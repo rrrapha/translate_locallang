@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes" ?>
+<xliff version="1.0">
+	<file source-language="en" datatype="plaintext" original="messages" date="2016-11-06T08:49:40Z" product-name="translate_locallang">
+		<header/>
+		<body>
+			<trans-unit id="title">
+				<source>Translate</source>
+			</trans-unit>
+			<trans-unit id="choose_extension">
+				<source>Select extension</source>
+			</trans-unit>
+			<trans-unit id="choose_file">
+				<source>Select file</source>
+			</trans-unit>
+			<trans-unit id="choose_language">
+				<source>Select language</source>
+			</trans-unit>
+			<trans-unit id="save">
+				<source>Save</source>
+			</trans-unit>
+			<trans-unit id="export">
+				<source>Export CSV</source>
+			</trans-unit>
+			<trans-unit id="all_languages">
+				<source>All languages</source>
+			</trans-unit>
+			<trans-unit id="default_only">
+				<source>Default only</source>
+			</trans-unit>
+		</body>
+	</file>
+</xliff>

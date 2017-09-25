@@ -1,0 +1,83 @@
+<f:form action="save" controller="Module" method="post" class="form-group">
+
+	<f:form.hidden name="extension" value="{extension}" />
+	<f:form.hidden name="file" value="{file}" />
+	<f:for each="{langKeys}" as="langKey">
+		<f:form.hidden name="langKeys[]" value="{langKey}" />
+	</f:for>
+	<div class="form-group">
+		<f:form.submit value="{f:translate(key:'save')}" class="btn btn-default"/>
+	</div>
+	<div class="translate-table form-group">
+		<div class="translate-row header">
+			<div>key</div>
+			<div>{conf.defaultLangKey} (default)</div>
+			<f:for each="{langKeys}" as="langKey">
+				<f:if condition="{langKey} != 'default'"><div>{langKey}</div></f:if>
+			</f:for>
+			<f:if condition="{conf.modifyDefaultLang}">
+				<div class="add"></div>
+				<div class="del"></div>
+				<div class="move"></div>
+			</f:if>
+		</div>
+		<f:for each="{labels}" as="label" key="key">
+		<f:spaceless>
+		<f:if condition="{key}">
+		<div class="translate-row">
+			<div>
+				<f:form.textfield name="keys[{key}]" value="{key}" additionalAttributes="{f:if(condition:'{conf.modifyKeys}',then:'{autocomplete:\'off\'}',else:'{readonly:\'1\',autocomplete:\'off\'}')}" />
+			</div>
+			<div>
+				<f:form.textarea name="labels[{key}][default]" value="{label.default}" additionalAttributes="{f:if(condition:'{conf.modifyDefaultLang}',then:'{data-no:\'1\'}',else:'{readonly:\'1\'}')}" />
+			</div>
+			<f:for each="{label}" as="value" key="langKey">
+			<f:if condition="{langKey} != 'default'">
+			<div{f:if(condition:'{value} == {label.default}',then:' class="same"')}>
+				<f:form.textarea name="labels[{key}][{langKey}]" value="{value}" />
+			</div>
+			</f:if>
+			</f:for>
+			<f:if condition="{conf.modifyDefaultLang}">
+				<f:render partial="Module/Icons" />
+			</f:if>
+		</div>
+		</f:if>
+		</f:spaceless>
+		</f:for>
+		<div class="translate-row">
+			<div>
+				<f:form.textfield name="keys[_newkey]" value="" additionalAttributes="{f:if(condition:'{conf.modifyKeys}',then:'{autocomplete:\'off\'}',else:'{readonly:\'1\',autocomplete:\'off\'}')}" />
+			</div>
+			<div>
+				<f:form.textarea name="labels[_newkey][default]" value="" additionalAttributes="{f:if(condition:'{conf.modifyDefaultLang}',then:'{foo:\'1\'}',else:'{readonly:\'1\'}')}" />
+			</div>
+			<f:for each="{langKeys}" as="langKey">
+			<f:if condition="{langKey} != 'default'">
+				<div>
+					<f:form.textarea name="labels[_newkey][{langKey}]" value="" />
+				</div>
+			</f:if>
+			</f:for>
+			<f:if condition="{conf.modifyDefaultLang}">
+				<f:render partial="Module/Icons" />
+			</f:if>
+		</div>
+	</div>
+	<div class="form-group">
+		<f:form.submit value="{f:translate(key:'save')}" class="btn btn-default" />
+	</div>
+
+</f:form>
+
+<br>
+<div class="panel panel-default">
+<div class="panel-body">
+<f:form action="exportCsv" controller="Module" class="form-inline">
+	<f:form.hidden name="extension" value="{extension}" />
+	<f:form.hidden name="file" value="{file}" />
+	<f:form.submit value="{f:translate(key:'export')}" class="btn btn-default" />
+	<f:form.select name="defaultOnly" options="{0:'{f:translate(key:\'all_languages\')}',1:'{f:translate(key:\'default_only\')}'}" class="form-control" />
+</f:form>
+</div>
+</div>

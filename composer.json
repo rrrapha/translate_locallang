@@ -1,0 +1,18 @@
+{
+    "name": "undefined/translate-locallang",
+    "type": "typo3-cms-extension",
+    "version": "2.0.1",
+    "description": "Editor for locallang.xlf files",
+    "replace": {
+        "translate_locallang": "self.version",
+        "typo3-ter/translate-locallang": "self.version"
+    },
+    "require": {
+        "typo3/cms-core": ">=7.6.0 <=9.0.99"
+    },
+    "autoload": {
+        "psr-4": {
+            "Undefined\\TranslateLocallang\\": "Classes"
+        }
+    }
+}

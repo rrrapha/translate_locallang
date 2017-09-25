@@ -1,0 +1,9 @@
+<f:form action="list" controller="Module" class="form-group">
+	<f:form.select name="extension" options="{conf.extensions}" value="{extension}" prependOptionValue="0" prependOptionLabel="{f:translate(key:'choose_extension')}" additionalAttributes="{onchange:'this.form.submit()'}" class="form-control input-sm" />
+	<f:if condition="{extension}">
+		<f:form.select name="file" options="{files}" value="{file}" prependOptionValue="0" prependOptionLabel="{f:translate(key:'choose_file')}" additionalAttributes="{onchange:'this.form.submit()'}" class="form-control input-sm"/>
+		<f:if condition="{file}">
+			<f:form.select name="langKeys" options="{conf.langKeys}" value="{langKeys}" multiple="1" additionalAttributes="{onchange:'this.form.submit()'}" class="form-control input-sm" size="{conf.langKeys->f:count()}"/>
+		</f:if>
+	</f:if>
+</f:form>

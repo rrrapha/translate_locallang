@@ -1,0 +1,18 @@
+# cat=basic//1; type=string; label=Default language key (default=en)
+defaultLangKey = en
+# cat=basic//2; type=string; label=Translation language keys
+langKeys = de,fr,it
+# cat=basic//3; type=boolean; label=Save translations to /typo3conf/l10n/ instead of typo3conf/ext/
+useL10n = 0
+# cat=basic//4; type=boolean; label=Show debug output
+debug = 0
+# cat=basic//5; type=boolean; label=Log write operations
+sysLog = 0
+# cat=basic//6; type=string; label=Allowed extensions for non-admin users (comma separated, empty=all)
+allowedExts = 
+# cat=basic//7; type=string; label=Allowed filenames for non-admin users (comma separated, empty=all)
+allowedFiles = 
+# cat=basic//8; type=boolean; label=Allow non-admin users to modify default language and sorting
+modifyDefaultLang = 0
+# cat=basic//9; type=boolean; label=Allow non-admin users to modify keys (implies modifyDefaultLang)
+modifyKeys = 0

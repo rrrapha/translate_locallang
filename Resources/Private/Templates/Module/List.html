@@ -1,0 +1,15 @@
+<f:layout name="Backend" />
+
+<f:section name="content">
+<div class="module-body">
+	<f:flashMessages />
+	<h1>{f:translate(key:'title')} {f:if(condition:'{extension}',then:' - {extension}')}</h1>
+	<f:render partial="Module/Filter" arguments="{_all}" />
+	<br>
+	<f:if condition="{extension}">
+		<f:if condition="{file}">
+			<f:render partial="Module/List" arguments="{_all}" />
+		</f:if>
+	</f:if>
+</div>
+</f:section>

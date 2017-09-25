@@ -1,0 +1,3 @@
+.. |translate_locallang_icon|      image:: Images/ext_icon.svg
+.. :align: left
+.. :name: translate_locallang_icon

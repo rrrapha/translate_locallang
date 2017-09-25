@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes" ?>
+<xliff version="1.0">
+	<file source-language="{sourcelang}"{f:if(condition:'{targetlang}',then:' target-language="{targetlang}"')} datatype="plaintext" original="messages" date="{date}" product-name="{productname}">
+		<header/>
+		<body><f:for each="{labels}" as="label" key="key">
+			<trans-unit id="{key}">
+				<source>{label.0.source->f:format.raw()}</source><f:if condition="{targetlang}">
+				<target>{label.0.target->f:format.raw()}</target></f:if>
+			</trans-unit></f:for>
+		</body>
+	</file>
+</xliff>

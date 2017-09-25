@@ -1,0 +1,60 @@
+.translate-table {
+	display:table;
+	position:relative;
+	width:100%;
+	border-collapse:collapse;
+}
+.translate-row {
+	display:table-row;
+	border:1px solid #aaaaaa;
+}
+.translate-row.over {
+	border-top: 2px solid #558b87;
+}
+.translate-row:hover {
+	background-color:#f2f2f2;
+}
+.translate-row.header {
+	border:1px solid #aaaaaa;
+	font-weight:bold;
+}
+.translate-row > div {
+	display:table-cell;
+	border-left:1px solid #aaaaaa;
+	border-right:1px solid #aaaaaa;
+	vertical-align:top;
+	line-height:normal;
+}
+.translate-row > .same {
+	background-color:#d2e3e2;
+}
+.translate-row input {
+	width:100%;
+	border:none;
+	outline:none;
+	background-color:transparent;
+	line-height:normal;
+	padding:0;
+}
+.translate-row textarea {
+	resize: none;
+	width:100%;
+	border:none;
+	outline:none;
+	background-color:transparent;
+	line-height:normal;
+	height:2.9em;
+	overflow-y:auto;
+	padding:0;
+}
+.translate-row > .add, .translate-row > .del, .translate-row > .move {
+	width:2em;
+	padding:4px;
+}
+
+form.form-group select {
+	width: 100%;
+}
+form.form-group select.form-control[multiple] {
+	min-height: 0;
+}

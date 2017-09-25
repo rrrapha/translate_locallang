@@ -1,0 +1,28 @@
+<f:Be.Container
+		includeCssFiles="{0: '{f:uri.resource(path:\'Css/translate.css\')}'}"
+		includeJsFiles="{0: '{f:uri.resource(path:\'Js/translate.js\')}'}"
+		pageTitle="translate">
+	<div class="module">
+		<div class="module-docheader">
+			<div class="typo3-docheader-functions">
+				<div class="module-docheader-bar module-docheader-bar-navigation">
+					<div class="module-docheader-bar-column-left">
+					</div>
+					<div class="module-docheader-bar-column-right">
+					target directory: {f:if(condition:'{conf.useL10n}',then:'typo3conf/l10n',else:'typo3conf/ext')}
+					</div>
+				</div>
+			</div>
+			<div class="module-docheader-bar module-docheader-bar-buttons">
+				<div class="module-docheader-bar-column-left">
+				</div>
+				<div class="module-docheader-bar-column-right">
+					<span class="btn btn-sm btn-default">
+						<f:be.buttons.shortcut />
+					</span>
+				</div>
+			</div>
+		</div>
+		<f:render section="content" />
+	</div>
+</f:Be.Container>
