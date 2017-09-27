@@ -308,7 +308,7 @@ class XliffService
         //matches the format used by TYPO3\CMS\Core\Localization\Parser\XliffParser
         $labels = [];
         foreach($this->data as $key => $dummy) {
-            if (isset($this->data[$key]['default']) && strpos($key, '_newkey') !== 0) {
+            if (isset($this->data[$key]['default'])) {
                 $labels[$key] = [
                     0 => [
                         'source' => $this->encodeValue($this->data[$key]['default']),

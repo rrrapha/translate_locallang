@@ -151,12 +151,7 @@ class ModuleController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionControlle
      * @param array $langKeys
      * @return void
      */
-    public function saveAction($keys = [], $labels = [], $extension = '', $file = '', $langKeys = ['default']) {
-        if (empty($keys) && $extension === '') {
-            //this can happen via backend bookmark
-            $this->forward('list', NULL, NULL, ['extension' => $extension, 'file' => $file, 'langKeys' => $langKeys]);
-        }
-
+    public function saveAction($keys, $labels, $extension, $file, $langKeys) {
         if (!isset($this->conf['extensions'][$extension])) {
             throw new \UnexpectedValueException('Extension not allowed: ' . $extension);
         }
@@ -171,9 +166,9 @@ class ModuleController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionControlle
             }
         }
 
-        //remove dummy keys
+        //remove empty keys
         foreach($keys as $key => $keyvalue) {
-            if (strpos($key, '_newkey') === 0 && $keyvalue === '') {
+            if (trim($keyvalue) === '') {
                 unset($labels[$key]);
                 unset($keys[$key]);
             }
@@ -227,7 +222,7 @@ class ModuleController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionControlle
      * @param bool $defaultOnly
      * @return void
      */
-    public function exportCsvAction($extension = '', $file = '', $defaultOnly = FALSE) {
+    public function exportCsvAction($extension, $file, $defaultOnly = FALSE) {
         if (!isset($this->conf['extensions'][$extension])) {
             throw new \UnexpectedValueException('Extension not allowed: ' . $extension);
         }
