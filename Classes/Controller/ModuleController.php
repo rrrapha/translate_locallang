@@ -89,7 +89,7 @@ class ModuleController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionControlle
 
         if ($extension) {
             if (!isset($this->conf['extensions'][$extension])) {
-                return __FUNCTION__ . ': extension not allowed: ' . $extension;  //ERR
+                throw new \UnexpectedValueException('Extension not allowed: ' . $extension);
             }
             $l = next($this->conf['langKeys']);
             $l10ndir = 'l10n/' . $l . '/' . $extension;
@@ -158,11 +158,11 @@ class ModuleController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionControlle
         }
 
         if (!isset($this->conf['extensions'][$extension])) {
-            return __FUNCTION__ . ': extension not allowed: ' . $extension; //ERR
+            throw new \UnexpectedValueException('Extension not allowed: ' . $extension);
         }
         $files = TranslateUtility::getFileList($extension);
         if (!isset($files[$file])) {
-            return __FUNCTION__ . ': file not allowed: ' . $file; //ERR
+            throw new \UnexpectedValueException('File not allowed: ' . $file);
         }
 
         foreach($langKeys as $key => $langKey) {
@@ -188,7 +188,7 @@ class ModuleController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionControlle
         foreach($keys as $key => $keyvalue) {
             if ($key !== $keyvalue) {
                 if (!$this->conf['modifyKeys']) {
-                    return __FUNCTION__ . ': not allowed to modify keys'; //ERR
+                    throw new \UnexpectedValueException('Not allowed to modify keys');
                 }
                 $keychanges[$key] = $keyvalue;
                 $this->log('Changed key: ' . $extension . '|' . $file . ' ' . $key . '->' . $keyvalue, 0);
@@ -229,11 +229,11 @@ class ModuleController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionControlle
      */
     public function exportCsvAction($extension = '', $file = '', $defaultOnly = FALSE) {
         if (!isset($this->conf['extensions'][$extension])) {
-            return __FUNCTION__ . ': extension not allowed: ' . $extension; //ERR
+            throw new \UnexpectedValueException('Extension not allowed: ' . $extension);
         }
         $files = TranslateUtility::getFileList($extension);
         if (!isset($files[$file])) {
-            return __FUNCTION__ . ': file not allowed: ' . $file; //ERR
+            throw new \UnexpectedValueException('File not allowed: ' . $file);
         }
 
         $xliffService = GeneralUtility::makeInstance('Undefined\TranslateLocallang\Service\XliffService');
