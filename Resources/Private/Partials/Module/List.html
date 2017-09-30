@@ -77,8 +77,10 @@
 <f:form action="exportCsv" controller="Module" class="form-inline">
 	<f:form.hidden name="extension" value="{extension}" />
 	<f:form.hidden name="file" value="{file}" />
+	<f:for each="{langKeys}" as="langKey">
+		<f:form.hidden name="langKeys[{langKey}]" value="{langKey}" />
+	</f:for>
 	<f:form.submit value="{f:translate(key:'export')}" class="btn btn-default" />
-	<f:form.select name="defaultOnly" options="{0:'{f:translate(key:\'all_languages\')}',1:'{f:translate(key:\'default_only\')}'}" class="form-control" />
 </f:form>
 </div>
 </div>

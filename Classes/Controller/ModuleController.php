@@ -223,10 +223,10 @@ class ModuleController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionControlle
     /**
      * @param string $extension
      * @param string $file
-     * @param bool $defaultOnly
-     * @return void
+     * @param array $langKeys
+     * @return string
      */
-    public function exportCsvAction($extension, $file, $defaultOnly = FALSE) {
+    public function exportCsvAction($extension, $file, $langKeys) {
         if (!isset($this->conf['extensions'][$extension])) {
             throw new \UnexpectedValueException('Extension not allowed: ' . $extension);
         }
@@ -238,18 +238,15 @@ class ModuleController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionControlle
         $xliffService = GeneralUtility::makeInstance('Undefined\TranslateLocallang\Service\XliffService');
         $xliffService->init($extension, $file, $this->conf['defaultLangKey'], $this->conf['useL10n']);
 
-        $langKeys = ($defaultOnly) ? ['default' => $this->conf['defaultLangKey'] . ' (default)'] : $this->conf['langKeys'];
-        foreach($langKeys as $langKey => $dummy) {
+        $hrow = ['key'];
+        foreach($langKeys as $langKey) {
             if (!$xliffService->loadLang($langKey)) {
                 continue;
             }
+            $hrow[] = $this->conf['langKeys'][$langKey];
         }
 
         $data = &$xliffService->getData();
-        $hrow = ['key'];
-        foreach($this->conf['langKeys'] as $langKey => $langKeyValue) {
-            $hrow[] = $langKeyValue;
-        }
 
         //output CSV
         $fileName = $extension . '-' . $file . '.csv';

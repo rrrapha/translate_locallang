@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8" standalone="yes" ?>
 <xliff version="1.0">
-	<file source-language="en" datatype="plaintext" original="messages" date="2017-09-30T12:14:09Z" product-name="translate_locallang">
+	<file source-language="en" datatype="plaintext" original="messages" date="2017-09-30T13:29:22Z" product-name="translate_locallang">
 		<header/>
 		<body>
 			<trans-unit id="title">
@@ -20,12 +20,6 @@
 			</trans-unit>
 			<trans-unit id="export">
 				<source>Export CSV</source>
-			</trans-unit>
-			<trans-unit id="all_languages">
-				<source>All languages</source>
-			</trans-unit>
-			<trans-unit id="default_only">
-				<source>Default only</source>
 			</trans-unit>
 			<trans-unit id="sort_by_key">
 				<source>Sort by key</source>
