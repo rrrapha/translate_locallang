@@ -219,6 +219,13 @@ class XliffService
     }
 
     /**
+     * @return void
+     */
+    public function sortByKey() {
+        ksort($this->data);
+    }
+
+    /**
      * @param string $langKey
      * @return string
      */

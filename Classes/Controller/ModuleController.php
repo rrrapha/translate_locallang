@@ -62,9 +62,10 @@ class ModuleController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionControlle
      * @param string $extension
      * @param string $file
      * @param array $langKeys
+     * @param boolean $sort
      * @return void
      */
-    public function listAction($extension = '', $file = '', $langKeys = ['default']) {
+    public function listAction($extension = '', $file = '', $langKeys = ['default'], $sort = FALSE) {
         $moduledata = TranslateUtility::getModuleData();
         if ($moduledata && $extension !== '0' ) {
             if (!$extension && $moduledata['extension'] && isset($this->conf['extensions'][$moduledata['extension']])) {
@@ -112,6 +113,9 @@ class ModuleController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionControlle
                         $this->addFlashMessage('Could not load language: ' . $langKey, 'Warning', AbstractMessage::WARNING);
                         $xliffService->addLang($langKey);
                     }
+                }
+                if ($sort) {
+                    $xliffService->sortByKey();
                 }
                 $labels = &$xliffService->getData();
                 if (empty($labels)) {

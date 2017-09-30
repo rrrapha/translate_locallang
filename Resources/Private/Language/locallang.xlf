@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8" standalone="yes" ?>
 <xliff version="1.0">
-	<file source-language="en" datatype="plaintext" original="messages" date="2016-11-06T08:49:40Z" product-name="translate_locallang">
+	<file source-language="en" datatype="plaintext" original="messages" date="2017-09-30T12:14:09Z" product-name="translate_locallang">
 		<header/>
 		<body>
 			<trans-unit id="title">
@@ -26,6 +26,9 @@
 			</trans-unit>
 			<trans-unit id="default_only">
 				<source>Default only</source>
+			</trans-unit>
+			<trans-unit id="sort_by_key">
+				<source>Sort by key</source>
 			</trans-unit>
 		</body>
 	</file>
