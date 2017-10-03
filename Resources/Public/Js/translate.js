@@ -1,6 +1,7 @@
 window.addEventListener('DOMContentLoaded', function() {
 	var el_act = null;	//current drag elem
 	var el_last = null;	//last element with a highlight border
+	var dragging = false;
 	var i;
 
 	var rows = document.getElementsByClassName('translate-row');
@@ -22,25 +23,23 @@ window.addEventListener('DOMContentLoaded', function() {
 
 	function inithandle(obj) {
 		obj.setAttribute('draggable', 'true');
-
-		obj.addEventListener('mousedown', function (e) {
-			starty = e.clientY;
-		});
-
 		obj.addEventListener('dragstart', function (e) {
 			e.dataTransfer.effectAllowed = 'copy';		// !
 			e.dataTransfer.setData('Text', this.id);	// !
 			el_act = this.parentNode;
 			el_act.style.opacity = '0.5';
+			dragging = true;
 		});
 
-		obj.addEventListener('dragover', function (e) {
-			if (e.preventDefault) e.preventDefault();
+		obj.parentNode.addEventListener('dragover', function (e) {
+			e.preventDefault();
+			if (!dragging)
+				return false;
 			e.dataTransfer.dropEffect = 'copy';			// !
 
-			var el_this = this.parentNode;
-			var el_next = this.parentNode.nextElementSibling;
-			var rect = this.parentNode.getBoundingClientRect();
+			var el_this = this;
+			var el_next = this.nextElementSibling;
+			var rect = this.getBoundingClientRect();
 			var vcenter = (rect.top + rect.bottom) >> 1;
 
 			if (el_last)
@@ -61,21 +60,21 @@ window.addEventListener('DOMContentLoaded', function() {
 			return false;
 		});
 
-		obj.addEventListener('drop', function (e) {
-			if (e.stopPropagation) e.stopPropagation();
-			if (e.preventDefault) e.preventDefault();
-
-			var src = el_act;
-			var dst = this.parentNode;
-			var rect = dst.getBoundingClientRect();
+		obj.parentNode.addEventListener('drop', function (e) {
+			e.stopPropagation();
+			e.preventDefault();
+			if (!dragging)
+				return false;
+			var rect = this.getBoundingClientRect();
 			var vcenter = (rect.top + rect.bottom) / 2;
 			if (e.clientY < vcenter)
-				dst.parentNode.insertBefore(src, dst); //insert before
+				this.parentNode.insertBefore(el_act, this); //insert before
 			else
-				dst.parentNode.insertBefore(src, dst.nextSibling); //insert after
+				this.parentNode.insertBefore(el_act, this.nextSibling); //insert after
 		});
 
 		obj.addEventListener('dragend', function (e) {
+			dragging = false;
 			if (el_act)
 				el_act.style.opacity = '';
 			if (el_last)
@@ -86,8 +85,8 @@ window.addEventListener('DOMContentLoaded', function() {
 	var newindex = 0;
 	function initadder(obj) {
 		obj.addEventListener('click', function (e) {
-			if (e.stopPropagation) e.stopPropagation();
-			if (e.preventDefault) e.preventDefault();
+			e.stopPropagation();
+			e.preventDefault();
 			var refnode = this.parentNode.nextSibling;
 			var newnode = this.parentNode.cloneNode(true);
 			var inputs = newnode.getElementsByTagName('input');
@@ -103,10 +102,9 @@ window.addEventListener('DOMContentLoaded', function() {
 
 			for (i = 0; i < textareas.length; i++) {
 				okey = textareas[i].getAttribute('name');
-				nkey = okey.replace(key, newkey);
+				nkey = okey.replace('[' + key + ']', '[' + newkey+ ']');
 				textareas[i].setAttribute('name', nkey);
 				textareas[i].innerText = '';
-				textareas[i].value = '';
 			}
 			initrow(newnode);
 			this.parentNode.parentNode.insertBefore(newnode, refnode);
