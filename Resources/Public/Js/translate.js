@@ -102,7 +102,7 @@ window.addEventListener('DOMContentLoaded', function() {
 
 			for (i = 0; i < textareas.length; i++) {
 				okey = textareas[i].getAttribute('name');
-				nkey = okey.replace('[' + key + ']', '[' + newkey+ ']');
+				nkey = okey.replace('][' + key + '][', '][' + newkey+ '][');
 				textareas[i].setAttribute('name', nkey);
 				textareas[i].innerText = '';
 			}
