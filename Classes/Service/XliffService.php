@@ -26,10 +26,11 @@ namespace Undefined\TranslateLocallang\Service;
  ***************************************************************/
 
 use TYPO3\CMS\Core\Utility\GeneralUtility;
+use Undefined\TranslateLocallang\Utility\TranslateUtility;
 
 class XliffService
 {
-    const CDATA_START =  '<![CDATA[';
+    const CDATA_START = '<![CDATA[';
     const CDATA_END = ']]>';
 
     /**
@@ -88,7 +89,7 @@ class XliffService
         if ($this->getLabelCount('default') === NULL) {
             $this->labelcount[$langKey] = 0;
             $this->data = [];
-            $fileref = $this->getXlfPath('default', FALSE);
+            $fileref = TranslateUtility::getXlfPath($this->extension, $this->file, 'default', FALSE);
             if(!$this->loadFile($fileref, 'default', TRUE)) {
                 return FALSE;
             }
@@ -98,13 +99,13 @@ class XliffService
         if ($langKey !== 'default') {
             $this->labelcount[$langKey] = 0;
             //check for file in typo3conf/ext first
-            $fileref = $this->getXlfPath($langKey, FALSE);
+            $fileref = TranslateUtility::getXlfPath($this->extension, $this->file, $langKey, FALSE);
 
             $addkeys = !$this->useL10n;
             $success = $this->loadFile($fileref, $langKey, $addkeys);
 
             if ($this->useL10n) {
-                $fileref = $this->getXlfPath($langKey, TRUE);
+                $fileref = TranslateUtility::getXlfPath($this->extension, $this->file, $langKey, TRUE);
                 $success = $this->loadFile($fileref, $langKey, TRUE) || $success;
             }
 
@@ -135,7 +136,7 @@ class XliffService
         if (!$xliff) {
             return FALSE;
         }
-        $fileref = $this->getXlfPath($langKey, $this->useL10n);
+        $fileref = TranslateUtility::getXlfPath($this->extension, $this->file, $langKey, $this->useL10n);
         if ($this->useL10n && !is_dir(dirname($fileref))) {
             $folderCreateMask = (isset($GLOBALS['TYPO3_CONF_VARS']['SYS']['folderCreateMask'])) ?
                 octdec($GLOBALS['TYPO3_CONF_VARS']['SYS']['folderCreateMask']) : octdec('2775');
@@ -230,7 +231,7 @@ class XliffService
      * @return string
      */
     public function getFilename($langKey) {
-        return $this->getXlfPath($langKey, $this->useL10n);
+        return TranslateUtility::getXlfPath($this->extension, $this->file, $langKey, $this->useL10n);
     }
 
     /**
@@ -249,7 +250,7 @@ class XliffService
      * @return int
      */
     public function fileExists($langKey) {
-        return is_file($this->getXlfPath($langKey, $this->useL10n));
+        return is_file($this->getFilename($langkey));
     }
 
     /**
@@ -347,28 +348,6 @@ class XliffService
             return ltrim($str);
         } else {
             return htmlspecialchars($str);
-        }
-    }
-
-    /**
-     * get path to XLF, no checking for file existence, arguments are checked by caller
-     *
-     * @param string $langKey
-     * @param bool $useL10n
-     * @return string
-     */
-    protected function getXlfPath($langKey = 'default', $useL10n = FALSE) {
-        //get default path
-        $relpath = $this->extension . '/Resources/Private/Language/';
-        if ($langKey === 'default') {
-            return PATH_typo3conf . 'ext/' . $relpath . $this->file;
-        }
-        //get overlay path
-        $fileName = $langKey . '.' . $this->file;
-        if ($useL10n) {
-            return PATH_typo3conf . 'l10n/' . $langKey . '/' . $relpath . $fileName;
-        } else {
-            return PATH_typo3conf . 'ext/' . $relpath . $fileName;
         }
     }
 }

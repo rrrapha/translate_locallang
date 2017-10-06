@@ -11,5 +11,10 @@
 			<f:render partial="Module/List" arguments="{_all}" />
 		</f:if>
 	</f:if>
+	<br>
+	<br>
+	<f:if condition="{file}">
+		<f:render partial="Module/Export" arguments="{_all}" />
+	</f:if>
 </div>
 </f:section>

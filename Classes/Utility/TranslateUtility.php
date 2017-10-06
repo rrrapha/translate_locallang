@@ -29,6 +29,8 @@ use TYPO3\CMS\Backend\Utility\BackendUtility;
 
 class TranslateUtility
 {
+    const LANGUAGE_DIR = 'Resources/Private/Language/';
+
     /**
      * get all extenions, loaded or not
      *
@@ -49,7 +51,7 @@ class TranslateUtility
             }
             if (!$GLOBALS['BE_USER']->user['admin']) {
                 if ((!empty($allowedExts) && !in_array($entry, $allowedExts))
-                    || (!empty($allowedFiles) && !static::fileExists($extdir . 'Resources/Private/Language/', $allowedFiles))
+                    || (!empty($allowedFiles) && !static::fileExists($extdir . static::LANGUAGE_DIR, $allowedFiles))
                 ) {
                     continue;
                 }
@@ -70,7 +72,7 @@ class TranslateUtility
     public static function getFileList($extension, $allowedFiles = []) {
         $files = [];
         $extdir = PATH_typo3conf . 'ext/' . $extension . '/';
-        if ($handle = @opendir($extdir . 'Resources/Private/Language')) {
+        if ($handle = @opendir($extdir . static::LANGUAGE_DIR)) {
             while (FALSE !== ($entry = readdir($handle))) {
                 $parts = explode('.', $entry);
                 if (count($parts) < 2 || $parts[0] === '' || end($parts) !== 'xlf' || strpos($parts[0], 'locallang') !== 0) {
@@ -85,11 +87,35 @@ class TranslateUtility
     }
 
     /**
+     * get path to XLF, no checking for file existence
+     *
+     * @param string $extension
+     * @param string $file
+     * @param string $langKey
+     * @param bool $useL10n
+     * @return string
+     */
+    public static function getXlfPath($extension, $file, $langKey = 'default', $useL10n = FALSE) {
+        //get default path
+        $relpath = $extension . '/' . static::LANGUAGE_DIR;
+        if ($langKey === 'default') {
+            return PATH_typo3conf . 'ext/' . $relpath . $file;
+        }
+        //get overlay path
+        $fileName = $langKey . '.' . $file;
+        if ($useL10n) {
+            return PATH_typo3conf . 'l10n/' . $langKey . '/' . $relpath . $fileName;
+        } else {
+            return PATH_typo3conf . 'ext/' . $relpath . $fileName;
+        }
+    }
+
+    /**
      * @param string extdir
      * @return bool
      */
     private static function isExtension($extdir) {
-        return (@is_file($extdir . 'ext_emconf.php') && @is_dir($extdir . 'Resources/Private/Language'));
+        return (@is_file($extdir . 'ext_emconf.php') && @is_dir($extdir . static::LANGUAGE_DIR));
     }
 
     /**

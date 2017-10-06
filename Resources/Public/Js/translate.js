@@ -2,7 +2,7 @@ window.addEventListener('DOMContentLoaded', function() {
 	var el_act = null;	//current drag elem
 	var el_last = null;	//last element with a highlight border
 	var dragging = false;
-	var i;
+	var i, l;
 
 	var rows = document.getElementsByClassName('translate-row');
 	for (i = 0, l = rows.length; i < l; i++) {
