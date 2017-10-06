@@ -8,7 +8,7 @@ if (TYPO3_MODE === 'BE') {
         'm1',
         '',
         [
-            'Module' => 'list, save, exportCsv'
+            'Module' => 'list, save, exportCsv, search'
         ],
         [
             'access' => 'user,group',

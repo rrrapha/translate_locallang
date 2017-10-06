@@ -1,0 +1,11 @@
+<f:layout name="Backend" />
+
+<f:section name="content">
+<div class="module-body">
+	<f:flashMessages />
+	<h1>{f:translate(key:'search')}</h1>
+	<f:render partial="Module/Search" arguments="{_all}" />
+	<f:link.action action="list" >{f:translate(key:'back')}</f:link.action>
+	<br>
+</div>
+</f:section>
