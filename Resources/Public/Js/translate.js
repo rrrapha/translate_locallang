@@ -92,19 +92,18 @@ window.addEventListener('DOMContentLoaded', function() {
 			var inputs = newnode.getElementsByTagName('input');
 			var textareas = newnode.getElementsByTagName('textarea');
 			var newkey = '_newkey' + newindex++;
-			var okey = inputs[0].getAttribute('name');
-			var start = okey.lastIndexOf('[') + 1;
-			var end = okey.lastIndexOf(']');
-			var key = okey.substring(start, end);
-			var nkey = 'tx_translatelocallang_tools_translatelocallangm1[keys]['+newkey+']';
-			inputs[0].setAttribute('name', nkey);
+			var oname = inputs[0].getAttribute('name');
+			var key = oname.substring(oname.lastIndexOf('[') + 1, oname.lastIndexOf(']'));
+			var nname = 'tx_translatelocallang_tools_translatelocallangm1[keys]['+newkey+']';
+			inputs[0].setAttribute('name', nname);
 			inputs[0].value = '';
 
 			for (i = 0; i < textareas.length; i++) {
-				okey = textareas[i].getAttribute('name');
-				nkey = okey.replace('][' + key + '][', '][' + newkey+ '][');
-				textareas[i].setAttribute('name', nkey);
+				oname = textareas[i].getAttribute('name');
+				nname = oname.replace('][' + key + '][', '][' + newkey+ '][');
+				textareas[i].setAttribute('name', nname);
 				textareas[i].innerText = '';
+				textareas[i].value = '';
 			}
 			initrow(newnode);
 			this.parentNode.parentNode.insertBefore(newnode, refnode);
