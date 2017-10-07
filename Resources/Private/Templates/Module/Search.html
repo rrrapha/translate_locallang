@@ -4,8 +4,31 @@
 <div class="module-body">
 	<f:flashMessages />
 	<h1>{f:translate(key:'search')}</h1>
-	<f:render partial="Module/Search" arguments="{_all}" />
-	<f:link.action action="list" >{f:translate(key:'back')}</f:link.action>
+		<f:form action="search" controller="Module" class="form-group">
+			<div class="form-group">
+				<div class="input-group">
+					<f:form.textfield name="word" value="{word}" class="form-control" placeholder="Label"/>
+					<span class="input-group-btn">
+						<f:form.button type="submit" value="{f:translate(key:'search_all')}" class="btn btn-default">{f:translate(key:'search_all')}</f:form.button>
+					</span>
+				</div>
+			</div>
+		</f:form>
+		<f:if condition="{word}">
+			<f:if condition="{results}">
+				<f:then>
+					<h2>{f:translate(key:'search_results')}:</h2>
+					<f:for each="{results}" as="result">
+						<div>
+							<f:link.action action="list" arguments="{extension:result.0,file:result.1,langKeys:result.2}"><strong>{result.0}</strong>/Resources/Private/Language/{result.1}</f:link.action>
+						</div>
+					</f:for>
+				</f:then>
+				<f:else>
+					<div>Nothing found.</div>
+				</f:else>
+			</f:if>
+		</f:if>
 	<br>
 </div>
 </f:section>

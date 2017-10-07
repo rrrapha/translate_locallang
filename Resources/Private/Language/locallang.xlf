@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8" standalone="yes" ?>
 <xliff version="1.0">
-	<file source-language="en" datatype="plaintext" original="messages" date="2017-10-06T09:41:10Z" product-name="translate_locallang">
+	<file source-language="en" datatype="plaintext" original="messages" date="2017-10-07T17:53:37Z" product-name="translate_locallang">
 		<header/>
 		<body>
 			<trans-unit id="title">
@@ -32,9 +32,6 @@
 			</trans-unit>
 			<trans-unit id="search_all">
 				<source>Search in all extensions</source>
-			</trans-unit>
-			<trans-unit id="back">
-				<source>Go back</source>
 			</trans-unit>
 		</body>
 	</file>

@@ -50,7 +50,7 @@
 				<f:form.textfield name="keys[_newkey]" value="" additionalAttributes="{f:if(condition:'{conf.modifyKeys}',then:'{autocomplete:\'off\'}',else:'{readonly:\'1\',autocomplete:\'off\'}')}" />
 			</div>
 			<div>
-				<f:form.textarea name="labels[_newkey][default]" value="" additionalAttributes="{f:if(condition:'{conf.modifyDefaultLang}',then:'{foo:\'1\'}',else:'{readonly:\'1\'}')}" />
+				<f:form.textarea name="labels[_newkey][default]" value="" additionalAttributes="{f:if(condition:'{conf.modifyDefaultLang}',then:'{data-no:\'1\'}',else:'{readonly:\'1\'}')}" />
 			</div>
 			<f:for each="{langKeys}" as="langKey">
 			<f:if condition="{langKey} != 'default'">
@@ -67,6 +67,9 @@
 	<f:link.action action="list" arguments="{extension:extension,file:file,langKeys:langKeys,sort:1}" style="float:right;">{f:translate(key:'sort_by_key')}</f:link.action>
 	<div class="form-group">
 		<f:form.submit value="{f:translate(key:'save')}" class="btn btn-default" />
+		<f:if condition="{labels}">
+			<f:form.button formaction="{f:uri.action(action:'exportCsv')}" value="{f:translate(key:'export')}" class="btn btn-default">{f:translate(key:'export')}</f:form.button>
+		</f:if>
 	</div>
 
 </f:form>

@@ -275,23 +275,25 @@ class ModuleController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionControlle
      * @param string $word
      * @return void
      */
-    public function searchAction($word) {
+    public function searchAction($word = '') {
         $results = [];
-        foreach($this->conf['extensions'] as $extension) {
-            $files = TranslateUtility::getFileList($extension, $this->conf['files']);
-            foreach($files as $file) {
-                $langKeys = [];
-                foreach($this->conf['langKeysAllowed'] as $langKey => $dummy) {
-                    $path = TranslateUtility::getXlfPath($extension, $file, $langKey);
-                    if (is_file($path)) {
-                        $xliff = file_get_contents($path);
-                        if ($xliff && preg_match('/>(.*)' . $word . '(.*)</i', $xliff)) {
-                            $langKeys[$langKey] = $langKey;
+        if ($word) {
+            foreach($this->conf['extensions'] as $extension) {
+                $files = TranslateUtility::getFileList($extension, $this->conf['files']);
+                foreach($files as $file) {
+                    $langKeys = [];
+                    foreach($this->conf['langKeysAllowed'] as $langKey => $dummy) {
+                        $path = TranslateUtility::getXlfPath($extension, $file, $langKey);
+                        if (is_file($path)) {
+                            $xliff = file_get_contents($path);
+                            if ($xliff && preg_match('/>(.*)' . $word . '(.*)</i', $xliff)) {
+                                $langKeys[$langKey] = $langKey;
+                            }
                         }
                     }
-                }
-                if (!empty($langKeys)) {
-                    $results[] = [$extension, $file, $langKeys];
+                    if (!empty($langKeys)) {
+                        $results[] = [$extension, $file, $langKeys];
+                    }
                 }
             }
         }
