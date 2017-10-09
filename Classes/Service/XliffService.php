@@ -138,20 +138,13 @@ class XliffService
         }
         $fileref = TranslateUtility::getXlfPath($this->extension, $this->file, $langKey, $this->useL10n);
         if ($this->useL10n && !is_dir(dirname($fileref))) {
-            $folderCreateMask = (isset($GLOBALS['TYPO3_CONF_VARS']['SYS']['folderCreateMask'])) ?
-                octdec($GLOBALS['TYPO3_CONF_VARS']['SYS']['folderCreateMask']) : octdec('2775');
-            if (!@mkdir(dirname($fileref), $folderCreateMask, TRUE)) {
+            try {
+                GeneralUtility::mkdir_deep(dirname($fileref), '');
+            } catch (\RuntimeException $e) {
                 return FALSE;
             }
         }
-        $success = FALSE;
-        if ($handle = @fopen($fileref , 'w')) {
-            $success = (fwrite($handle , $xliff) !== FALSE);
-            if (isset($GLOBALS['TYPO3_CONF_VARS']['SYS']['fileCreateMask'])) {
-                @chmod($fileref, octdec($GLOBALS['TYPO3_CONF_VARS']['SYS']['fileCreateMask']));
-            }
-        }
-        return $success;
+        return GeneralUtility::writeFile($fileref, $xliff);
     }
 
     /**
@@ -268,10 +261,10 @@ class XliffService
         libxml_use_internal_errors(TRUE);
         $xml = simplexml_load_file($fileref, 'SimpleXMLElement');
         if ($xml === FALSE) {
-                echo '<pre>Error parsing file: ' . $fileref . "\n";
-                print_r(libxml_get_errors());
-                echo '</pre>';
-                return FALSE;
+            echo '<pre>Error parsing file: ' . $fileref . "\n";
+            print_r(libxml_get_errors());
+            echo '</pre>';
+            return FALSE;
         }
         $children = [];
 
