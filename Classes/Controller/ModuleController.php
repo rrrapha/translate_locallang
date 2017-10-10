@@ -286,7 +286,8 @@ class ModuleController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionControlle
                         $path = TranslateUtility::getXlfPath($extension, $file, $langKey);
                         if (is_file($path)) {
                             $xliff = file_get_contents($path);
-                            if ($xliff && preg_match('/>(.*)' . $word . '(.*)</i', $xliff)) {
+                            $matchtag = ($langKey === 'default') ? 'source' : 'target';
+                            if ($xliff && preg_match('/<' . $matchtag . '>.*' . $word . '.*<\/' . $matchtag . '>/i', $xliff)) {
                                 $langKeys[$langKey] = $langKey;
                             }
                         }
