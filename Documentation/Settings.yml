@@ -6,8 +6,8 @@
 conf.py:
   copyright: 2017
   project: Translate
-  version: 2.1
-  release: 2.1.0
+  version: 2.2
+  release: 2.2.0
   intersphinx_mapping:
     t3tsref:
     - http://docs.typo3.org/typo3cms/TyposcriptReference/
