@@ -15,7 +15,7 @@
 			<f:for each="{langKeys}" as="langKey">
 				<f:if condition="{langKey} != 'default'"><div>{langKey}</div></f:if>
 			</f:for>
-			<f:if condition="{conf.modifyDefaultLang}">
+			<f:if condition="{conf.langKeysAllowed.default}">
 				<div class="add"></div>
 				<div class="del"></div>
 				<div class="move"></div>
@@ -26,19 +26,19 @@
 		<f:if condition="{key}">
 		<div class="translate-row">
 			<div>
-				<f:form.textfield name="keys[{key}]" value="{key}" additionalAttributes="{f:if(condition:'{conf.modifyKeys}',then:'{autocomplete:\'off\'}',else:'{readonly:\'1\',autocomplete:\'off\'}')}" />
+				<f:form.textfield name="keys[{key}]" value="{key}" readonly="{f:if(condition:'{conf.modifyKeys}',then:'',else:'1')}" additionalAttributes="{autocomplete:'off'}" />
 			</div>
 			<div>
-				<f:form.textarea name="labels[{key}][default]" value="{label.default}" additionalAttributes="{f:if(condition:'{conf.modifyDefaultLang}',then:'{data-no:\'1\'}',else:'{readonly:\'1\'}')}" />
+				<f:form.textarea name="labels[{key}][default]" value="{label.default}" additionalAttributes="{f:if(condition:'{conf.langKeysAllowed.default}',then:'{data-no:\'1\'}',else:'{readonly:\'1\'}')}" />
 			</div>
 			<f:for each="{label}" as="value" key="langKey">
 			<f:if condition="{langKey} != 'default'">
-			<div{f:if(condition:'{value} == {label.default}',then:' class="same"')}>
+			<div<f:if condition="{value} == {label.default}"> class="same"</f:if>>
 				<f:form.textarea name="labels[{key}][{langKey}]" value="{value}" />
 			</div>
 			</f:if>
 			</f:for>
-			<f:if condition="{conf.modifyDefaultLang}">
+			<f:if condition="{conf.langKeysAllowed.default}">
 				<f:render partial="Module/Icons" />
 			</f:if>
 		</div>
@@ -47,10 +47,10 @@
 		</f:for>
 		<div class="translate-row">
 			<div>
-				<f:form.textfield name="keys[_newkey]" value="" additionalAttributes="{f:if(condition:'{conf.modifyKeys}',then:'{autocomplete:\'off\'}',else:'{readonly:\'1\',autocomplete:\'off\'}')}" />
+				<f:form.textfield name="keys[_newkey]" value="" readonly="{f:if(condition:'{conf.modifyKeys}',then:'',else:'1')}" additionalAttributes="{autocomplete:'off'}" />
 			</div>
 			<div>
-				<f:form.textarea name="labels[_newkey][default]" value="" additionalAttributes="{f:if(condition:'{conf.modifyDefaultLang}',then:'{data-no:\'1\'}',else:'{readonly:\'1\'}')}" />
+				<f:form.textarea name="labels[_newkey][default]" value="" additionalAttributes="{f:if(condition:'{conf.langKeysAllowed.default}',then:'{data-no:\'1\'}',else:'{readonly:\'1\'}')}" />
 			</div>
 			<f:for each="{langKeys}" as="langKey">
 			<f:if condition="{langKey} != 'default'">
@@ -59,7 +59,7 @@
 				</div>
 			</f:if>
 			</f:for>
-			<f:if condition="{conf.modifyDefaultLang}">
+			<f:if condition="{conf.langKeysAllowed.default}">
 				<f:render partial="Module/Icons" />
 			</f:if>
 		</div>

@@ -48,12 +48,11 @@ class ModuleController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionControlle
         $allowedExts = GeneralUtility::trimExplode(',', $extConf['allowedExts'], TRUE);
         $this->conf['extensions'] = TranslateUtility::getExtList($allowedExts, $this->conf['files']);
         $this->conf['modifyKeys'] = (bool)$extConf['modifyKeys'] || $GLOBALS['BE_USER']->user['admin'];
-        $this->conf['modifyDefaultLang'] = (bool)$extConf['modifyDefaultLang'] || $GLOBALS['BE_USER']->user['admin'] || $this->conf['modifyKeys'];
         $this->conf['useL10n'] = (bool)$extConf['useL10n'];
         $this->conf['debug'] = (bool)$extConf['debug'];
         $this->conf['sysLog'] = (bool)$extConf['sysLog'];
         $this->conf['langKeysAllowed'] = $this->conf['langKeys'];
-        if (!$this->conf['modifyDefaultLang']) {
+        if (!((bool)$extConf['modifyDefaultLang'] || $GLOBALS['BE_USER']->user['admin'] || $this->conf['modifyKeys'])) {
             unset($this->conf['langKeysAllowed']['default']);
         }
     }
@@ -287,7 +286,7 @@ class ModuleController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionControlle
                         if (is_file($path)) {
                             $xliff = file_get_contents($path);
                             $matchtag = ($langKey === 'default') ? 'source' : 'target';
-                            if ($xliff && preg_match('/<' . $matchtag . '>.*' . $word . '.*<\/' . $matchtag . '>/i', $xliff)) {
+                            if ($xliff && preg_match('/' . $matchtag . '>.*' . $word . '.*<\/' . $matchtag . '/i', $xliff)) {
                                 $langKeys[$langKey] = $langKey;
                             }
                         }
