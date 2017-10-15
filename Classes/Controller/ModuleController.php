@@ -87,6 +87,10 @@ class ModuleController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionControlle
             array_unshift($langKeys, 'default');
         }
 
+        $disableSaveButtons = '';
+        $files = [];
+        $labels = [];
+
         if ($extension) {
             if (!isset($this->conf['extensions'][$extension])) {
                 throw new \UnexpectedValueException('Extension not allowed: ' . $extension);
@@ -123,7 +127,8 @@ class ModuleController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionControlle
                 $max_input_vars = (int)ini_get('max_input_vars');
                 $fieldcount = count($labels) * (count($langKeys) + 1) + count($langKeys) + 4;
                 if ($fieldcount > $max_input_vars) {
-                    $this->addFlashMessage('Too many labels, max_input_vars too small. Do not press save!', 'Warning', AbstractMessage::WARNING);
+                    $this->addFlashMessage('Too many labels, max_input_vars too small. Set max_input_vars to at least: ' . $fieldcount, 'Warning', AbstractMessage::WARNING);
+                    $disableSaveButtons = 'disabled';
                 }
             }
         }
@@ -135,6 +140,7 @@ class ModuleController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionControlle
             'langKeys' => $langKeys,
             'labels' => $labels,
             'conf' => $this->conf,
+            'disableSaveButtons' => $disableSaveButtons
         ]);
 
         TranslateUtility::setModuleData([
