@@ -294,7 +294,7 @@ class ModuleController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionControlle
                     if (is_file($path)) {
                         $xliff = file_get_contents($path);
                         $matchtag = ($langKey === 'default') ? 'source' : 'target';
-                        if ($xliff && preg_match('/<' . $matchtag . '>.*' . $word . '.*<\/' . $matchtag . '>/i', $xliff)) {
+                        if ($xliff && preg_match('/<' . $matchtag . '>.*' . preg_quote($word) . '.*<\/' . $matchtag . '>/i', $xliff)) {
                             $langKeys[$langKey] = $langKey;
                         }
                     }
