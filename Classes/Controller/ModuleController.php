@@ -125,7 +125,7 @@ class ModuleController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionControlle
                     $this->addFlashMessage('No labels found.', 'Warning', AbstractMessage::WARNING);
                 }
                 $max_input_vars = (int)ini_get('max_input_vars');
-                $fieldcount = count($labels) * (count($langKeys) + 1) + count($langKeys) + 4;
+                $fieldcount = (count($labels) + 1) * (count($langKeys) + 1) + count($langKeys) + 10;
                 if ($fieldcount > $max_input_vars) {
                     $this->addFlashMessage('Too many labels, max_input_vars too small. Set max_input_vars to at least: ' . $fieldcount, 'Warning', AbstractMessage::WARNING);
                     $disableSaveButtons = 'disabled';
