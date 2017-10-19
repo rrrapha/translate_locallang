@@ -3,7 +3,7 @@ defaultLangKey = en
 # cat=basic//2; type=string; label=Translation language keys
 langKeys = de,fr,it
 # cat=basic//3; type=boolean; label=Save translations to /typo3conf/l10n/ instead of typo3conf/ext/
-useL10n = 0
+useL10n = 1
 # cat=basic//4; type=boolean; label=Show debug output
 debug = 0
 # cat=basic//5; type=boolean; label=Log write operations
