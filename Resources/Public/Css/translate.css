@@ -26,7 +26,13 @@
 	line-height:normal;
 }
 .translate-row > .same {
-	background-color:#d2e3e2;
+	background-color:#dbeceb;
+}
+.translate-row > .nd {
+	background-color:#e5bcbc;
+}
+.translate-row > .nt {
+	background-color:#ffe3e3;
 }
 .translate-row input {
 	width:100%;
