@@ -291,8 +291,7 @@ class XliffService
                 $value = (string)$transunit->target;
                 $str = $transunit->target->asXML();
             }
-            $s = strpos($str, static::CDATA_START, 8);
-            if ($s !== FALSE) {
+            if ($str && strpos($str, static::CDATA_START, 8) !== FALSE) {
                 $value = static::CDATA_START . $value . static::CDATA_END;
             }
             $this->data[$key][$langKey] = $value;

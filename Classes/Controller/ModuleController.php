@@ -190,7 +190,7 @@ class ModuleController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionControlle
         //handle keychanges
         $keychanges = [];
         foreach($keys as $key => $keyvalue) {
-            if ($key !== $keyvalue) {
+            if ((string)$key !== $keyvalue) {
                 if (!$this->conf['modifyKeys']) {
                     throw new \UnexpectedValueException('Not allowed to modify keys');
                 }
