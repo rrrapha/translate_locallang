@@ -4,7 +4,7 @@ namespace Undefined\TranslateLocallang\Service;
 /***************************************************************
  *  Copyright notice
  *
- *  (c) 2016-2017 Raphael Graf <r@undefined.ch>
+ *  (c) 2016-2018 Raphael Graf <r@undefined.ch>
  *
  *  All rights reserved
  *

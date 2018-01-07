@@ -1,7 +1,7 @@
 {
     "name": "undefined/translate-locallang",
     "type": "typo3-cms-extension",
-    "version": "2.2.0",
+    "version": "2.2.1",
     "description": "Editor for locallang.xlf files",
     "replace": {
         "translate_locallang": "self.version",
