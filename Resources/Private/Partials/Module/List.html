@@ -65,7 +65,9 @@
 			</f:if>
 		</div>
 	</div>
-	<f:link.action action="list" arguments="{extension:extension,file:file,langKeys:langKeys,sort:1}" class="pull-right">{f:translate(key:'sort_by_key')}</f:link.action>
+	<f:if condition="{conf.langKeysAllowed.default}">
+		<f:link.action action="list" arguments="{extension:extension,file:file,langKeys:langKeys,sort:1}" class="pull-right">{f:translate(key:'sort_by_key')}</f:link.action>
+	</f:if>
 	<div class="form-group">
 		<f:form.submit value="{f:translate(key:'save')}" disabled="{disableSaveButtons}" class="btn btn-default" />
 		<f:if condition="{labels}">
