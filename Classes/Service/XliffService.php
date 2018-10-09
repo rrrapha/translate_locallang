@@ -243,7 +243,7 @@ class XliffService
      * @return int
      */
     public function fileExists($langKey) {
-        return is_file($this->getFilename($langkey));
+        return is_file($this->getFilename($langKey));
     }
 
     /**
