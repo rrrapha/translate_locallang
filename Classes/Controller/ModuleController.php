@@ -317,7 +317,7 @@ class ModuleController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionControlle
      */
     protected function log($msg, $error = 0) {
         if ($this->conf['sysLog'] || $error) {
-            $GLOBALS['BE_USER']->simplelog($msg, 'translate_locallang', $error);
+            $GLOBALS['BE_USER']->writelog(4, 0, $error, 0, '[translate_locallang] ' . $msg, []);
         }
         if ($this->conf['debug'] || $error) {
             $this->addFlashMessage($msg, ($error) ? 'Error' : 'Debug', ($error) ? AbstractMessage::ERROR : AbstractMessage::NOTICE);
