@@ -83,13 +83,13 @@ Configuration Options
  - :Property:
       modifyDefaultLang
    :Description:
-      Allow non-admin users to modify default language and sorting
+      Allow non-admin users to modify default language
    :Default:
       0
 
  - :Property:
       modifyKeys
    :Description:
-      Allow non-admin users to modify keys (implies modifyDefaultLang)
+      Allow non-admin users to modify keys and sorting(implies modifyDefaultLang)
    :Default:
       0
