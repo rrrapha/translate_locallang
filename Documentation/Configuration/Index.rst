@@ -90,6 +90,6 @@ Configuration Options
  - :Property:
       modifyKeys
    :Description:
-      Allow non-admin users to modify keys and sorting(implies modifyDefaultLang)
+      Allow non-admin users to modify keys and sorting (implies modifyDefaultLang)
    :Default:
       0
