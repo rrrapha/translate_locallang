@@ -16,7 +16,7 @@
 			<f:for each="{langKeys}" as="langKey">
 				<f:if condition="{langKey} != 'default'"><div>{langKey}</div></f:if>
 			</f:for>
-			<f:if condition="{conf.langKeysAllowed.default}">
+			<f:if condition="{conf.modifyKeys}">
 				<div class="add"></div>
 				<div class="del"></div>
 				<div class="move"></div>
@@ -39,7 +39,7 @@
 					</div>
 				</f:if>
 			</f:for>
-			<f:if condition="{conf.langKeysAllowed.default}">
+			<f:if condition="{conf.modifyKeys}">
 				<f:render partial="Module/Icons" />
 			</f:if>
 		</div>
@@ -60,12 +60,12 @@
 				</div>
 			</f:if>
 			</f:for>
-			<f:if condition="{conf.langKeysAllowed.default}">
+			<f:if condition="{conf.modifyKeys}">
 				<f:render partial="Module/Icons" />
 			</f:if>
 		</div>
 	</div>
-	<f:if condition="{conf.langKeysAllowed.default}">
+	<f:if condition="{conf.modifyKeys}">
 		<f:link.action action="list" arguments="{extension:extension,file:file,langKeys:langKeys,sort:1}" class="pull-right">{f:translate(key:'sort_by_key')}</f:link.action>
 	</f:if>
 	<div class="form-group">

@@ -12,7 +12,7 @@ sysLog = 0
 allowedExts = 
 # cat=basic//7; type=string; label=Allowed filenames for non-admin users (comma separated, empty=all)
 allowedFiles = 
-# cat=basic//8; type=boolean; label=Allow non-admin users to modify default language and sorting
+# cat=basic//8; type=boolean; label=Allow non-admin users to modify default language
 modifyDefaultLang = 0
-# cat=basic//9; type=boolean; label=Allow non-admin users to modify keys (implies modifyDefaultLang)
+# cat=basic//9; type=boolean; label=Allow non-admin users to modify keys and sorting (implies modifyDefaultLang)
 modifyKeys = 0

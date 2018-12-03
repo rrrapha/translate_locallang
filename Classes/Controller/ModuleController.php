@@ -109,7 +109,7 @@ class ModuleController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionControlle
             }
             if ($file) {
                 $xliffService = GeneralUtility::makeInstance('Undefined\TranslateLocallang\Service\XliffService');
-                $xliffService->init($extension, $file, $this->conf['defaultLangKey'], $this->conf['useL10n']);
+                $xliffService->init($extension, $file, $this->conf['defaultLangKey'], $this->conf['useL10n'], !$this->conf['modifyKeys']);
 
                 foreach($langKeys as $langKey) {
                     if (!$xliffService->loadLang($langKey)) {
@@ -184,8 +184,8 @@ class ModuleController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionControlle
         }
 
         $xliffService = GeneralUtility::makeInstance('Undefined\TranslateLocallang\Service\XliffService');
-        $xliffService->init($extension, $file, $this->conf['defaultLangKey'], $this->conf['useL10n']);
-        $xliffService->setData($labels);
+        $xliffService->init($extension, $file, $this->conf['defaultLangKey'], $this->conf['useL10n'], !$this->conf['modifyKeys']);
+        $xliffService->mergeData($labels, $this->conf['langKeys']);
 
         //handle keychanges
         $keychanges = [];
@@ -213,7 +213,7 @@ class ModuleController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionControlle
 
         //save languages
         foreach($savelangs as $langKey) {
-            if ($xliffService->fileExists($langKey) || $xliffService->getLabelCount($langKey)) {
+            if ($xliffService->fileExists($langKey) || $xliffService->isLanguageLoaded($langKey)) {
                 $success = $xliffService->saveLang($langKey);
                 if (!$success) {
                     $this->log('Write failed: ' . $xliffService->getFilename($langKey), 2);
@@ -241,7 +241,7 @@ class ModuleController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionControlle
         }
 
         $xliffService = GeneralUtility::makeInstance('Undefined\TranslateLocallang\Service\XliffService');
-        $xliffService->init($extension, $file, $this->conf['defaultLangKey'], $this->conf['useL10n']);
+        $xliffService->init($extension, $file, $this->conf['defaultLangKey'], $this->conf['useL10n'], !$this->conf['modifyKeys']);
 
         $hrow = ['key'];
         foreach($langKeys as $langKey) {
