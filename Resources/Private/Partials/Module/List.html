@@ -27,14 +27,14 @@
 		<f:if condition="{key}">
 		<div class="translate-row">
 			<div>
-				<f:form.textfield name="keys[{key}]" value="{key}" readonly="{f:if(condition:'{conf.modifyKeys}',then:'',else:'1')}" additionalAttributes="{autocomplete:'off'}" />
+				<f:form.textfield name="keys[{key}]" value="{key}" readonly="{f:if(condition:'{conf.modifyKeys}',else:'1')}" additionalAttributes="{autocomplete:'off'}" />
 			</div>
-			<div class="{f:if(condition: '{label.default}', else: 'nd')}">
-				<f:form.textarea name="labels[{key}][default]" value="{label.default}" additionalAttributes="{f:if(condition:'{conf.langKeysAllowed.default}',then:'{data-no:\'1\'}',else:'{readonly:\'1\'}')}" />
+			<div class="{f:if(condition:'{label.default}',else:'nd')}">
+				<f:form.textarea name="labels[{key}][default]" value="{label.default}" additionalAttributes="{f:if(condition:'{conf.langKeysAllowed.default}',else:'{readonly:\'1\'}')}" />
 			</div>
 			<f:for each="{label}" as="value" key="langKey">
 				<f:if condition="{langKey} != 'default'">
-					<div class="{f:if(condition: '{value}', then: '{f:if(condition: \'{value} == {label.default}\', then: \'same\')}', else: 'nt')}">
+					<div class="{f:if(condition: '{value}', then: '{f:if(condition:\'{value} == {label.default}\',then:\'same\')}',else:'nt')}">
 						<f:form.textarea name="labels[{key}][{langKey}]" value="{value}" />
 					</div>
 				</f:if>
@@ -48,10 +48,10 @@
 		</f:for>
 		<div class="translate-row">
 			<div>
-				<f:form.textfield name="keys[_newkey]" value="" readonly="{f:if(condition:'{conf.modifyKeys}',then:'',else:'1')}" additionalAttributes="{autocomplete:'off'}" />
+				<f:form.textfield name="keys[_newkey]" value="" readonly="{f:if(condition:'{conf.modifyKeys}',else:'1')}" additionalAttributes="{autocomplete:'off'}" />
 			</div>
 			<div>
-				<f:form.textarea name="labels[_newkey][default]" value="" additionalAttributes="{f:if(condition:'{conf.langKeysAllowed.default}',then:'{data-no:\'1\'}',else:'{readonly:\'1\'}')}" />
+				<f:form.textarea name="labels[_newkey][default]" value="" additionalAttributes="{f:if(condition:'{conf.langKeysAllowed.default}',else:'{readonly:\'1\'}')}" />
 			</div>
 			<f:for each="{langKeys}" as="langKey">
 			<f:if condition="{langKey} != 'default'">
