@@ -32,7 +32,7 @@ class TranslateUtility
     const LANGUAGE_DIR = 'Resources/Private/Language/';
 
     /**
-     * get all extenions, loaded or not
+     * get list of extensions, loaded or not
      *
      * @param array $allowedExts (empty = all)
      * @param array $allowedFiles (empty = all)
