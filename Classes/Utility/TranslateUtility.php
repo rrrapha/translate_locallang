@@ -75,7 +75,7 @@ class TranslateUtility
         if ($handle = @opendir($extdir . static::LANGUAGE_DIR)) {
             while (FALSE !== ($entry = readdir($handle))) {
                 $parts = explode('.', $entry);
-                if (count($parts) < 2 || $parts[0] === '' || end($parts) !== 'xlf') {
+                if (count($parts) !== 2 || $parts[0] === '' || end($parts) !== 'xlf') {
                     continue;
                 }
                 if ($GLOBALS['BE_USER']->user['admin'] || empty($allowedFiles) || in_array($entry, $allowedFiles)) {
