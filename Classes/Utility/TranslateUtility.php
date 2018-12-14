@@ -1,4 +1,5 @@
 <?php
+declare(strict_types=1);
 namespace Undefined\TranslateLocallang\Utility;
 
 /***************************************************************
@@ -25,6 +26,7 @@ namespace Undefined\TranslateLocallang\Utility;
  *  This copyright notice MUST APPEAR in all copies of the script!
  ***************************************************************/
 
+use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Backend\Utility\BackendUtility;
 
 class TranslateUtility
@@ -38,14 +40,15 @@ class TranslateUtility
      * @param array $allowedFiles (empty = all)
      * @return array
      */
-    public static function getExtList($allowedExts, $allowedFiles = []) {
+    public static function getExtList(array $allowedExts, array $allowedFiles = []): array {
         //ListUtility->getAvailableExtensions() is too slow..
         $extensions = [];
-        if (($handle = @opendir(PATH_typo3conf . 'ext/')) === FALSE) {
+        $configPath = static::getConfigPath();
+        if (($handle = @opendir($configPath . '/ext/')) === FALSE) {
             return $extensions;
         }
         while (($entry = readdir($handle)) !== FALSE) {
-            $extdir = PATH_typo3conf . 'ext/' . $entry . '/';
+            $extdir = $configPath . '/ext/' . $entry . '/';
             if ($entry[0] === '.' || !static::isExtension($extdir)) {
                 continue;
             }
@@ -69,9 +72,9 @@ class TranslateUtility
      * @param array $allowedFiles
      * @return array
      */
-    public static function getFileList($extension, $allowedFiles = []) {
+    public static function getFileList(string $extension, array $allowedFiles = []): array {
         $files = [];
-        $extdir = PATH_typo3conf . 'ext/' . $extension . '/';
+        $extdir = static::getConfigPath() . '/ext/' . $extension . '/';
         if ($handle = @opendir($extdir . static::LANGUAGE_DIR)) {
             while (FALSE !== ($entry = readdir($handle))) {
                 $parts = explode('.', $entry);
@@ -95,18 +98,19 @@ class TranslateUtility
      * @param bool $useL10n
      * @return string
      */
-    public static function getXlfPath($extension, $file, $langKey = 'default', $useL10n = FALSE) {
+    public static function getXlfPath(string $extension, string $file, string $langKey = 'default', bool $useL10n = FALSE): string {
         //get default path
-        $relpath = $extension . '/' . static::LANGUAGE_DIR;
+        $relPath = $extension . '/' . static::LANGUAGE_DIR;
+        $configPath = static::getConfigPath();
         if ($langKey === 'default') {
-            return PATH_typo3conf . 'ext/' . $relpath . $file;
+            return $configPath . '/ext/' . $relPath . $file;
         }
         //get overlay path
         $fileName = $langKey . '.' . $file;
         if ($useL10n) {
-            return PATH_typo3conf . 'l10n/' . $langKey . '/' . $relpath . $fileName;
+            return $configPath . '/l10n/' . $langKey . '/' . $relPath . $fileName;
         } else {
-            return PATH_typo3conf . 'ext/' . $relpath . $fileName;
+            return $configPath . '/ext/' . $relPath . $fileName;
         }
     }
 
@@ -114,7 +118,7 @@ class TranslateUtility
      * @param string extdir
      * @return bool
      */
-    private static function isExtension($extdir) {
+    private static function isExtension(string $extdir): bool {
         return (@is_file($extdir . 'ext_emconf.php') && @is_dir($extdir . static::LANGUAGE_DIR));
     }
 
@@ -123,7 +127,7 @@ class TranslateUtility
      * @param array filenames
      * @return bool
      */
-    private static function fileExists($dir, $filenames) {
+    private static function fileExists(string $dir, array $filenames): bool {
         foreach($filenames as $filename) {
             if (@is_file($dir . $filename)) {
                 return TRUE;
@@ -137,7 +141,7 @@ class TranslateUtility
      *
      * @return array
      */
-    public static function getModuleData() {
+    public static function getModuleData(): array {
         $moduledata = BackendUtility::getModuleData(['data' => ''], [], 'tools_translate_locallang');
         if (!empty($moduledata['data'])) {
             $data = unserialize($moduledata['data']);
@@ -145,7 +149,7 @@ class TranslateUtility
                 return $data;
             }
         }
-        return NULL;
+        return [];
     }
 
     /**
@@ -154,5 +158,33 @@ class TranslateUtility
      */
     public static function setModuleData($data) {
         BackendUtility::getModuleData(['data' => ''], ['data' => serialize($data)], 'tools_translate_locallang');
+    }
+
+    /**
+     * compatibility wrapper
+     *
+     * @return string
+     */
+    public static function getConfigPath(): string {
+        if (class_exists('\\TYPO3\\CMS\\Core\\Core\\Environment')) {
+            //TYPO3 >= 9.2
+            return \TYPO3\CMS\Core\Core\Environment::getConfigPath();
+        } else {
+            return rtrim(PATH_typo3conf, '/');
+        }
+    }
+
+    /**
+     * compatibility wrapper
+     *
+     * @return array
+     */
+    public static function getExtConf() {
+        if (class_exists('\\TYPO3\\CMS\\Core\\Configuration\\ExtensionConfiguration')) {
+            //TYPO3 >= 9.0
+            return GeneralUtility::makeInstance(\TYPO3\CMS\Core\Configuration\ExtensionConfiguration::class)->get('translate_locallang');
+        } else {
+            return unserialize($GLOBALS['TYPO3_CONF_VARS']['EXT']['extConf']['translate_locallang']);
+        }
     }
 }

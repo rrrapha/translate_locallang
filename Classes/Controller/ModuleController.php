@@ -1,4 +1,5 @@
 <?php
+declare(strict_types=1);
 namespace Undefined\TranslateLocallang\Controller;
 
 /***************************************************************
@@ -40,7 +41,7 @@ class ModuleController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionControlle
      * @return void
      */
     public function initializeAction() {
-        $extConf = unserialize($GLOBALS['TYPO3_CONF_VARS']['EXT']['extConf']['translate_locallang']);
+        $extConf = TranslateUtility::getExtConf();
         $this->conf['defaultLangKey'] = (trim($extConf['defaultLangKey'])) ? trim($extConf['defaultLangKey']) : 'en';
         $langKeys = GeneralUtility::trimExplode(',', $extConf['langKeys'], TRUE);
         $this->conf['langKeys'] = array_merge(['default' => $this->conf['defaultLangKey'] . ' (default)'], array_combine($langKeys, $langKeys));
@@ -61,12 +62,12 @@ class ModuleController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionControlle
      * @param string $extension
      * @param string $file
      * @param array $langKeys
-     * @param boolean $sort
+     * @param bool $sort
      * @return void
      */
-    public function listAction($extension = '', $file = '', $langKeys = ['default'], $sort = FALSE) {
+    public function listAction(string $extension = '', string $file = '', array $langKeys = ['default'], bool $sort = FALSE) {
         $moduledata = TranslateUtility::getModuleData();
-        if ($moduledata && $extension !== '0' ) {
+        if (!empty($moduledata) && $extension !== '0' ) {
             if (!$extension && $moduledata['extension'] && isset($this->conf['extensions'][$moduledata['extension']])) {
                 //restore from moduledata
                 $extension = $moduledata['extension'];
@@ -96,8 +97,8 @@ class ModuleController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionControlle
                 throw new \UnexpectedValueException('Extension not allowed: ' . $extension);
             }
             $l = next($this->conf['langKeys']);
-            $l10ndir = 'l10n/' . $l . '/' . $extension;
-            if (!$this->conf['useL10n'] && is_dir(PATH_typo3conf . $l10ndir)) {
+            $l10ndir = '/l10n/' . $l . '/' . $extension;
+            if (!$this->conf['useL10n'] && is_dir(TranslateUtility::getConfigPath() . $l10ndir)) {
                 $this->addFlashMessage(
                     'typo3conf/' . $l10ndir . ' directory exists. (You are currently editing the files in typo3conf/ext).', 'Notice', AbstractMessage::NOTICE
                 );
@@ -160,7 +161,7 @@ class ModuleController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionControlle
      * @param array $langKeys
      * @return void
      */
-    public function saveAction($keys, $labels, $extension, $file, $langKeys) {
+    public function saveAction(array $keys, array $labels, string $extension, string $file, array $langKeys) {
         if (!isset($this->conf['extensions'][$extension])) {
             throw new \UnexpectedValueException('Extension not allowed: ' . $extension);
         }
@@ -231,7 +232,7 @@ class ModuleController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionControlle
      * @param array $langKeys
      * @return string
      */
-    public function exportCsvAction($extension, $file, $langKeys) {
+    public function exportCsvAction(string $extension, string $file, array $langKeys): string {
         if (!isset($this->conf['extensions'][$extension])) {
             throw new \UnexpectedValueException('Extension not allowed: ' . $extension);
         }
@@ -280,7 +281,7 @@ class ModuleController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionControlle
      * @param string $word
      * @return void
      */
-    public function searchAction($word = '') {
+    public function searchAction(string $word = '') {
         if (!$word) {
             return;
         }
@@ -315,7 +316,7 @@ class ModuleController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionControlle
      * @param int $error (0 = message, 1 = User Error, 2 = System Error, 3 = security notice)
      * @return void
      */
-    protected function log($msg, $error = 0) {
+    protected function log(string $msg, int $error = 0) {
         if ($this->conf['sysLog'] || $error) {
             $GLOBALS['BE_USER']->writelog(4, 0, $error, 0, '[translate_locallang] ' . $msg, []);
         }
