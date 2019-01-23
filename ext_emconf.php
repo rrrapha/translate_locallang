@@ -13,6 +13,7 @@ $EM_CONF[$_EXTKEY] = [
     'constraints' => [
         'depends' => [
             'typo3' => '8.7.0-9.9.99',
+            'svconnector_csv' => '2.3.0-9.9.99',
         ],
         'conflicts' => [],
         'suggests' => [],

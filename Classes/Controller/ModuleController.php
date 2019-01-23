@@ -27,6 +27,7 @@ namespace Undefined\TranslateLocallang\Controller;
 
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Core\Messaging\AbstractMessage;
+use TYPO3\CMS\Extensionmanager\Utility\FileHandlingUtility;
 use Undefined\TranslateLocallang\Utility\TranslateUtility;
 
 class ModuleController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionController
@@ -229,7 +230,6 @@ class ModuleController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionControlle
         }
 
         $this->log('Updated ' . $extension . '|' . $file . ' ' . implode(', ', $savelangs), 0);
-        $this->forward('list', NULL, NULL, ['extension' => $extension, 'file' => $file, 'langKeys' => $langKeys]);
     }
 
     /**
