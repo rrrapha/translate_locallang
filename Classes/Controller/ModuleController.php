@@ -160,7 +160,14 @@ class ModuleController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionControlle
      * @param array $langKeys
      * @return void
      */
-    public function saveAction($keys, $labels, $extension, $file, $langKeys) {
+    public function saveAction($keys, $labels, $extension, $file, $langKeys)
+    {
+        $this->updateLabels($keys, $labels, $extension, $file, $langKeys);
+        $this->forward('list', NULL, NULL, ['extension' => $extension, 'file' => $file, 'langKeys' => $langKeys]);
+
+    }
+
+    private function updateLabels($keys, $labels, $extension, $file, $langKeys){
         if (!isset($this->conf['extensions'][$extension])) {
             throw new \UnexpectedValueException('Extension not allowed: ' . $extension);
         }
@@ -274,6 +281,107 @@ class ModuleController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionControlle
         }
         fclose($output);
         return '';
+    }
+
+    /**
+     * @param array  $keys
+     * @param array  $labels
+     * @param string $extension
+     * @param string $file
+     * @param array  $langKeys
+     *
+     * @return void
+     */
+    public function importCsvAction($keys, $labels, $extension, $file, $langKeys){
+        //assume that no key change is possible
+        try {
+            $uploadedFile = $this->request->getArgument('importFile');
+            /** @see FileHandlingUtility -> getPathToUploadFolder*/
+            $uploadPath = GeneralUtility::getFileAbsFileName('uploads/tx_' . str_replace('_', '', mb_strtolower($this->extensionName)) . '/');
+
+            if(array_key_exists('name', $uploadedFile) === true){
+                $filename = tempnam($uploadPath, 'importCsv');
+                move_uploaded_file($uploadedFile['tmp_name'], $filename);
+                $services = \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::findService('connector', 'csv');
+                if ($services === false) {
+                    // Issue an error
+                } else {
+                    $connector = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstanceService('connector', 'csv');
+                }
+                $parameters = [
+                    'filename' => $filename,
+                    'delimiter' => ";",
+                    'text_qualifier' => '',
+                    'encoding' => 'utf-8',
+                    'skip_rows' => 1,
+                ];
+                $data = $connector->fetchArray($parameters);
+
+                $labels = [];
+                foreach ($data as $element){
+                    $key = $element['key'];
+                    unset($element['key']);
+                    $languageKey = '';
+                    foreach($element as $languageKey => $value){
+                        if (substr_compare($languageKey, '(default)', -9,9) === 0){
+                            $element['default'] = $value;
+                            break;
+                        }
+                    }
+                    if ($languageKey !== '' ){
+                        unset($element[$languageKey]);
+                    }
+                    $labels[$key] = $element;
+                }
+                $this->updateLabels($keys, $labels, $extension, $file, $langKeys);
+
+            }
+        } catch(ExistingTargetFileNameException $e) {
+        }
+
+
+        $this->forward('list', NULL, NULL, ['extension' => $extension, 'file' => $file, 'langKeys' => $langKeys]);
+
+    }
+
+
+    private function readCsvFile($filename){
+
+
+        $delimiter = empty($parameters['delimiter']) ? ',' : $parameters['delimiter'];
+        $qualifier = empty($parameters['text_qualifier']) ? '"' : $parameters['text_qualifier'];
+        // Set locale, if specific locale is defined
+        $oldLocale = '';
+        if (!empty($parameters['locale'])) {
+            // Get the old locale first, in order to restore it later
+            $oldLocale = setlocale(LC_ALL, 0);
+            setlocale(LC_ALL, $parameters['locale']);
+        }
+        $filePointer = fopen($temporaryFile, 'rb');
+        while ($row = fgetcsv($filePointer, 0, $delimiter, $qualifier)) {
+            $numData = count($row);
+            // If the row is an array with a single NULL entry, it corresponds to a blank line
+            // and we want to skip it (see note in http://php.net/manual/en/function.fgetcsv.php#refsect1-function.fgetcsv-returnvalues)
+            if ($numData === 1 && current($row) === null) {
+                continue;
+            }
+            // If the charset of the file is not the same as the BE charset,
+            // convert every input to the proper charset
+            if (!$isSameCharset) {
+                for ($i = 0; $i < $numData; $i++) {
+                    $row[$i] = $this->getCharsetConverter()->conv($row[$i], $encoding, $this->getCharset());
+                }
+            }
+            $fileData[] = $row;
+        }
+        unlink($temporaryFile);
+        $this->logger->info('Data from file', $fileData);
+        // Reset locale, if necessary
+        if (!empty($oldLocale)) {
+            setlocale(LC_ALL, $oldLocale);
+        }
+
+        return $fileData;
     }
 
     /**

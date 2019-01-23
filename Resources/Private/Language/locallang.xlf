@@ -21,6 +21,9 @@
 			<trans-unit id="export">
 				<source>Export CSV</source>
 			</trans-unit>
+			<trans-unit id="import">
+				<source>Import CSV</source>
+			</trans-unit>
 			<trans-unit id="sort_by_key">
 				<source>Sort by key</source>
 			</trans-unit>

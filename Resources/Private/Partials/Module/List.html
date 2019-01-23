@@ -1,5 +1,5 @@
 <html xmlns:f="http://typo3.org/ns/TYPO3/CMS/Fluid/ViewHelpers" data-namespace-typo3-fluid="true">
-<f:form action="save" controller="Module" method="post" class="form-group">
+<f:form action="save" controller="Module" method="post" class="form-group" enctype="multipart/form-data">
 
 	<f:form.hidden name="extension" value="{extension}" />
 	<f:form.hidden name="file" value="{file}" />
@@ -72,6 +72,9 @@
 		<f:form.submit value="{f:translate(key:'save')}" disabled="{disableSaveButtons}" class="btn btn-default" />
 		<f:if condition="{labels}">
 			<f:form.button formaction="{f:uri.action(action:'exportCsv')}" value="{f:translate(key:'export')}" class="btn btn-default">{f:translate(key:'export')}</f:form.button>
+
+			<f:form.button formaction="{f:uri.action(action:'importCsv')}" value="{f:translate(key:'import')}" class="btn btn-default">{f:translate(key:'import')}</f:form.button>
+			<f:form.upload name="importFile"></f:form.upload>
 		</f:if>
 	</div>
 </f:form>
