@@ -24,8 +24,7 @@
 		</div>
 		<f:for each="{labels}" as="label" key="key">
 		<f:if condition="{key}">
-		<div class="translate-row"><f:spaceless>
-
+		<div class="translate-row">
 			<div>
 				<f:form.textfield name="keys[{key}]" value="{key}" readonly="{f:if(condition:'{conf.modifyKeys}',else:'1')}" additionalAttributes="{autocomplete:'off'}" />
 			</div>
@@ -33,19 +32,18 @@
 				<f:form.textarea name="labels[{key}][default]" value="{label.default}" additionalAttributes="{f:if(condition:'{conf.langKeysAllowed.default}',else:'{readonly:\'1\'}')}" />
 			</div>
 
-			</f:spaceless><f:for each="{label}" as="value" key="langKey">
+			<f:for each="{label}" as="value" key="langKey">
 				<f:if condition="{langKey} != 'default'">
 					<div class="{f:if(condition: '{value}', then: '{f:if(condition:\'{value} == {label.default}\',then:\'same\')}',else:'nt')}">
 						<f:form.textarea name="labels[{key}][{langKey}]" value="{value}" />
 					</div>
 				</f:if>
-			</f:for><f:spaceless>
+			</f:for>
 
 			<f:if condition="{conf.modifyKeys}">
 				<f:render partial="Module/Icons" />
 			</f:if>
-
-			</f:spaceless></div>
+		</div>
 		</f:if>
 		</f:for>
 		<div class="translate-row">
