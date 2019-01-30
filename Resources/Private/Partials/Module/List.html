@@ -36,7 +36,7 @@
 			</f:spaceless><f:for each="{label}" as="value" key="langKey">
 				<f:if condition="{langKey} != 'default'">
 					<div class="{f:if(condition: '{value}', then: '{f:if(condition:\'{value} == {label.default}\',then:\'same\')}',else:'nt')}">
-						<f:form.textarea name="labels[{key}][{langKey}]" value="{value->f:format.raw()}" />
+						<f:form.textarea name="labels[{key}][{langKey}]" value="{value}" />
 					</div>
 				</f:if>
 			</f:for><f:spaceless>
