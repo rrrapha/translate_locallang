@@ -168,7 +168,7 @@ class TranslateUtility
     public static function getConfigPath(): string {
         if (class_exists('\\TYPO3\\CMS\\Core\\Core\\Environment')) {
             //TYPO3 >= 9.2
-            return \TYPO3\CMS\Core\Core\Environment::getConfigPath();
+            return \TYPO3\CMS\Core\Core\Environment::getPublicPath() . '/typo3conf';
         } else {
             return rtrim(PATH_typo3conf, '/');
         }
