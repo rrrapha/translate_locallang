@@ -102,13 +102,14 @@ class TranslateUtility
         //get default path
         $relPath = $extension . '/' . static::LANGUAGE_DIR;
         $configPath = static::getConfigPath();
+        $l10nPath = static::getLabelsPath();
         if ($langKey === 'default') {
             return $configPath . '/ext/' . $relPath . $file;
         }
         //get overlay path
         $fileName = $langKey . '.' . $file;
         if ($useL10n) {
-            return $configPath . '/l10n/' . $langKey . '/' . $relPath . $fileName;
+            return $l10nPath . '/' . $langKey . '/' . $relPath . $fileName;
         } else {
             return $configPath . '/ext/' . $relPath . $fileName;
         }
@@ -171,6 +172,20 @@ class TranslateUtility
             return \TYPO3\CMS\Core\Core\Environment::getPublicPath() . '/typo3conf';
         } else {
             return rtrim(PATH_typo3conf, '/');
+        }
+    }
+
+    /**
+     * compatibility wrapper
+     *
+     * @return string
+     */
+    public static function getLabelsPath(): string {
+        if (class_exists('\\TYPO3\\CMS\\Core\\Core\\Environment')) {
+            //TYPO3 >= 9.2
+            return \TYPO3\CMS\Core\Core\Environment::getLabelsPath();
+        } else {
+            return PATH_typo3conf . 'l10n';
         }
     }
 

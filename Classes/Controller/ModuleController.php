@@ -97,10 +97,10 @@ class ModuleController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionControlle
                 throw new \UnexpectedValueException('Extension not allowed: ' . $extension);
             }
             $l = next($this->conf['langKeys']);
-            $l10ndir = '/l10n/' . $l . '/' . $extension;
-            if (!$this->conf['useL10n'] && is_dir(TranslateUtility::getConfigPath() . $l10ndir)) {
+            $l10ndir = TranslateUtility::getLabelsPath() . '/' . $l . '/' . $extension;
+            if (!$this->conf['useL10n'] && is_dir($l10ndir)) {
                 $this->addFlashMessage(
-                    'typo3conf' . $l10ndir . ' directory exists. (You are currently editing the files in typo3conf/ext).', 'Notice', AbstractMessage::NOTICE
+                    $l10ndir . ' directory exists. (You are currently editing the files in typo3conf/ext).', 'Notice', AbstractMessage::NOTICE
                 );
             }
             $files = TranslateUtility::getFileList($extension, $this->conf['files']);
@@ -282,32 +282,32 @@ class ModuleController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionControlle
      * @return void
      */
     public function searchAction(string $word = '') {
-        if (!$word) {
-            return;
-        }
-        $results = [];
-        foreach($this->conf['extensions'] as $extension) {
-            $files = TranslateUtility::getFileList($extension, $this->conf['files']);
-            foreach($files as $file) {
-                $langKeys = [];
-                foreach($this->conf['langKeysAllowed'] as $langKey => $dummy) {
-                    $path = TranslateUtility::getXlfPath($extension, $file, $langKey);
-                    if (is_file($path)) {
-                        $xliff = file_get_contents($path);
-                        $matchtag = ($langKey === 'default') ? 'source' : 'target';
-                        if ($xliff && preg_match('/<' . $matchtag . '>.*' . preg_quote($word) . '.*<\/' . $matchtag . '>/i', $xliff)) {
-                            $langKeys[$langKey] = $langKey;
+        if ($word) {
+            $results = [];
+            foreach($this->conf['extensions'] as $extension) {
+                $files = TranslateUtility::getFileList($extension, $this->conf['files']);
+                foreach($files as $file) {
+                    $langKeys = [];
+                    foreach($this->conf['langKeysAllowed'] as $langKey => $dummy) {
+                        $path = TranslateUtility::getXlfPath($extension, $file, $langKey, $this->conf['useL10n']);
+                        if (is_file($path)) {
+                            $xliff = file_get_contents($path);
+                            $matchtag = ($langKey === 'default') ? 'source' : 'target';
+                            if ($xliff && preg_match('/<' . $matchtag . '>.*' . preg_quote($word) . '.*<\/' . $matchtag . '>/i', $xliff)) {
+                                $langKeys[$langKey] = $langKey;
+                            }
                         }
                     }
-                }
-                if (!empty($langKeys)) {
-                    $results[] = [$extension, $file, $langKeys];
+                    if (!empty($langKeys)) {
+                        $results[] = [$extension, $file, $langKeys];
+                    }
                 }
             }
         }
         $this->view->assignMultiple([
             'word' => $word,
             'results' => $results,
+            'conf' => $this->conf,
         ]);
     }
 

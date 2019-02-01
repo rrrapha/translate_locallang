@@ -48,7 +48,7 @@ Configuration Options
  - :Property:
       useL10n 
    :Description:
-      Save translations to /typo3conf/l10n/ instead of typo3conf/ext/
+      Save translations to 'labels' or 'l10n' folder instead of 'typo3conf/ext/'
    :Default:
       0
 
