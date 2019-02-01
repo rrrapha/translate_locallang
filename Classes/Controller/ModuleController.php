@@ -5,7 +5,7 @@ namespace Undefined\TranslateLocallang\Controller;
 /***************************************************************
  *  Copyright notice
  *
- *  (c) 2016-2018 Raphael Graf <r@undefined.ch>
+ *  (c) 2016-2019 Raphael Graf <r@undefined.ch>
  *
  *  All rights reserved
  *
@@ -100,7 +100,7 @@ class ModuleController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionControlle
             $l10ndir = '/l10n/' . $l . '/' . $extension;
             if (!$this->conf['useL10n'] && is_dir(TranslateUtility::getConfigPath() . $l10ndir)) {
                 $this->addFlashMessage(
-                    'typo3conf/' . $l10ndir . ' directory exists. (You are currently editing the files in typo3conf/ext).', 'Notice', AbstractMessage::NOTICE
+                    'typo3conf' . $l10ndir . ' directory exists. (You are currently editing the files in typo3conf/ext).', 'Notice', AbstractMessage::NOTICE
                 );
             }
             $files = TranslateUtility::getFileList($extension, $this->conf['files']);

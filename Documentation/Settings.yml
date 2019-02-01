@@ -7,7 +7,7 @@ conf.py:
   copyright: 2017-2018
   project: Translate
   version: 2.3
-  release: 2.3.2
+  release: 2.3.3
   intersphinx_mapping:
     t3tsref:
     - http://docs.typo3.org/typo3cms/TyposcriptReference/
