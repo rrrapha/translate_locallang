@@ -63,9 +63,10 @@ class ModuleController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionControlle
      * @param string $file
      * @param array $langKeys
      * @param bool $sort
+     * @param array $overrideLabels
      * @return void
      */
-    public function listAction(string $extension = '', string $file = '', array $langKeys = ['default'], bool $sort = FALSE) {
+    public function listAction(string $extension = '', string $file = '', array $langKeys = ['default'], bool $sort = FALSE, array $overrideLabels = []) {
         $moduledata = TranslateUtility::getModuleData();
         if (!empty($moduledata) && $extension !== '0' ) {
             if (!$extension && $moduledata['extension'] && isset($this->conf['extensions'][$moduledata['extension']])) {
@@ -109,22 +110,29 @@ class ModuleController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionControlle
                 $file = '';
             }
             if ($file) {
-                $xliffService = GeneralUtility::makeInstance('Undefined\TranslateLocallang\Service\XliffService');
-                $xliffService->init($extension, $file, $this->conf['defaultLangKey'], $this->conf['useL10n'], !$this->conf['modifyKeys']);
+                if (empty($overrideLabels)) {
+                    $xliffService = GeneralUtility::makeInstance('Undefined\TranslateLocallang\Service\XliffService');
+                    $xliffService->init($extension, $file, $this->conf['defaultLangKey'], $this->conf['useL10n'], !$this->conf['modifyKeys']);
 
-                foreach($langKeys as $langKey) {
-                    if (!$xliffService->loadLang($langKey)) {
-                        $this->addFlashMessage('Could not load language: ' . $langKey, 'Warning', AbstractMessage::WARNING);
-                        $xliffService->addLang($langKey);
+                    foreach($langKeys as $langKey) {
+                        if (!$xliffService->loadLang($langKey)) {
+                            $this->addFlashMessage('Could not load language: ' . $langKey, 'Warning', AbstractMessage::WARNING);
+                            $xliffService->addLang($langKey);
+                        }
                     }
+                    if ($sort) {
+                        $xliffService->sortByKey();
+                        $formChanged = TRUE;
+                    }
+                    $labels = &$xliffService->getData();
+                } else {
+                    $labels = $overrideLabels;
+                    $formChanged = TRUE;
                 }
-                if ($sort) {
-                    $xliffService->sortByKey();
-                }
-                $labels = &$xliffService->getData();
                 if (empty($labels)) {
                     $this->addFlashMessage('No labels found.', 'Warning', AbstractMessage::WARNING);
                 }
+
                 $max_input_vars = (int)ini_get('max_input_vars');
                 $fieldcount = (count($labels) + 1) * (count($langKeys) + 1) + count($langKeys) + 10;
                 if ($fieldcount > $max_input_vars) {
@@ -141,7 +149,8 @@ class ModuleController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionControlle
             'langKeys' => $langKeys,
             'labels' => $labels,
             'conf' => $this->conf,
-            'disableSaveButtons' => $disableSaveButtons
+            'disableSaveButtons' => $disableSaveButtons,
+            'formChanged' => $formChanged,
         ]);
 
         TranslateUtility::setModuleData([
@@ -275,6 +284,55 @@ class ModuleController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionControlle
         }
         fclose($output);
         return '';
+    }
+
+    /**
+     * @param string $extension
+     * @param string $file
+     * @param array  $langKeys
+     *
+     * @return void
+     */
+    public function importCsvAction(string $extension, string $file, array $langKeys) {
+        $uploadedFile = $this->request->getArgument('importFile');
+
+        if (is_uploaded_file($uploadedFile['tmp_name'])) {
+            $fp = @fopen($uploadedFile['tmp_name'], 'r');
+            if ($fp === FALSE) {
+                throw new \RuntimeException('Could not open file');
+            }
+
+            // check and skip BOM
+            if (fgets($fp, 4) !== "\xef\xbb\xbf") {
+                rewind($fp);
+            }
+            // check header row
+            $hrow = fgetcsv ($fp, 0, ';');
+            if (!$hrow || $hrow[0] !== 'key' || count($hrow) < 2) {
+                $this->addFlashMessage('Invalid file format', 'Error', AbstractMessage::ERROR);
+                $this->forward('list', NULL, NULL, ['extension' => $extension, 'file' => $file, 'langKeys' => $langKeys]);
+            }
+
+            $langKeys = [];
+            for ($i = 1; $i < count($hrow); $i++) {
+                $langKey = (strpos($hrow[$i], '(default)') !== FALSE) ? 'default' : $hrow[$i];
+                $langKeys[$langKey] = $langKey;
+            }
+            $langKeys = array_intersect_key($langKeys, $this->conf['langKeysAllowed']);
+            $labels = [];
+            while ($row = fgetcsv ($fp, 0, ';')) {
+                $key = $row[0];
+                $i = 1;
+                foreach($langKeys as $langKey) {
+                    $labels[$key][$langKey] = isset($row[$i]) ? $row[$i] : '';
+                    $i++;
+                }
+            }
+        } else {
+            $this->addFlashMessage('No file uploaded', 'Error', AbstractMessage::ERROR);
+        }
+
+        $this->forward('list', NULL, NULL, ['extension' => $extension, 'file' => $file, 'langKeys' => $langKeys, 'sort' => FALSE, 'overrideLabels' => $labels]);
     }
 
     /**

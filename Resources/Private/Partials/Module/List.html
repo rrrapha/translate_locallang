@@ -1,5 +1,5 @@
 <html xmlns:f="http://typo3.org/ns/TYPO3/CMS/Fluid/ViewHelpers" data-namespace-typo3-fluid="true">
-<f:form action="save" controller="Module" method="post" class="form-group">
+<f:form id="translate_labels" action="save" controller="Module" method="post" class="form-group" enctype="multipart/form-data">
 
 	<f:form.hidden name="extension" value="{extension}" />
 	<f:form.hidden name="file" value="{file}" />
@@ -7,7 +7,10 @@
 		<f:form.hidden name="langKeys[]" value="{langKey}" />
 	</f:for>
 	<div class="form-group">
-		<f:form.submit value="{f:translate(key:'save')}" disabled="{disableSaveButtons}" class="btn btn-default" />
+		<f:form.submit value="{f:translate(key:'save')}" disabled="{disableSaveButtons}" class="btn btn-default btn-primary{f:if(condition:'{formChanged}',then:' changed')}" />
+		<f:if condition="{labels}">
+			<f:form.button formaction="{f:uri.action(action:'exportCsv')}" value="{f:translate(key:'export')}" class="btn btn-default">{f:translate(key:'export')}</f:form.button>
+		</f:if>
 	</div>
 	<div class="translate-table form-group">
 		<div class="translate-row header">
@@ -31,7 +34,6 @@
 			<div class="{f:if(condition:'{label.default}',else:'nd')}">
 				<f:form.textarea name="labels[{key}][default]" value="{label.default}" additionalAttributes="{f:if(condition:'{conf.langKeysAllowed.default}',else:'{readonly:\'1\'}')}" />
 			</div>
-
 			<f:for each="{label}" as="value" key="langKey">
 				<f:if condition="{langKey} != 'default'">
 					<div class="{f:if(condition: '{value}', then: '{f:if(condition:\'{value} == {label.default}\',then:\'same\')}',else:'nt')}">
@@ -39,7 +41,6 @@
 					</div>
 				</f:if>
 			</f:for>
-
 			<f:if condition="{conf.modifyKeys}">
 				<f:render partial="Module/Icons" />
 			</f:if>
@@ -69,10 +70,19 @@
 		<f:link.action action="list" arguments="{extension:extension,file:file,langKeys:langKeys,sort:1}" class="pull-right">{f:translate(key:'sort_by_key')}</f:link.action>
 	</f:if>
 	<div class="form-group">
-		<f:form.submit value="{f:translate(key:'save')}" disabled="{disableSaveButtons}" class="btn btn-default" />
+		<f:form.submit value="{f:translate(key:'save')}" disabled="{disableSaveButtons}" class="btn btn-default btn-primary{f:if(condition:'{formChanged}',then:' changed')}" />
 		<f:if condition="{labels}">
 			<f:form.button formaction="{f:uri.action(action:'exportCsv')}" value="{f:translate(key:'export')}" class="btn btn-default">{f:translate(key:'export')}</f:form.button>
 		</f:if>
 	</div>
+	<br>
+	<br>
+	<f:if condition="{conf.modifyKeys}">
+		<div class="form-group">
+			<div><label>Load labels from CSV file</label></div>
+			<f:form.upload name="importFile" class="btn btn-default" style="display:inline-block;" />
+			<f:form.button formaction="{f:uri.action(action:'importCsv')}" value="{f:translate(key:'import')}" class="btn btn-default">{f:translate(key:'import')}</f:form.button>
+		</div>
+	</f:if>
 </f:form>
 </html>

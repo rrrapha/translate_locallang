@@ -29,7 +29,7 @@ Features:
 
 - CDATA support.
 
-- CVS export function.
+- CSV import/export function.
 
 - Configurable restrictions for non-admin backend users.
 

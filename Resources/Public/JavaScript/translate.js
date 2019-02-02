@@ -4,9 +4,22 @@ window.addEventListener('DOMContentLoaded', function() {
 	var dragging = false;
 	var i, l;
 
+	var translate_form = document.getElementById('translate_labels');
+	if (!translate_form)
+		return;
+
 	var rows = document.getElementsByClassName('translate-row');
 	for (i = 0, l = rows.length; i < l; i++) {
 		initrow(rows[i]);
+	}
+	var submitButtons = translate_form.getElementsByClassName('btn-primary');
+	translate_form.addEventListener('change', function (e) {
+		formChanged();
+	});
+
+	function formChanged() {
+		for (var i = 0; i < submitButtons.length; i++)
+			submitButtons[i].classList.add('changed');
 	}
 
 	function initrow(row) {
@@ -71,6 +84,7 @@ window.addEventListener('DOMContentLoaded', function() {
 				this.parentNode.insertBefore(el_act, this); //insert before
 			else
 				this.parentNode.insertBefore(el_act, this.nextSibling); //insert after
+			formChanged();
 		});
 
 		obj.addEventListener('dragend', function (e) {
@@ -113,6 +127,7 @@ window.addEventListener('DOMContentLoaded', function() {
 	function initremover(obj) {
 		obj.addEventListener('click', function (e) {
 			this.parentNode.parentNode.removeChild(obj.parentNode);
+			formChanged();
 		});
 	}
 });
