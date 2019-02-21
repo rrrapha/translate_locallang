@@ -8,9 +8,6 @@
 	</f:for>
 	<div class="form-group">
 		<f:form.submit value="{f:translate(key:'save')}" disabled="{disableSaveButtons}" class="btn btn-default btn-primary{f:if(condition:'{formChanged}',then:' changed')}" />
-		<f:if condition="{labels}">
-			<f:form.button formaction="{f:uri.action(action:'exportCsv')}" value="{f:translate(key:'export')}" class="btn btn-default">{f:translate(key:'export')}</f:form.button>
-		</f:if>
 	</div>
 	<div class="translate-table form-group">
 		<div class="translate-row header">
