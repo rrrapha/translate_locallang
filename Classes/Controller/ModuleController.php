@@ -29,6 +29,7 @@ namespace Undefined\TranslateLocallang\Controller;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Core\Messaging\AbstractMessage;
 use Undefined\TranslateLocallang\Utility\TranslateUtility;
+use TYPO3\CMS\Core\Cache\CacheManager;
 
 class ModuleController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionController
 {
@@ -232,6 +233,12 @@ class ModuleController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionControlle
         }
 
         $this->log('Updated ' . $extension . '|' . $file . ' ' . implode(', ', $savelangs), 0);
+        
+        //Clear l10n cache after save
+        /** @var \TYPO3\CMS\Core\Cache\Frontend\FrontendInterface $cacheFrontend */
+        $cacheFrontend = GeneralUtility::makeInstance(CacheManager::class)->getCache('l10n');
+        $cacheFrontend->flush();
+
         $this->forward('list', NULL, NULL, ['extension' => $extension, 'file' => $file, 'langKeys' => $langKeys]);
     }
 
@@ -328,6 +335,11 @@ class ModuleController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionControlle
                     $i++;
                 }
             }
+            //Clear l10n cache after save
+            /** @var \TYPO3\CMS\Core\Cache\Frontend\FrontendInterface $cacheFrontend */
+            $cacheFrontend = GeneralUtility::makeInstance(CacheManager::class)->getCache('l10n');
+            $cacheFrontend->flush();
+
         } else {
             $this->addFlashMessage('No file uploaded', 'Error', AbstractMessage::ERROR);
         }
