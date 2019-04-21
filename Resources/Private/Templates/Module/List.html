@@ -10,6 +10,20 @@
 		<f:if condition="{file}">
 			<f:render partial="Module/List" arguments="{_all}" />
 		</f:if>
+		<f:if condition="{conf.modifyKeys}">
+			<f:form>
+				<f:form.hidden name="extension" value="{extension}" />
+				<div class="form-group">
+					<div><label>Create new file</label></div>
+					<div class="input-group">
+						<f:form.textfield name="newFile" value="" class="form-control" placeholder="filename.xlf"/>
+						<span class="input-group-btn">
+							<f:form.button formaction="{f:uri.action(action:'createFile')}" value="{f:translate(key:'create_file')}" class="btn btn-default">{f:translate(key:'create_file')}</f:form.button>
+						</span>
+					</div>
+				</div>
+			</f:form>
+		</f:if>
 	</f:if>
 	<br>
 </div>

@@ -370,6 +370,42 @@ class ModuleController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionControlle
     }
 
     /**
+     * @param string $extension
+     * @param string $newFile
+     *
+     * @return void
+     */
+    public function createFileAction(string $extension, string $newFile) {
+        if (!isset($this->conf['extensions'][$extension])) {
+            throw new \UnexpectedValueException('Extension not allowed: ' . $extension);
+        }
+        if (!$this->conf['modifyKeys']) {
+            throw new \UnexpectedValueException('Not allowed to modify keys');
+        }
+        if ($newFile) {
+            $ok = TRUE;
+            $parts = explode('.', $newFile);
+            if (count($parts) !== 2 || $parts[0] === '' || end($parts) !== 'xlf') {
+                $this->addFlashMessage('Illegal filename', 'Error', AbstractMessage::ERROR);
+                $ok = FALSE;
+            }
+            $path = TranslateUtility::getXlfPath($extension, $newFile, 'default', FALSE);
+            if (is_file($path)) {
+                 $this->addFlashMessage('The file already exists', 'Error', AbstractMessage::ERROR);
+                 $ok = FALSE;
+            }
+            if ($ok) {
+                /* copy the template file */
+                $src = realpath(__DIR__ . '/../../Resources/Private/Templates/Empty.xlf');
+                if (!copy($src, $path)) {
+                    $this->addFlashMessage('Could not create file', 'Error', AbstractMessage::ERROR);
+                }
+            }
+        }
+        $this->forward('list', NULL, NULL, ['extension' => $extension, 'file' => $newFile, 'langKeys' => $langKeys, 'sort' => FALSE]);
+    }
+
+    /**
      * @param string $msg
      * @param int $error (0 = message, 1 = User Error, 2 = System Error, 3 = security notice)
      * @return void
