@@ -47,11 +47,11 @@ class ModuleController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionControlle
         $this->conf['langKeys'] = array_merge(['default' => $this->conf['defaultLangKey'] . ' (default)'], array_combine($langKeys, $langKeys));
         $this->conf['files'] = GeneralUtility::trimExplode(',', $extConf['allowedFiles'], TRUE);
         $allowedExts = GeneralUtility::trimExplode(',', $extConf['allowedExts'], TRUE);
-        $this->conf['extensions'] = TranslateUtility::getExtList($allowedExts, $this->conf['files']);
+        $patterns = GeneralUtility::trimExplode(',', $extConf['extFilter'], TRUE);
+        $this->conf['extensions'] = TranslateUtility::getExtList($allowedExts, $this->conf['files'], $patterns);
         $this->conf['modifyKeys'] = (bool)$extConf['modifyKeys'] || $GLOBALS['BE_USER']->user['admin'];
         $this->conf['useL10n'] = (bool)$extConf['useL10n'];
         $this->conf['debug'] = (bool)$extConf['debug'];
-        $this->conf['sysLog'] = (bool)$extConf['sysLog'];
         $this->conf['langKeysAllowed'] = $this->conf['langKeys'];
         if (!((bool)$extConf['modifyDefaultLang'] || $GLOBALS['BE_USER']->user['admin'] || $this->conf['modifyKeys'])) {
             unset($this->conf['langKeysAllowed']['default']);
@@ -411,9 +411,6 @@ class ModuleController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionControlle
      * @return void
      */
     protected function log(string $msg, int $error = 0) {
-        if ($this->conf['sysLog'] || $error) {
-            $GLOBALS['BE_USER']->writelog(4, 0, $error, 0, '[translate_locallang] ' . $msg, []);
-        }
         if ($this->conf['debug'] || $error) {
             $this->addFlashMessage($msg, ($error) ? 'Error' : 'Debug', ($error) ? AbstractMessage::ERROR : AbstractMessage::NOTICE);
         }

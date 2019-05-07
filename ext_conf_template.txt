@@ -6,8 +6,8 @@ langKeys = de,fr,it
 useL10n = 0
 # cat=basic//4; type=boolean; label=Show debug output
 debug = 0
-# cat=basic//5; type=boolean; label=Log write operations
-sysLog = 0
+# cat=basic//5; type=string; label=Filter for extension names (wildcard patterns, comma separated, e.g. acme_*)
+extFilter = *
 # cat=basic//6; type=string; label=Allowed extensions for non-admin users (comma separated, empty=all)
 allowedExts = 
 # cat=basic//7; type=string; label=Allowed filenames for non-admin users (comma separated, empty=all)

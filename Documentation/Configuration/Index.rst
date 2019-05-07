@@ -60,11 +60,11 @@ Configuration Options
       0
 
  - :Property:
-      sysLog
+      extFilter
    :Description:
-      Log write operations
+      Filter for extension names (wildcard patterns, comma separated, e.g. acme_*)
    :Default:
-      0
+      *
 
  - :Property:
       allowedExts

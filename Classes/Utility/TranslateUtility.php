@@ -38,9 +38,10 @@ class TranslateUtility
      *
      * @param array $allowedExts (empty = all)
      * @param array $allowedFiles (empty = all)
+     * @param array $patterns
      * @return array
      */
-    public static function getExtList(array $allowedExts, array $allowedFiles = []): array {
+    public static function getExtList(array $allowedExts, array $allowedFiles = [], array $patterns): array {
         //ListUtility->getAvailableExtensions() is too slow..
         $extensions = [];
         $configPath = static::getConfigPath();
@@ -51,6 +52,17 @@ class TranslateUtility
             $extdir = $configPath . '/ext/' . $entry . '/';
             if ($entry[0] === '.' || !static::isExtension($extdir)) {
                 continue;
+            }
+            if (!empty($patterns)) {
+                $skip = 1;
+                foreach($patterns as $pattern) {
+                    if (fnmatch($pattern, $entry)) {
+                        $skip = 0;
+                    }
+                }
+                if ($skip) {
+                    continue;
+                }
             }
             if (!$GLOBALS['BE_USER']->user['admin']) {
                 if ((!empty($allowedExts) && !in_array($entry, $allowedExts))
