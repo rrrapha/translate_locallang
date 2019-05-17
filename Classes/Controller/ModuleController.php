@@ -47,7 +47,8 @@ class ModuleController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionControlle
         $this->conf['langKeys'] = array_merge(['default' => $this->conf['defaultLangKey'] . ' (default)'], array_combine($langKeys, $langKeys));
         $this->conf['files'] = GeneralUtility::trimExplode(',', $extConf['allowedFiles'], TRUE);
         $allowedExts = GeneralUtility::trimExplode(',', $extConf['allowedExts'], TRUE);
-        $patterns = GeneralUtility::trimExplode(',', $extConf['extFilter'], TRUE);
+        $this->conf['extFilter'] = trim((string)$extConf['extFilter']);
+        $patterns = GeneralUtility::trimExplode(',', $this->conf['extFilter'], TRUE);
         $this->conf['extensions'] = TranslateUtility::getExtList($allowedExts, $this->conf['files'], $patterns);
         $this->conf['modifyKeys'] = (bool)$extConf['modifyKeys'] || $GLOBALS['BE_USER']->user['admin'];
         $this->conf['useL10n'] = (bool)$extConf['useL10n'];
