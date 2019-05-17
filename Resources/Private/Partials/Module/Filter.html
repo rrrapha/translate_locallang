@@ -4,7 +4,7 @@
 	    options="{conf.extensions}"
 	    value="{extension}"
 	    prependOptionValue="0"
-	    prependOptionLabel="{f:translate(key:'choose_extension')} {f:if(condition:'{conf.extFilter} && {conf.extFilter} != *',then:'(Filter: {conf.extFilter})')}"
+	    prependOptionLabel="{f:translate(key:'choose_extension')} {f:if(condition:'{isAdmin} && {conf.extFilter} && {conf.extFilter} != *',then:'(Filter: {conf.extFilter})')}"
 	    additionalAttributes="{onchange:'this.form.submit()'}"
 	    class="form-control input-sm" />
 	<f:if condition="{extension}">

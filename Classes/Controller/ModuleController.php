@@ -50,11 +50,11 @@ class ModuleController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionControlle
         $this->conf['extFilter'] = trim((string)$extConf['extFilter']);
         $patterns = GeneralUtility::trimExplode(',', $this->conf['extFilter'], TRUE);
         $this->conf['extensions'] = TranslateUtility::getExtList($allowedExts, $this->conf['files'], $patterns);
-        $this->conf['modifyKeys'] = (bool)$extConf['modifyKeys'] || $GLOBALS['BE_USER']->user['admin'];
+        $this->conf['modifyKeys'] = (bool)$extConf['modifyKeys'] || $GLOBALS['BE_USER']->isAdmin();
         $this->conf['useL10n'] = (bool)$extConf['useL10n'];
         $this->conf['debug'] = (bool)$extConf['debug'];
         $this->conf['langKeysAllowed'] = $this->conf['langKeys'];
-        if (!((bool)$extConf['modifyDefaultLang'] || $GLOBALS['BE_USER']->user['admin'] || $this->conf['modifyKeys'])) {
+        if (!((bool)$extConf['modifyDefaultLang'] || $GLOBALS['BE_USER']->isAdmin() || $this->conf['modifyKeys'])) {
             unset($this->conf['langKeysAllowed']['default']);
         }
     }
@@ -150,6 +150,7 @@ class ModuleController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionControlle
             'langKeys' => $langKeys,
             'labels' => $labels,
             'conf' => $this->conf,
+            'isAdmin' => $GLOBALS['BE_USER']->isAdmin(),
             'disableSaveButtons' => $disableSaveButtons,
             'formChanged' => $formChanged,
         ]);
