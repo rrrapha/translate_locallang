@@ -1,5 +1,6 @@
 <html xmlns:f="http://typo3.org/ns/TYPO3/CMS/Fluid/ViewHelpers" data-namespace-typo3-fluid="true">
-<f:form id="translate_labels" action="save" controller="Module" method="post" class="form-group" enctype="multipart/form-data" additionalAttributes="{spellcheck:'false'}">
+<f:form id="translate_labels" action="save" controller="Module" method="post" class="form-group" enctype="multipart/form-data" 
+    additionalAttributes="{spellcheck:'false',autocomplete:'off',autocorrect:'off',autocapitalize:'off'}">
 
 	<f:form.hidden name="extension" value="{extension}" />
 	<f:form.hidden name="file" value="{file}" />
@@ -26,7 +27,7 @@
 		<f:if condition="{key}">
 		<div class="translate-row">
 			<div>
-				<f:form.textfield name="keys[{key}]" value="{key}" readonly="{f:if(condition:'{conf.modifyKeys}',else:'1')}" additionalAttributes="{autocomplete:'off'}" />
+				<f:form.textfield name="keys[{key}]" value="{key}" readonly="{f:if(condition:'{conf.modifyKeys}',else:'1')}" />
 			</div>
 			<div class="{f:if(condition:'{label.default}',else:'nd')}">
 				<f:form.textarea name="labels[{key}][default]" value="{label.default}" additionalAttributes="{f:if(condition:'{conf.langKeysAllowed.default}',else:'{readonly:\'1\'}')}" />
@@ -46,7 +47,7 @@
 		</f:for>
 		<div class="translate-row">
 			<div>
-				<f:form.textfield name="keys[_newkey]" value="" readonly="{f:if(condition:'{conf.modifyKeys}',else:'1')}" additionalAttributes="{autocomplete:'off'}" />
+				<f:form.textfield name="keys[_newkey]" value="" readonly="{f:if(condition:'{conf.modifyKeys}',else:'1')}" />
 			</div>
 			<div>
 				<f:form.textarea name="labels[_newkey][default]" value="" additionalAttributes="{f:if(condition:'{conf.langKeysAllowed.default}',else:'{readonly:\'1\'}')}" />
