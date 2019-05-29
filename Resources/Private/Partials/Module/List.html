@@ -69,14 +69,14 @@
 	<f:if condition="{conf.modifyKeys}">
 		<f:link.action action="list" arguments="{extension:extension,file:file,langKeys:langKeys,sort:1}" class="pull-right">{f:translate(key:'sort_by_key')}</f:link.action>
 	</f:if>
+	<f:comment>
 	<div class="form-group">
-		<f:comment>
 		<f:form.submit value="{f:translate(key:'save')}" disabled="{disableSaveButtons}" class="btn btn-default btn-primary{f:if(condition:'{formChanged}',then:' changed')}" />
-		</f:comment>
 		<f:if condition="{labels}">
 			<f:form.button formaction="{f:uri.action(action:'exportCsv')}" value="{f:translate(key:'export')}" class="btn btn-default">{f:translate(key:'export')}</f:form.button>
 		</f:if>
 	</div>
+	</f:comment>
 	<br>
 	<br>
 	<f:if condition="{conf.modifyKeys}">
