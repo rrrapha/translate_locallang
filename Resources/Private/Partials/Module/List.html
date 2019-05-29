@@ -7,9 +7,11 @@
 	<f:for each="{langKeys}" as="langKey">
 		<f:form.hidden name="langKeys[]" value="{langKey}" />
 	</f:for>
+	<f:comment>
 	<div class="form-group">
 		<f:form.submit value="{f:translate(key:'save')}" disabled="{disableSaveButtons}" class="btn btn-default btn-primary{f:if(condition:'{formChanged}',then:' changed')}" />
 	</div>
+	</f:comment>
 	<div class="translate-table form-group">
 		<div class="translate-row header">
 			<div>key</div>
@@ -68,7 +70,9 @@
 		<f:link.action action="list" arguments="{extension:extension,file:file,langKeys:langKeys,sort:1}" class="pull-right">{f:translate(key:'sort_by_key')}</f:link.action>
 	</f:if>
 	<div class="form-group">
+		<f:comment>
 		<f:form.submit value="{f:translate(key:'save')}" disabled="{disableSaveButtons}" class="btn btn-default btn-primary{f:if(condition:'{formChanged}',then:' changed')}" />
+		</f:comment>
 		<f:if condition="{labels}">
 			<f:form.button formaction="{f:uri.action(action:'exportCsv')}" value="{f:translate(key:'export')}" class="btn btn-default">{f:translate(key:'export')}</f:form.button>
 		</f:if>

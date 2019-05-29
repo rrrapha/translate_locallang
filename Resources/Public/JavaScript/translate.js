@@ -12,14 +12,13 @@ window.addEventListener('DOMContentLoaded', function() {
 	for (i = 0, l = rows.length; i < l; i++) {
 		initrow(rows[i]);
 	}
-	var submitButtons = translate_form.getElementsByClassName('btn-primary');
+	var submitButton = document.getElementById('translate_save');
 	translate_form.addEventListener('change', function (e) {
 		formChanged();
 	});
 
 	function formChanged() {
-		for (var i = 0; i < submitButtons.length; i++)
-			submitButtons[i].classList.add('changed');
+		submitButton.classList.add('btn-danger');
 	}
 
 	function initrow(row) {
