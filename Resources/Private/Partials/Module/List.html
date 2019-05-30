@@ -14,8 +14,8 @@
 	</f:comment>
 	<div class="translate-table form-group">
 		<div class="translate-row header">
-			<div>key</div>
-			<div>{conf.defaultLangKey} (default)</div>
+			<div>{f:translate(key: 'key')}</div>
+			<div>{conf.defaultLangKey} ({f:translate(key: 'default')})</div>
 			<f:for each="{langKeys}" as="langKey">
 				<f:if condition="{langKey} != 'default'"><div>{langKey}</div></f:if>
 			</f:for>
@@ -81,7 +81,7 @@
 	<br>
 	<f:if condition="{conf.modifyKeys}">
 		<div class="form-group">
-			<div><label>Load labels from CSV file</label></div>
+			<div><label>{f:translate(key: 'load_labels_from_csv_file')}</label></div>
 			<f:form.upload name="importFile" class="btn btn-default" style="display:inline-block;" />
 			<f:form.button formaction="{f:uri.action(action:'importCsv')}" value="{f:translate(key:'import')}" class="btn btn-default">{f:translate(key:'import')}</f:form.button>
 		</div>

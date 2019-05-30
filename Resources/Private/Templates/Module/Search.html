@@ -7,7 +7,7 @@
 		<f:form action="search" controller="Module" class="form-group">
 			<div class="form-group">
 				<div class="input-group">
-					<f:form.textfield name="word" value="{word}" class="form-control" placeholder="Label"/>
+					<f:form.textfield name="word" value="{word}" class="form-control" placeholder="{f:translate(key:'key')}"/>
 					<span class="input-group-btn">
 						<f:form.button type="submit" value="{f:translate(key:'search_all')}" class="btn btn-default">{f:translate(key:'search_all')}</f:form.button>
 					</span>
@@ -25,7 +25,7 @@
 					</f:for>
 				</f:then>
 				<f:else>
-					<div>Nothing found.</div>
+					<div>{f:translate(key: 'search_results_none')}</div>
 				</f:else>
 			</f:if>
 		</f:if>
