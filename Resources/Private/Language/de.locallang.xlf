@@ -21,7 +21,7 @@
 			</trans-unit>
 			<trans-unit id="save">
 				<source>Save</source>
-				<target>speichern</target>
+				<target>Speichern</target>
 			</trans-unit>
 			<trans-unit id="export">
 				<source>Export CSV</source>
