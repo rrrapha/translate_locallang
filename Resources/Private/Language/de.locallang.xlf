@@ -61,7 +61,7 @@
 			</trans-unit>
 			<trans-unit id="add">
 				<source>Add</source>
-				<target>neue Zeile</target>
+				<target>Neue Zeile</target>
 			</trans-unit>
 			<trans-unit id="remove">
 				<source>Remove</source>
