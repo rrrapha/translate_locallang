@@ -14,9 +14,9 @@
 			<f:form>
 				<f:form.hidden name="extension" value="{extension}" />
 				<div class="form-group">
-					<div><label>Create new file</label></div>
+					<div><label>{f:translate(key:'create_file')}</label></div>
 					<div class="input-group">
-						<f:form.textfield name="newFile" value="" class="form-control" placeholder="filename.xlf"/>
+						<f:form.textfield name="newFile" value="" class="form-control" placeholder="{f:translate(key: 'dummy_filename')}"/>
 						<span class="input-group-btn">
 							<f:form.button formaction="{f:uri.action(action:'createFile')}" value="{f:translate(key:'create_file')}" class="btn btn-default">{f:translate(key:'create_file')}</f:form.button>
 						</span>
