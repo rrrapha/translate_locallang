@@ -53,6 +53,7 @@ class ModuleController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionControlle
         $this->conf['extensions'] = TranslateUtility::getExtList($allowedExts, $this->conf['files'], $patterns);
         $this->conf['modifyKeys'] = (bool)$extConf['modifyKeys'] || $GLOBALS['BE_USER']->isAdmin();
         $this->conf['useL10n'] = (bool)$extConf['useL10n'];
+        $this->conf['clearCache'] = (bool)$extConf['clearCache'];
         $this->conf['debug'] = (bool)$extConf['debug'];
         $this->conf['langKeysAllowed'] = $this->conf['langKeys'];
         if (!((bool)$extConf['modifyDefaultLang'] || $GLOBALS['BE_USER']->isAdmin() || $this->conf['modifyKeys'])) {
@@ -235,11 +236,12 @@ class ModuleController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionControlle
         }
 
         $this->log('Updated ' . $extension . '|' . $file . ' ' . implode(', ', $savelangs), 0);
-        
-        //Clear l10n cache after save
-        /** @var \TYPO3\CMS\Core\Cache\Frontend\FrontendInterface $cacheFrontend */
-        $cacheFrontend = GeneralUtility::makeInstance(CacheManager::class)->getCache('l10n');
-        $cacheFrontend->flush();
+
+        if ($this->conf['clearCache']) {
+            /** @var \TYPO3\CMS\Core\Cache\Frontend\FrontendInterface $cacheFrontend */
+            $cacheFrontend = GeneralUtility::makeInstance(CacheManager::class)->getCache('l10n');
+            $cacheFrontend->flush();
+        }
 
         $this->forward('list', NULL, NULL, ['extension' => $extension, 'file' => $file, 'langKeys' => $langKeys]);
     }
@@ -337,10 +339,6 @@ class ModuleController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionControlle
                     $i++;
                 }
             }
-            //Clear l10n cache after save
-            /** @var \TYPO3\CMS\Core\Cache\Frontend\FrontendInterface $cacheFrontend */
-            $cacheFrontend = GeneralUtility::makeInstance(CacheManager::class)->getCache('l10n');
-            $cacheFrontend->flush();
 
         } else {
             $this->addFlashMessage('No file uploaded', 'Error', AbstractMessage::ERROR);

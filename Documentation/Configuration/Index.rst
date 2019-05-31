@@ -53,6 +53,13 @@ Configuration Options
       0
 
  - :Property:
+      clearCache
+   :Description:
+      Clear l10n cache on save
+   :Default:
+      0
+
+ - :Property:
       debug
    :Description:
       Show debug output
