@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8" standalone="yes" ?>
 <xliff version="1.0">
-	<file source-language="en" target-language="de" datatype="plaintext" original="messages" date="2019-05-30T07:47:05Z" product-name="translate_locallang">
+	<file source-language="en" target-language="de" datatype="plaintext" original="messages" date="2019-05-31T13:27:25Z" product-name="translate_locallang">
 		<header/>
 		<body>
 			<trans-unit id="title">
@@ -50,6 +50,10 @@
 			<trans-unit id="search_all">
 				<source>Search in all extensions</source>
 				<target>In allen Extensions suchen</target>
+			</trans-unit>
+			<trans-unit id="search_text">
+				<source>Text</source>
+				<target>Text</target>
 			</trans-unit>
 			<trans-unit id="create_file">
 				<source>Create file</source>

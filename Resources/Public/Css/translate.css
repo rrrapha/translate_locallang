@@ -64,6 +64,3 @@ form.form-group select {
 form.form-group select.form-control[multiple] {
 	min-height: 0;
 }
-input[type=submit].changed {
-	border-color:red;
-}
