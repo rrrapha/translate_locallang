@@ -71,7 +71,7 @@ Configuration Options
    :Description:
       Filter for extension names (wildcard patterns, comma separated, e.g. acme_*)
    :Default:
-      *
+      \*
 
  - :Property:
       allowedExts
