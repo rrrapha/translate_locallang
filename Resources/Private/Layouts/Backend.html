@@ -19,18 +19,16 @@
 			</div>
 			<div class="module-docheader-bar module-docheader-bar-buttons">
 				<div class="module-docheader-bar-column-left">
-				<f:if condition="{extension} && {file}">
-					<button id="translate_save" name="_savedok" class="btn btn-{f:if(condition:'{formChanged}',then:'danger',else:'default')} btn-sm" value="1" title="{f:translate(key: 'save')}" form="translate_labels" {disableSaveButtons}>
-						<span class="t3js-icon icon icon-size-small icon-state-default icon-actions-document-save" data-identifier="actions-document-save">
-							<span class="icon-markup">
-								<img src="/typo3/sysext/core/Resources/Public/Icons/T3Icons/actions/actions-document-save.svg" width="16" height="16">
-							</span>
-						</span> {f:translate(key: 'save')}
-					</button>
-					<f:if condition="{labels}">
-						<f:form.button form="translate_labels" formaction="{f:uri.action(action:'exportCsv')}" value="{f:translate(key:'export')}" class="btn btn-default btn-sm">{f:translate(key:'export')}</f:form.button>
+					<div class="btn-toolbar" role="toolbar" aria-label="">
+					<f:if condition="{extension} && {file}">
+						<button id="translate_save" name="_savedok" class="btn btn-{f:if(condition:'{formChanged}',then:'danger',else:'default')} btn-sm" value="1" title="{f:translate(key: 'save')}" form="translate_labels" {disableSaveButtons}>
+							<core:icon identifier="actions-document-save" /> {f:translate(key: 'save')}
+						</button>
+						<f:if condition="{labels}">
+							<f:form.button form="translate_labels" formaction="{f:uri.action(action:'exportCsv')}" value="{f:translate(key:'export')}" class="btn btn-default btn-sm">{f:translate(key:'export')}</f:form.button>
+						</f:if>
 					</f:if>
-				</f:if>
+					</div>
 				</div>
 				<div class="module-docheader-bar-column-right">
 					<span class="btn btn-sm btn-default">
