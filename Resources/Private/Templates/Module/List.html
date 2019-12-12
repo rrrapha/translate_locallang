@@ -4,6 +4,9 @@
 <div class="module-body">
 	<f:flashMessages />
 	<h1>{f:translate(key:'title')} {f:if(condition:'{extension}',then:' - {extension}')}</h1>
+	<f:if condition="{translatorInfo}">
+ 		<p>{translatorInfo}</p>
+	</f:if>
 	<f:render partial="Module/Filter" arguments="{_all}" />
 	<br>
 	<f:if condition="{extension}">

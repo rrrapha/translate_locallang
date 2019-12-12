@@ -18,3 +18,5 @@ allowedFiles =
 modifyDefaultLang = 0
 # cat=basic//10; type=boolean; label=Allow non-admin users to modify keys and sorting (implies modifyDefaultLang)
 modifyKeys = 0
+# cat=basic//11; type=string; label=Provide an information for translators
+translatorInfo =
