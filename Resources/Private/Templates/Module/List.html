@@ -5,7 +5,13 @@
 	<f:flashMessages />
 	<h1>{f:translate(key:'title')} {f:if(condition:'{extension}',then:' - {extension}')}</h1>
 	<f:if condition="{translatorInfo}">
- 		<p>{translatorInfo}</p>
+		<div class="alert alert-warning">
+			<div class="media">
+				<div class="media-body">
+					<p class="alert-message">{translatorInfo}</p>
+				</div>
+			</div>
+		</div>
 	</f:if>
 	<f:render partial="Module/Filter" arguments="{_all}" />
 	<br>
