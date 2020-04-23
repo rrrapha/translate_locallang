@@ -26,6 +26,7 @@ namespace Undefined\TranslateLocallang\Utility;
  *  This copyright notice MUST APPEAR in all copies of the script!
  ***************************************************************/
 
+use TYPO3\CMS\Core\Core\Environment;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Backend\Utility\BackendUtility;
 
@@ -44,12 +45,12 @@ class TranslateUtility
     public static function getExtList(array $allowedExts, array $allowedFiles = [], array $patterns): array {
         //ListUtility->getAvailableExtensions() is too slow..
         $extensions = [];
-        $configPath = static::getConfigPath();
-        if (($handle = @opendir($configPath . '/ext/')) === FALSE) {
+        $extsPath = Environment::getPublicPath() . '/typo3conf/ext';
+        if (($handle = @opendir($extsPath)) === FALSE) {
             return $extensions;
         }
         while (($entry = readdir($handle)) !== FALSE) {
-            $extdir = $configPath . '/ext/' . $entry . '/';
+            $extdir = $extsPath . '/' . $entry . '/';
             if ($entry[0] === '.' || !static::isExtension($extdir)) {
                 continue;
             }
@@ -86,7 +87,7 @@ class TranslateUtility
      */
     public static function getFileList(string $extension, array $allowedFiles = []): array {
         $files = [];
-        $extdir = static::getConfigPath() . '/ext/' . $extension . '/';
+        $extdir = Environment::getPublicPath() . '/typo3conf/ext/' . $extension . '/';
         if ($handle = @opendir($extdir . static::LANGUAGE_DIR)) {
             while (FALSE !== ($entry = readdir($handle))) {
                 $parts = explode('.', $entry);
@@ -113,17 +114,17 @@ class TranslateUtility
     public static function getXlfPath(string $extension, string $file, string $langKey = 'default', bool $useL10n = FALSE): string {
         //get default path
         $relPath = $extension . '/' . static::LANGUAGE_DIR;
-        $configPath = static::getConfigPath();
-        $l10nPath = static::getLabelsPath();
+        $extsPath = Environment::getPublicPath() . '/typo3conf/ext';
+        $l10nPath = Environment::getLabelsPath();
         if ($langKey === 'default') {
-            return $configPath . '/ext/' . $relPath . $file;
+            return $extsPath . '/' . $relPath . $file;
         }
         //get overlay path
         $fileName = $langKey . '.' . $file;
         if ($useL10n) {
             return $l10nPath . '/' . $langKey . '/' . $relPath . $fileName;
         } else {
-            return $configPath . '/ext/' . $relPath . $fileName;
+            return $extsPath . '/' . $relPath . $fileName;
         }
     }
 
@@ -171,47 +172,5 @@ class TranslateUtility
      */
     public static function setModuleData($data) {
         BackendUtility::getModuleData(['data' => ''], ['data' => serialize($data)], 'tools_translate_locallang');
-    }
-
-    /**
-     * compatibility wrapper
-     *
-     * @return string
-     */
-    public static function getConfigPath(): string {
-        if (class_exists('\\TYPO3\\CMS\\Core\\Core\\Environment')) {
-            //TYPO3 >= 9.2
-            return \TYPO3\CMS\Core\Core\Environment::getPublicPath() . '/typo3conf';
-        } else {
-            return rtrim(PATH_typo3conf, '/');
-        }
-    }
-
-    /**
-     * compatibility wrapper
-     *
-     * @return string
-     */
-    public static function getLabelsPath(): string {
-        if (class_exists('\\TYPO3\\CMS\\Core\\Core\\Environment')) {
-            //TYPO3 >= 9.2
-            return \TYPO3\CMS\Core\Core\Environment::getLabelsPath();
-        } else {
-            return PATH_typo3conf . 'l10n';
-        }
-    }
-
-    /**
-     * compatibility wrapper
-     *
-     * @return array
-     */
-    public static function getExtConf() {
-        if (class_exists('\\TYPO3\\CMS\\Core\\Configuration\\ExtensionConfiguration')) {
-            //TYPO3 >= 9.0
-            return GeneralUtility::makeInstance(\TYPO3\CMS\Core\Configuration\ExtensionConfiguration::class)->get('translate_locallang');
-        } else {
-            return unserialize($GLOBALS['TYPO3_CONF_VARS']['EXT']['extConf']['translate_locallang']);
-        }
     }
 }

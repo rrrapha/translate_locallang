@@ -26,6 +26,7 @@ namespace Undefined\TranslateLocallang\Service;
  *  This copyright notice MUST APPEAR in all copies of the script!
  ***************************************************************/
 
+use TYPO3\CMS\Core\Core\Environment;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use Undefined\TranslateLocallang\Utility\TranslateUtility;
 
@@ -340,7 +341,7 @@ class XliffService
         }
         $objectManager = GeneralUtility::makeInstance('TYPO3\\CMS\\Extbase\\Object\\ObjectManager');
         $xliffview = $objectManager->get('TYPO3\\CMS\\Fluid\\View\\StandaloneView');
-        $xliffview->setTemplatePathAndFilename(TranslateUtility::getConfigPath() . '/ext/translate_locallang/Resources/Private/Templates/Xliff.html');
+        $xliffview->setTemplatePathAndFilename(Environment::getPublicPath() . '/typo3conf/ext/translate_locallang/Resources/Private/Templates/Xliff.html');
 
         date_default_timezone_set('UTC');
         $xliffview->assignMultiple([

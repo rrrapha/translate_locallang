@@ -9,7 +9,7 @@
         "typo3-ter/translate-locallang": "self.version"
     },
     "require": {
-        "typo3/cms-core": ">=8.7.0 <11.0.0"
+        "typo3/cms-core": ">=9.5.0 <11.0.0"
     },
     "autoload": {
         "psr-4": {

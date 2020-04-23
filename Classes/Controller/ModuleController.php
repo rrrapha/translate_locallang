@@ -26,10 +26,13 @@ namespace Undefined\TranslateLocallang\Controller;
  *  This copyright notice MUST APPEAR in all copies of the script!
  ***************************************************************/
 
-use TYPO3\CMS\Core\Utility\GeneralUtility;
-use TYPO3\CMS\Core\Messaging\AbstractMessage;
-use Undefined\TranslateLocallang\Utility\TranslateUtility;
 use TYPO3\CMS\Core\Cache\CacheManager;
+use TYPO3\CMS\Core\Configuration\ExtensionConfiguration;
+use TYPO3\CMS\Core\Core\Environment;
+use TYPO3\CMS\Core\Messaging\AbstractMessage;
+use TYPO3\CMS\Core\Utility\GeneralUtility;
+use Undefined\TranslateLocallang\Utility\TranslateUtility;
+
 
 class ModuleController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionController
 {
@@ -42,7 +45,7 @@ class ModuleController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionControlle
      * @return void
      */
     public function initializeAction() {
-        $extConf = TranslateUtility::getExtConf();
+        $extConf = GeneralUtility::makeInstance(ExtensionConfiguration::class)->get('translate_locallang');
         $this->conf['defaultLangKey'] = (trim($extConf['defaultLangKey'])) ? trim($extConf['defaultLangKey']) : 'en';
         $langKeys = GeneralUtility::trimExplode(',', $extConf['langKeys'], TRUE);
         $this->conf['langKeys'] = array_merge(['default' => $this->conf['defaultLangKey'] . ' (default)'], array_combine($langKeys, $langKeys));
@@ -101,7 +104,7 @@ class ModuleController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionControlle
                 throw new \UnexpectedValueException('Extension not allowed: ' . $extension);
             }
             $l = next($this->conf['langKeys']);
-            $l10ndir = TranslateUtility::getLabelsPath() . '/' . $l . '/' . $extension;
+            $l10ndir = Environment::getLabelsPath() . '/' . $l . '/' . $extension;
             if (!$this->conf['useL10n'] && is_dir($l10ndir)) {
                 $this->addFlashMessage(
                     $l10ndir . ' directory exists. (You are currently editing the files in typo3conf/ext).', 'Notice', AbstractMessage::NOTICE
