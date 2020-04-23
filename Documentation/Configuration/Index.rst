@@ -1,4 +1,4 @@
-﻿.. ==================================================
+.. ==================================================
 .. FOR YOUR INFORMATION
 .. --------------------------------------------------
 .. -*- coding: utf-8 -*- with BOM.
@@ -100,3 +100,10 @@ Configuration Options
       Allow non-admin users to modify keys and sorting (implies modifyDefaultLang)
    :Default:
       0
+
+ - :Property:
+      translatorInfo
+   :Description:
+      Provide an information for translators
+   :Default:
+      [empty]

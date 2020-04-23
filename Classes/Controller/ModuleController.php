@@ -148,6 +148,8 @@ class ModuleController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionControlle
             }
         }
 
+        $extConf = TranslateUtility::getExtConf();
+
         $this->view->assignMultiple([
             'extension' => $extension,
             'files' => $files,
@@ -158,6 +160,7 @@ class ModuleController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionControlle
             'isAdmin' => $GLOBALS['BE_USER']->isAdmin(),
             'disableSaveButtons' => $disableSaveButtons,
             'formChanged' => $formChanged,
+            'translatorInfo' => $extConf['translatorInfo'],
         ]);
 
         TranslateUtility::setModuleData([
