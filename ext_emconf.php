@@ -3,7 +3,7 @@ $EM_CONF[$_EXTKEY] = [
     'title' => 'Translate',
     'description' => 'Editor for locallang.xlf files',
     'category' => 'module',
-    'version' => '2.6.1',
+    'version' => '2.6.2',
     'state' => 'stable',
     'uploadfolder' => 0,
     'clearCacheOnLoad' => 1,
@@ -12,7 +12,7 @@ $EM_CONF[$_EXTKEY] = [
     'author_company' => 'undefined',
     'constraints' => [
         'depends' => [
-            'typo3' => '8.7.0-9.9.99',
+            'typo3' => '8.7.0-10.99.99',
         ],
         'conflicts' => [],
         'suggests' => [],

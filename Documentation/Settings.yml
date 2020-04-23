@@ -4,10 +4,10 @@
 
 ---
 conf.py:
-  copyright: 2017-2019
+  copyright: 2017-2020
   project: Translate
   version: 2.6
-  release: 2.6.1
+  release: 2.6.2
   intersphinx_mapping:
     t3tsref:
     - http://docs.typo3.org/typo3cms/TyposcriptReference/
