@@ -59,6 +59,7 @@ class ModuleController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionControlle
         $this->conf['clearCache'] = (bool)$extConf['clearCache'];
         $this->conf['debug'] = (bool)$extConf['debug'];
         $this->conf['langKeysAllowed'] = $this->conf['langKeys'];
+        $this->conf['translatorInfo'] = (string)$extConf['translatorInfo'];
         if (!((bool)$extConf['modifyDefaultLang'] || $GLOBALS['BE_USER']->isAdmin() || $this->conf['modifyKeys'])) {
             unset($this->conf['langKeysAllowed']['default']);
         }
@@ -148,8 +149,6 @@ class ModuleController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionControlle
             }
         }
 
-        $extConf = TranslateUtility::getExtConf();
-
         $this->view->assignMultiple([
             'extension' => $extension,
             'files' => $files,
@@ -160,7 +159,6 @@ class ModuleController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionControlle
             'isAdmin' => $GLOBALS['BE_USER']->isAdmin(),
             'disableSaveButtons' => $disableSaveButtons,
             'formChanged' => $formChanged,
-            'translatorInfo' => $extConf['translatorInfo'],
         ]);
 
         TranslateUtility::setModuleData([

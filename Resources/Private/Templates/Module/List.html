@@ -4,11 +4,11 @@
 <div class="module-body">
 	<f:flashMessages />
 	<h1>{f:translate(key:'title')} {f:if(condition:'{extension}',then:' - {extension}')}</h1>
-	<f:if condition="{translatorInfo}">
+	<f:if condition="{conf.translatorInfo}">
 		<div class="alert alert-warning">
 			<div class="media">
 				<div class="media-body">
-					<p class="alert-message">{translatorInfo}</p>
+					<p class="alert-message">{conf.translatorInfo}</p>
 				</div>
 			</div>
 		</div>
