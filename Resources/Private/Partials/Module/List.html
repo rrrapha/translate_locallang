@@ -7,11 +7,6 @@
 	<f:for each="{langKeys}" as="langKey">
 		<f:form.hidden name="langKeys[]" value="{langKey}" />
 	</f:for>
-	<f:comment>
-	<div class="form-group">
-		<f:form.submit value="{f:translate(key:'save')}" disabled="{disableSaveButtons}" class="btn btn-default btn-primary{f:if(condition:'{formChanged}',then:' changed')}" />
-	</div>
-	</f:comment>
 	<div class="translate-table form-group">
 		<div class="translate-row header">
 			<div>{f:translate(key: 'key')}</div>
@@ -32,7 +27,7 @@
 				<f:form.textfield name="keys[{key}]" value="{key}" readonly="{f:if(condition:'{conf.modifyKeys}',else:'1')}" />
 			</div>
 			<div class="{f:if(condition:'{label.default}',else:'nd')}">
-				<f:form.textarea name="labels[{key}][default]" value="{label.default}" additionalAttributes="{f:if(condition:'{conf.langKeysAllowed.default}',else:'{readonly:\'1\'}')}" />
+				<f:form.textarea name="labels[{key}][default]" value="{label.default}" readonly="{f:if(condition:'{conf.langKeysAllowed.default}',else:'1')}" />
 			</div>
 			<f:for each="{label}" as="value" key="langKey">
 				<f:if condition="{langKey} != 'default'">
@@ -52,7 +47,7 @@
 				<f:form.textfield name="keys[_newkey]" value="" readonly="{f:if(condition:'{conf.modifyKeys}',else:'1')}" />
 			</div>
 			<div>
-				<f:form.textarea name="labels[_newkey][default]" value="" additionalAttributes="{f:if(condition:'{conf.langKeysAllowed.default}',else:'{readonly:\'1\'}')}" />
+				<f:form.textarea name="labels[_newkey][default]" value="" readonly="{f:if(condition:'{conf.langKeysAllowed.default}',else:'1')}" />
 			</div>
 			<f:for each="{langKeys}" as="langKey">
 			<f:if condition="{langKey} != 'default'">
@@ -69,14 +64,6 @@
 	<f:if condition="{conf.modifyKeys}">
 		<f:link.action action="list" arguments="{extension:extension,file:file,langKeys:langKeys,sort:1}" class="pull-right">{f:translate(key:'sort_by_key')}</f:link.action>
 	</f:if>
-	<f:comment>
-	<div class="form-group">
-		<f:form.submit value="{f:translate(key:'save')}" disabled="{disableSaveButtons}" class="btn btn-default btn-primary{f:if(condition:'{formChanged}',then:' changed')}" />
-		<f:if condition="{labels}">
-			<f:form.button formaction="{f:uri.action(action:'exportCsv')}" value="{f:translate(key:'export')}" class="btn btn-default">{f:translate(key:'export')}</f:form.button>
-		</f:if>
-	</div>
-	</f:comment>
 	<br>
 	<br>
 	<f:if condition="{conf.modifyKeys}">

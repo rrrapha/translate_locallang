@@ -3,7 +3,7 @@ defined('TYPO3_MODE') or die();
 
 if (TYPO3_MODE === 'BE') {
     \TYPO3\CMS\Extbase\Utility\ExtensionUtility::registerModule(
-        'Undefined.translate_locallang',
+        'Undefined.TranslateLocallang',
         'tools',
         'm1',
         '',
