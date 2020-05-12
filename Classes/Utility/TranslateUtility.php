@@ -5,7 +5,7 @@ namespace Undefined\TranslateLocallang\Utility;
 /***************************************************************
  *  Copyright notice
  *
- *  (c) 2016-2019 Raphael Graf <r@undefined.ch>
+ *  (c) 2016-2020 Raphael Graf <r@undefined.ch>
  *
  *  All rights reserved
  *
@@ -32,7 +32,7 @@ use TYPO3\CMS\Backend\Utility\BackendUtility;
 
 class TranslateUtility
 {
-    const LANGUAGE_DIR = 'Resources/Private/Language/';
+    const LANGUAGE_DIR = 'Resources/Private/Language';
 
     /**
      * get list of extensions, loaded or not
@@ -88,16 +88,18 @@ class TranslateUtility
     public static function getFileList(string $extension, array $allowedFiles = []): array {
         $files = [];
         $extdir = Environment::getPublicPath() . '/typo3conf/ext/' . $extension . '/';
-        if ($handle = @opendir($extdir . static::LANGUAGE_DIR)) {
-            while (FALSE !== ($entry = readdir($handle))) {
-                $parts = explode('.', $entry);
-                if (count($parts) !== 2 || $parts[0] === '' || end($parts) !== 'xlf') {
+        $langdir = $extdir . static::LANGUAGE_DIR;
+
+        $allfiles = GeneralUtility::getAllFilesAndFoldersInPath([], $langdir . '/', 'xlf', false, 3);
+        foreach($allfiles as $file) {
+                $filename = str_replace($langdir . '/', '', $file);
+                $parts = explode('.', $filename);
+                if (count($parts) !== 2 || $parts[0] === '') {
                     continue;
                 }
-                if ($GLOBALS['BE_USER']->user['admin'] || empty($allowedFiles) || in_array($entry, $allowedFiles)) {
-                    $files[$entry] = $entry;
+                if ($GLOBALS['BE_USER']->user['admin'] || empty($allowedFiles) || in_array($filename, $allowedFiles)) {
+                    $files[$filename] = $filename;
                 }
-            }
         }
         return $files;
     }
@@ -117,14 +119,18 @@ class TranslateUtility
         $extsPath = Environment::getPublicPath() . '/typo3conf/ext';
         $l10nPath = Environment::getLabelsPath();
         if ($langKey === 'default') {
-            return $extsPath . '/' . $relPath . $file;
+            return $extsPath . '/' . $relPath . '/' . $file;
         }
         //get overlay path
-        $fileName = $langKey . '.' . $file;
+        $pinfo = pathinfo($file);
+        $fileName = $langKey . '.' . $pinfo['filename'] . '.' . $pinfo['extension'];
+        if ($pinfo['dirname'] !== '.') {
+                $fileName = $pinfo['dirname'] . '/' . $fileName;
+        }
         if ($useL10n) {
-            return $l10nPath . '/' . $langKey . '/' . $relPath . $fileName;
+            return $l10nPath . '/' . $langKey . '/' . $relPath . '/' . $fileName;
         } else {
-            return $extsPath . '/' . $relPath . $fileName;
+            return $extsPath . '/' . $relPath . '/' . $fileName;
         }
     }
 

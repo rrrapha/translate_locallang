@@ -5,7 +5,7 @@ namespace Undefined\TranslateLocallang\Controller;
 /***************************************************************
  *  Copyright notice
  *
- *  (c) 2016-2019 Raphael Graf <r@undefined.ch>
+ *  (c) 2016-2020 Raphael Graf <r@undefined.ch>
  *
  *  All rights reserved
  *
@@ -413,7 +413,7 @@ class ModuleController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionControlle
             if ($ok) {
                 /* copy the template file */
                 $src = realpath(__DIR__ . '/../../Resources/Private/Templates/Empty.xlf');
-                if (!copy($src, $path)) {
+                if (!@copy($src, $path)) {
                     $this->addFlashMessage('Could not create file', 'Error', AbstractMessage::ERROR);
                 }
             }
