@@ -10,8 +10,8 @@ clearCache = 0
 debug = 0
 # cat=basic//6; type=string; label=Filter for extension names (wildcard patterns, comma separated, e.g. acme_*)
 extFilter = *
-# cat=basic//7; type=string; label=Allowed extensions for non-admin users (comma separated, empty=all)
-allowedExts = 
+# cat=basic//7; type=string; label=Allowed extensions for non-admin users (wildcard patterns, comma separated, e.g. acme_*)
+allowedExts = *
 # cat=basic//8; type=string; label=Allowed filenames for non-admin users (comma separated, empty=all)
 allowedFiles = 
 # cat=basic//9; type=boolean; label=Allow non-admin users to modify default language

@@ -76,9 +76,9 @@ Configuration Options
  - :Property:
       allowedExts
    :Description:
-      Allowed extensions for non-admin users (comma separated, empty=all)
+      Allowed extensions for non-admin users (wildcard patterns, comma separated, e.g. acme_*)
    :Default:
-      [empty]
+      \*
 
  - :Property:
       allowedFiles

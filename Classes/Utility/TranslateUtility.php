@@ -65,10 +65,14 @@ class TranslateUtility
                     continue;
                 }
             }
-            if (!$GLOBALS['BE_USER']->user['admin']) {
-                if ((!empty($allowedExts) && !in_array($entry, $allowedExts))
-                    || (!empty($allowedFiles) && !static::fileExists($extdir . static::LANGUAGE_DIR, $allowedFiles))
-                ) {
+            if (!$GLOBALS['BE_USER']->user['admin'] && !empty($allowedExts)) {
+                $skip = 1;
+                foreach($allowedExts as $pattern) {
+                    if (fnmatch($pattern, $entry)) {
+                        $skip = 0;
+                    }
+                }
+                if ($skip || (!empty($allowedFiles) && !static::fileExists($extdir . static::LANGUAGE_DIR, $allowedFiles))) {
                     continue;
                 }
             }
