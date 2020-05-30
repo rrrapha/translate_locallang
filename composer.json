@@ -5,7 +5,6 @@
     "description": "Editor for locallang.xlf files",
     "license": "GPL-2.0-or-later",
     "replace": {
-        "translate_locallang": "self.version",
         "typo3-ter/translate-locallang": "self.version"
     },
     "require": {
