@@ -153,7 +153,7 @@ class TranslateUtility
      */
     private static function fileExists(string $dir, array $filenames): bool {
         foreach($filenames as $filename) {
-            if (@is_file($dir . $filename)) {
+            if (@is_file($dir . '/' . $filename)) {
                 return TRUE;
             }
         }
