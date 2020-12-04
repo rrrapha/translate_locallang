@@ -308,6 +308,7 @@ class XliffService
             if ($langKey === 'default' && isset($transunit->source)) {
                 $value = (string)$transunit->source;
                 $str = $transunit->source->asXML();
+            // @extensionScannerIgnoreLine
             } else if (isset($transunit->target)) {
                 $value = (string)$transunit->target;
                 $str = $transunit->target->asXML();
