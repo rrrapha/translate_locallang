@@ -44,7 +44,8 @@ class ModuleController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionControlle
     /**
      * @return void
      */
-    public function initializeAction() {
+    public function initializeAction(): void
+    {
         $extConf = GeneralUtility::makeInstance(ExtensionConfiguration::class)->get('translate_locallang');
         $this->conf['defaultLangKey'] = (trim($extConf['defaultLangKey'])) ? trim($extConf['defaultLangKey']) : 'en';
         $langKeys = GeneralUtility::trimExplode(',', $extConf['langKeys'], TRUE);
@@ -73,7 +74,8 @@ class ModuleController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionControlle
      * @param array $overrideLabels
      * @return void
      */
-    public function listAction(string $extension = '', string $file = '', array $langKeys = ['default'], bool $sort = FALSE, array $overrideLabels = []) {
+    public function listAction(string $extension = '', string $file = '', array $langKeys = ['default'], bool $sort = FALSE, array $overrideLabels = []): void
+    {
         $moduledata = TranslateUtility::getModuleData();
         if (!empty($moduledata) && $extension !== '0' ) {
             if (!$extension && $moduledata['extension'] && isset($this->conf['extensions'][$moduledata['extension']])) {
@@ -178,7 +180,8 @@ class ModuleController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionControlle
      * @param array $langKeys
      * @return void
      */
-    public function saveAction(array $keys, array $labels, string $extension, string $file, array $langKeys) {
+    public function saveAction(array $keys, array $labels, string $extension, string $file, array $langKeys): void
+    {
         if (!isset($this->conf['extensions'][$extension])) {
             throw new \UnexpectedValueException('Extension not allowed: ' . $extension);
         }
@@ -256,7 +259,8 @@ class ModuleController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionControlle
      * @param array $langKeys
      * @return string
      */
-    public function exportCsvAction(string $extension, string $file, array $langKeys): string {
+    public function exportCsvAction(string $extension, string $file, array $langKeys): string
+    {
         if (!isset($this->conf['extensions'][$extension])) {
             throw new \UnexpectedValueException('Extension not allowed: ' . $extension);
         }
@@ -308,7 +312,8 @@ class ModuleController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionControlle
      *
      * @return void
      */
-    public function importCsvAction(string $extension, string $file, array $langKeys) {
+    public function importCsvAction(string $extension, string $file, array $langKeys): void
+    {
         $uploadedFile = $this->request->getArgument('importFile');
 
         if (is_uploaded_file($uploadedFile['tmp_name'])) {
@@ -355,7 +360,8 @@ class ModuleController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionControlle
      * @param string $word
      * @return void
      */
-    public function searchAction(string $word = '') {
+    public function searchAction(string $word = ''): void
+    {
         if ($word) {
             $results = [];
             foreach($this->conf['extensions'] as $extension) {
@@ -391,7 +397,8 @@ class ModuleController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionControlle
      *
      * @return void
      */
-    public function createFileAction(string $extension, string $newFile) {
+    public function createFileAction(string $extension, string $newFile): void
+    {
         if (!isset($this->conf['extensions'][$extension])) {
             throw new \UnexpectedValueException('Extension not allowed: ' . $extension);
         }
@@ -426,7 +433,8 @@ class ModuleController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionControlle
      * @param int $error (0 = message, 1 = User Error, 2 = System Error, 3 = security notice)
      * @return void
      */
-    protected function log(string $msg, int $error = 0) {
+    protected function log(string $msg, int $error = 0): void
+    {
         if ($this->conf['debug'] || $error) {
             $this->addFlashMessage($msg, ($error) ? 'Error' : 'Debug', ($error) ? AbstractMessage::ERROR : AbstractMessage::NOTICE);
         }

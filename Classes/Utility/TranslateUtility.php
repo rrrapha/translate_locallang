@@ -42,7 +42,8 @@ class TranslateUtility
      * @param array $patterns
      * @return array
      */
-    public static function getExtList(array $allowedExts, array $allowedFiles = [], array $patterns): array {
+    public static function getExtList(array $allowedExts, array $allowedFiles = [], array $patterns): array
+    {
         //ListUtility->getAvailableExtensions() is too slow..
         $extensions = [];
         $extsPath = Environment::getPublicPath() . '/typo3conf/ext';
@@ -89,7 +90,8 @@ class TranslateUtility
      * @param array $allowedFiles
      * @return array
      */
-    public static function getFileList(string $extension, array $allowedFiles = []): array {
+    public static function getFileList(string $extension, array $allowedFiles = []): array
+    {
         $files = [];
         $extdir = Environment::getPublicPath() . '/typo3conf/ext/' . $extension . '/';
         $langdir = $extdir . static::LANGUAGE_DIR;
@@ -117,7 +119,8 @@ class TranslateUtility
      * @param bool $useL10n
      * @return string
      */
-    public static function getXlfPath(string $extension, string $file, string $langKey = 'default', bool $useL10n = FALSE): string {
+    public static function getXlfPath(string $extension, string $file, string $langKey = 'default', bool $useL10n = FALSE): string
+    {
         //get default path
         $relPath = $extension . '/' . static::LANGUAGE_DIR;
         $extsPath = Environment::getPublicPath() . '/typo3conf/ext';
@@ -142,7 +145,8 @@ class TranslateUtility
      * @param string extdir
      * @return bool
      */
-    private static function isExtension(string $extdir): bool {
+    private static function isExtension(string $extdir): bool
+    {
         return (@is_file($extdir . 'ext_emconf.php') && @is_dir($extdir . static::LANGUAGE_DIR));
     }
 
@@ -151,7 +155,8 @@ class TranslateUtility
      * @param array filenames
      * @return bool
      */
-    private static function fileExists(string $dir, array $filenames): bool {
+    private static function fileExists(string $dir, array $filenames): bool
+    {
         foreach($filenames as $filename) {
             if (@is_file($dir . '/' . $filename)) {
                 return TRUE;
@@ -165,7 +170,8 @@ class TranslateUtility
      *
      * @return array
      */
-    public static function getModuleData(): array {
+    public static function getModuleData(): array
+    {
         $moduledata = BackendUtility::getModuleData(['data' => ''], [], 'tools_translate_locallang');
         if (!empty($moduledata['data'])) {
             $data = unserialize($moduledata['data']);
@@ -180,7 +186,8 @@ class TranslateUtility
      * @param array $data
      * @return void
      */
-    public static function setModuleData($data) {
+    public static function setModuleData($data): void
+    {
         BackendUtility::getModuleData(['data' => ''], ['data' => serialize($data)], 'tools_translate_locallang');
     }
 }

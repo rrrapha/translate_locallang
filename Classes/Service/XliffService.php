@@ -83,7 +83,8 @@ class XliffService
      * @param bool $lockSourceLang
      * @return void
      */
-    public function init(string $extension, string $file, string $sourcelang = 'en', bool $useL10n = TRUE, bool $lockSourceLang = FALSE) {
+    public function init(string $extension, string $file, string $sourcelang = 'en', bool $useL10n = TRUE, bool $lockSourceLang = FALSE): void
+    {
         $this->extension = $extension;
         $this->file = $file;
         $this->sourcelang = $sourcelang;
@@ -97,7 +98,8 @@ class XliffService
      * @param string $langKey
      * @return bool
      */
-    public function loadLang(string $langKey = 'default'): bool {
+    public function loadLang(string $langKey = 'default'): bool
+    {
         //Note: This does not use TYPO3\CMS\Core\Localization\Parser\XliffParser because of CDATA support
         //load default data first
         if (!$this->isLanguageLoaded('default')) {
@@ -139,7 +141,8 @@ class XliffService
      * @param string $langKey
      * @return bool
      */
-    public function saveLang(string $langKey): bool {
+    public function saveLang(string $langKey): bool
+    {
         $xliff = $this->renderLang($langKey);
         if (!$xliff) {
             return FALSE;
@@ -158,7 +161,8 @@ class XliffService
     /**
      * @return array
      */
-    public function &getData(): array {
+    public function &getData(): array
+    {
         //return a reference to the array
         return $this->data;
     }
@@ -168,7 +172,8 @@ class XliffService
      * @param array $langKeys
      * @return void
      */
-    public function mergeData(array $data, array $langKeys) {
+    public function mergeData(array $data, array $langKeys): void
+    {
         if (!$this->lockSourceLang) {
             //overwrite all data
             $this->data = $data;
@@ -197,7 +202,8 @@ class XliffService
      * @param string $langKey
      * @return void
      */
-    public function addLang(string $langKey) {
+    public function addLang(string $langKey): void
+    {
         foreach($this->data as $key => $dummy) {
             $this->data[$key][$langKey] = '';
         }
@@ -209,7 +215,8 @@ class XliffService
      * @param string $newKey
      * @return void
      */
-    public function changeKey(string $oldKey, string $newKey) {
+    public function changeKey(string $oldKey, string $newKey): void
+    {
         //replace the array key
         if(!isset($this->data[$oldKey])) {
             return;
@@ -230,7 +237,8 @@ class XliffService
     /**
      * @return void
      */
-    public function sortByKey() {
+    public function sortByKey(): void
+    {
         if (!$this->lockSourceLang){
             ksort($this->data);
         }
@@ -240,14 +248,16 @@ class XliffService
      * @param string $langKey
      * @return string
      */
-    public function getFilename(string $langKey): string {
+    public function getFilename(string $langKey): string
+    {
         return TranslateUtility::getXlfPath($this->extension, $this->file, $langKey, $this->useL10n);
     }
 
     /**
      * @return int
      */
-    public function getLabelCount(): int {
+    public function getLabelCount(): int
+    {
         return $this->labelcount;
     }
 
@@ -255,7 +265,8 @@ class XliffService
      * @param string $langKey
      * @return bool
      */
-    public function isLanguageLoaded(string $langKey): bool {
+    public function isLanguageLoaded(string $langKey): bool
+    {
         return (isset($this->languageLoaded[$langKey]) && $this->labelcount > 0); //XXX
     }
 
@@ -263,7 +274,8 @@ class XliffService
      * @param string $langKey
      * @return bool
      */
-    public function fileExists(string $langKey): bool {
+    public function fileExists(string $langKey): bool
+    {
         return is_file($this->getFilename($langKey));
     }
 
@@ -275,7 +287,8 @@ class XliffService
      * @param bool $addkeys
      * @return bool
      */
-    protected function loadFile(string $fileref, string $langKey = 'default', bool $addkeys = TRUE): bool {
+    protected function loadFile(string $fileref, string $langKey = 'default', bool $addkeys = TRUE): bool
+    {
         if (!is_file($fileref)) {
             return FALSE;
         }
@@ -328,7 +341,8 @@ class XliffService
      * @param string $langKey
      * @return string
      */
-    protected function renderLang(string $langKey): string {
+    protected function renderLang(string $langKey): string
+    {
         //matches the format used by TYPO3\CMS\Core\Localization\Parser\XliffParser
         $labels = [];
         foreach($this->data as $key => $dummy) {
@@ -359,7 +373,8 @@ class XliffService
      * @param string $str
      * @return string
      */
-    protected function encodeValue(string $str): string {
+    protected function encodeValue(string $str): string
+    {
         if (strpos(ltrim($str), static::CDATA_START) === 0) {
             return ltrim($str);
         } else {
