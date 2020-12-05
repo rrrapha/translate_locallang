@@ -11,7 +11,7 @@
 							<div class="form-group form-group-sm">
 								<f:be.menus.actionMenu additionalAttributes="{class:'form-control'}">
 									<f:be.menus.actionMenuItem label="{f:translate(key:'title')->f:format.htmlspecialchars()}" controller="Module" action="list" />
-									<f:be.menus.actionMenuItem label="{f:translate(key:'search')->f:format.htmlspecialchars()}" controller="Module" action="search" />
+									<f:be.menus.actionMenuItem label="{f:translate(key:'search')->f:format.htmlspecialchars()}" controller="Module" action="search" additionalAttributes="{f:if(condition:'{search}',then:'{selected:1}')}" />
 								</f:be.menus.actionMenu>
 							</div>
 						</div>

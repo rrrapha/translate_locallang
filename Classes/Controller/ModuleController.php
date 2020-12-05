@@ -388,6 +388,7 @@ class ModuleController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionControlle
             'word' => $word,
             'results' => $results,
             'conf' => $this->conf,
+            'search' => TRUE,
         ]);
     }
 
