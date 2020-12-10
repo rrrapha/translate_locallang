@@ -1,25 +1,19 @@
-.. ==================================================
-.. FOR YOUR INFORMATION
-.. --------------------------------------------------
-.. -*- coding: utf-8 -*- with BOM.
-
 .. include:: ../Includes.txt
-
 
 .. _configuration:
 
-Configuration Reference
-=======================
+=============
+Configuration
+=============
 
 .. _configuration-extconf:
 
 Extension Configuration
------------------------
+=======================
 
 All configuration is done in the extension manager (extConf). 
 
-Configuration Options
-^^^^^^^^^^^^^^^^^^^^^
+Configuration Options:
 
 .. t3-field-list-table::
  :header-rows: 1

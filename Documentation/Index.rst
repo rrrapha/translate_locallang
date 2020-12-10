@@ -1,62 +1,60 @@
-﻿.. ==================================================
-.. FOR YOUR INFORMATION
-.. --------------------------------------------------
-.. -*- coding: utf-8 -*- with BOM.
+﻿.. include:: Includes.txt
 
-.. include:: Includes.txt
-.. include:: Images.txt
+.. Every manual should have a start label for cross-referencing to
+.. start page. Do not remove this!
 
 .. _start:
-
-|translate_locallang_icon|
 
 =============================================================
 translate_locallang
 =============================================================
 
-.. only:: html
+:Version:
+   |release|
 
-	:Classification:
-		translate_locallang
+:Language:
+   en
 
-	:Version:
-		|release|
+:Authors:
+   Raphael Graf
 
-	:Language:
-		en
+:Email:
+   r@undefined.ch
 
-	:Description:
-		XLIFF translation tool
+:License:
+   This extension documentation is published under the
+   `CC BY-NC-SA 4.0 <https://creativecommons.org/licenses/by-nc-sa/4.0/>`__ (Creative Commons)
+   license
 
-	:Keywords:
-		XLIFF,XLF,translation,localization,l10n
+The Translate backend module is an editor for locallang.xlf files (Resources/Private/Language/locallang*.xlf).
 
-	:Copyright:
-		2016-2017
+**TYPO3**
 
-	:Author:
-		Raphael Graf
+The content of this document is related to TYPO3 CMS,
+a GNU/GPL CMS/Framework available from `typo3.org <https://typo3.org/>`_ .
 
-	:Email:
-		r@undefined.ch
+**Community Documentation**
 
-	:Thanks to:
-		David Hoeckele <david@hoeckele.net>
+This documentation is community documentation for the TYPO3 extension translate_locallang
 
-	:Rendered:
-		|today|
+It is maintained as part of this third party extension.
 
-	The content of this document is related to TYPO3,
-	a GNU/GPL CMS/Framework available from `www.typo3.org <http://www.typo3.org/>`_.
+If you find an error or something is missing, please:
+`Report a Problem <https://github.com/rrrapha/translate_locallang/issues/new>`__
 
-	**Table of Contents**
+**Extension Manual**
+
+This documentation is for the TYPO3 extension <extkey>.
+
+**For Contributors**
+
+You are welcome to help improve this guide.
+Just click on "Edit me on GitHub" on the top right to submit your change request.
 
 .. toctree::
-	:maxdepth: 5
-	:titlesonly:
-	:glob:
+   :maxdepth: 3
 
-	Introduction/Index
-	User/Index
-	Administrator/Index
-	Configuration/Index
+   Introduction/Index
+   User/Index
+   Installation/Index
+   Configuration/Index
