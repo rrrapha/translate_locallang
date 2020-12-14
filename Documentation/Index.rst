@@ -35,7 +35,7 @@ a GNU/GPL CMS/Framework available from `typo3.org <https://typo3.org/>`_ .
 
 **Community Documentation**
 
-This documentation is community documentation for the TYPO3 extension translate_locallang
+This documentation is community documentation for the TYPO3 extension translate_locallang.
 
 It is maintained as part of this third party extension.
 
@@ -44,12 +44,12 @@ If you find an error or something is missing, please:
 
 **Extension Manual**
 
-This documentation is for the TYPO3 extension <extkey>.
+This documentation is for the TYPO3 extension translate_locallang.
 
 **For Contributors**
 
 You are welcome to help improve this guide.
-Just click on "Edit me on GitHub" on the top right to submit your change request.
+Just click on "Edit on GitHub" on the top right to submit your change request.
 
 .. toctree::
    :maxdepth: 3
