@@ -101,3 +101,10 @@ Configuration Options:
       Provide an information for translators
    :Default:
       [empty]
+
+ - :Property:
+      CSVSeparator
+   :Description:
+      CSV value separator
+   :Default:
+      Comma
