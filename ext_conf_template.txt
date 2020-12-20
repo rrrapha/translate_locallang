@@ -20,5 +20,5 @@ modifyDefaultLang = 0
 modifyKeys = 0
 # cat=basic//11; type=string; label=Provide an information for translators
 translatorInfo =
-# cat=basic//12; type=options[Comma=comma,Semicolon=semicolon]; label=CSV separator
+# cat=basic//12; type=options[Comma=comma,Semicolon (Not recommended)=semicolon]; label=CSV separator
 CSVSeparator = comma
