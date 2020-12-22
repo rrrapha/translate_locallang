@@ -36,8 +36,7 @@ window.addEventListener('DOMContentLoaded', function() {
 	function inithandle(obj) {
 		obj.setAttribute('draggable', 'true');
 		obj.addEventListener('dragstart', function (e) {
-			e.dataTransfer.effectAllowed = 'copy';		// !
-			e.dataTransfer.setData('Text', this.id);	// !
+			e.dataTransfer.effectAllowed = 'move';
 			el_act = this.parentNode;
 			el_act.style.opacity = '0.5';
 			dragging = true;
@@ -47,7 +46,7 @@ window.addEventListener('DOMContentLoaded', function() {
 			e.preventDefault();
 			if (!dragging)
 				return false;
-			e.dataTransfer.dropEffect = 'copy';			// !
+			e.dataTransfer.dropEffect = 'move';
 
 			var el_this = this;
 			var el_next = this.nextElementSibling;
