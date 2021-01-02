@@ -8,7 +8,7 @@ window.addEventListener('DOMContentLoaded', function() {
 	if (!translate_form)
 		return;
 
-	var rows = document.getElementsByClassName('translate-row');
+	var rows = translate_form.getElementsByClassName('translate-row');
 	for (i = 0, l = rows.length; i < l; i++) {
 		initrow(rows[i]);
 	}
@@ -42,33 +42,31 @@ window.addEventListener('DOMContentLoaded', function() {
 			dragging = true;
 		});
 
+		obj.addEventListener('dragend', function (e) {
+			dragging = false;
+			if (el_act)
+				el_act.style.opacity = '';
+			if (el_last)
+				el_last.className = 'translate-row';
+		});
+
 		obj.parentNode.addEventListener('dragover', function (e) {
 			e.preventDefault();
 			if (!dragging)
 				return false;
 			e.dataTransfer.dropEffect = 'move';
 
-			var el_this = this;
 			var el_next = this.nextElementSibling;
 			var rect = this.getBoundingClientRect();
-			var vcenter = (rect.top + rect.bottom) >> 1;
+			var vcenter = (rect.top + rect.bottom) / 2;
 
 			if (el_last)
 				el_last.className = 'translate-row';
-			if (el_next) {
-				if (e.clientY < vcenter) {
-					el_last = el_this;
-					el_this.className = 'translate-row over';
-					el_next.className = 'translate-row';
-				} else {
-					el_last = el_next;
-					el_next.className = 'translate-row over';
-					el_this.className = 'translate-row';
-				}
-			} else {
-				el_last = el_this;
-			}
-			return false;
+			if (el_next)
+				el_last = (e.clientY < vcenter) ? this : el_next;
+			else
+				el_last = this;
+			el_last.className = 'translate-row over';
 		});
 
 		obj.parentNode.addEventListener('drop', function (e) {
@@ -83,14 +81,6 @@ window.addEventListener('DOMContentLoaded', function() {
 			else
 				this.parentNode.insertBefore(el_act, this.nextSibling); //insert after
 			formChanged();
-		});
-
-		obj.addEventListener('dragend', function (e) {
-			dragging = false;
-			if (el_act)
-				el_act.style.opacity = '';
-			if (el_last)
-				el_last.className = 'translate-row';
 		});
 	}
 
@@ -114,7 +104,6 @@ window.addEventListener('DOMContentLoaded', function() {
 				oname = textareas[i].getAttribute('name');
 				nname = oname.replace('][' + key + '][', '][' + newkey+ '][');
 				textareas[i].setAttribute('name', nname);
-				textareas[i].innerText = '';
 				textareas[i].value = '';
 			}
 			initrow(newnode);
