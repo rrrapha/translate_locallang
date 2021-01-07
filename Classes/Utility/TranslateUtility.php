@@ -5,7 +5,7 @@ namespace Undefined\TranslateLocallang\Utility;
 /***************************************************************
  *  Copyright notice
  *
- *  (c) 2016-2020 Raphael Graf <r@undefined.ch>
+ *  (c) 2016-2021 Raphael Graf <r@undefined.ch>
  *
  *  All rights reserved
  *
@@ -66,16 +66,19 @@ class TranslateUtility
                     continue;
                 }
             }
-            if (!$GLOBALS['BE_USER']->user['admin'] && !empty($allowedExts)) {
+            if (!empty($allowedExts)) {
                 $skip = 1;
                 foreach($allowedExts as $pattern) {
                     if (fnmatch($pattern, $entry)) {
                         $skip = 0;
                     }
                 }
-                if ($skip || (!empty($allowedFiles) && !static::fileExists($extdir . static::LANGUAGE_DIR, $allowedFiles))) {
+                if ($skip) {
                     continue;
                 }
+            }
+            if (!empty($allowedFiles) && !static::fileExists($extdir . static::LANGUAGE_DIR, $allowedFiles)) {
+                continue;
             }
             $extensions[$entry] = $entry;
         }
@@ -103,7 +106,7 @@ class TranslateUtility
                 if (count($parts) !== 2 || $parts[0] === '') {
                     continue;
                 }
-                if ($GLOBALS['BE_USER']->user['admin'] || empty($allowedFiles) || in_array($filename, $allowedFiles)) {
+                if (empty($allowedFiles) || in_array($filename, $allowedFiles)) {
                     $files[$filename] = $filename;
                 }
         }

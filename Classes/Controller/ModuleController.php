@@ -5,7 +5,7 @@ namespace Undefined\TranslateLocallang\Controller;
 /***************************************************************
  *  Copyright notice
  *
- *  (c) 2016-2020 Raphael Graf <r@undefined.ch>
+ *  (c) 2016-2021 Raphael Graf <r@undefined.ch>
  *
  *  All rights reserved
  *
@@ -50,11 +50,11 @@ class ModuleController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionControlle
         $this->conf['defaultLangKey'] = (trim($extConf['defaultLangKey'])) ? trim($extConf['defaultLangKey']) : 'en';
         $langKeys = GeneralUtility::trimExplode(',', $extConf['langKeys'], TRUE);
         $this->conf['langKeys'] = array_merge(['default' => $this->conf['defaultLangKey'] . ' (default)'], array_combine($langKeys, $langKeys));
-        $this->conf['files'] = GeneralUtility::trimExplode(',', $extConf['allowedFiles'], TRUE);
-        $allowedExts = GeneralUtility::trimExplode(',', $extConf['allowedExts'], TRUE);
+        $this->conf['allowedFiles'] = $GLOBALS['BE_USER']->isAdmin() ? [] : GeneralUtility::trimExplode(',', $extConf['allowedFiles'], TRUE);
+        $allowedExts = $GLOBALS['BE_USER']->isAdmin() ? [] : GeneralUtility::trimExplode(',', $extConf['allowedExts'], TRUE);
         $this->conf['extFilter'] = trim((string)$extConf['extFilter']);
         $patterns = GeneralUtility::trimExplode(',', $this->conf['extFilter'], TRUE);
-        $this->conf['extensions'] = TranslateUtility::getExtList($allowedExts, $this->conf['files'], $patterns);
+        $this->conf['extensions'] = TranslateUtility::getExtList($allowedExts, $this->conf['allowedFiles'], $patterns);
         $this->conf['modifyKeys'] = (bool)$extConf['modifyKeys'] || $GLOBALS['BE_USER']->isAdmin();
         $this->conf['useL10n'] = (bool)$extConf['useL10n'];
         $this->conf['clearCache'] = (bool)$extConf['clearCache'];
@@ -114,7 +114,7 @@ class ModuleController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionControlle
                     $l10ndir . ' directory exists. (You are currently editing the files in typo3conf/ext).', 'Notice', AbstractMessage::NOTICE
                 );
             }
-            $files = TranslateUtility::getFileList($extension, $this->conf['files']);
+            $files = TranslateUtility::getFileList($extension, $this->conf['allowedFiles']);
 
             if ($file && !isset($files[$file])) {
                 $file = '';
@@ -366,7 +366,7 @@ class ModuleController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionControlle
         if ($word) {
             $results = [];
             foreach($this->conf['extensions'] as $extension) {
-                $files = TranslateUtility::getFileList($extension, $this->conf['files']);
+                $files = TranslateUtility::getFileList($extension, $this->conf['allowedFiles']);
                 foreach($files as $file) {
                     $langKeys = [];
                     foreach($this->conf['langKeysAllowed'] as $langKey => $dummy) {
