@@ -1,4 +1,5 @@
 <?php
+
 $EM_CONF[$_EXTKEY] = [
     'title' => 'Translate',
     'description' => 'Editor for locallang.xlf files',

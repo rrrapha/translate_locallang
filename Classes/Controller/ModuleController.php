@@ -1,6 +1,6 @@
 <?php
+
 declare(strict_types=1);
-namespace Undefined\TranslateLocallang\Controller;
 
 /***************************************************************
  *  Copyright notice
@@ -25,6 +25,8 @@ namespace Undefined\TranslateLocallang\Controller;
  *
  *  This copyright notice MUST APPEAR in all copies of the script!
  ***************************************************************/
+
+namespace Undefined\TranslateLocallang\Controller;
 
 use TYPO3\CMS\Core\Cache\CacheManager;
 use TYPO3\CMS\Core\Configuration\ExtensionConfiguration;

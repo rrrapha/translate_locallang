@@ -1,7 +1,6 @@
 <?php
+
 defined('TYPO3_MODE') or die();
-
-
 
 (function () {
     $typo3version = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance(\TYPO3\CMS\Core\Information\Typo3Version::class);
