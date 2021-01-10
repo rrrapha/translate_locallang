@@ -1,11 +1,11 @@
 <?php
+
 declare(strict_types=1);
-namespace Undefined\TranslateLocallang\Service;
 
 /***************************************************************
  *  Copyright notice
  *
- *  (c) 2016-2020 Raphael Graf <r@undefined.ch>
+ *  (c) 2016-2021 Raphael Graf <r@undefined.ch>
  *
  *  All rights reserved
  *
@@ -25,6 +25,8 @@ namespace Undefined\TranslateLocallang\Service;
  *
  *  This copyright notice MUST APPEAR in all copies of the script!
  ***************************************************************/
+
+namespace Undefined\TranslateLocallang\Service;
 
 use TYPO3\CMS\Core\Core\Environment;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
@@ -365,6 +367,7 @@ class XliffService
             'targetlang' => ($langKey === 'default') ? NULL: $langKey,
             'productname' => $this->extension,
             'date' => date('Y-m-d\TH:i:s\Z'), //date('c')
+            'original' => 'EXT:' . $this->extension . '/' . TranslateUtility::getXlfRelPath($this->file, $langKey),
         ]);
         return $xliffview->render();
     }

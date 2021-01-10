@@ -1,6 +1,6 @@
 <?php
+
 declare(strict_types=1);
-namespace Undefined\TranslateLocallang\Utility;
 
 /***************************************************************
  *  Copyright notice
@@ -25,6 +25,8 @@ namespace Undefined\TranslateLocallang\Utility;
  *
  *  This copyright notice MUST APPEAR in all copies of the script!
  ***************************************************************/
+
+namespace Undefined\TranslateLocallang\Utility;
 
 use TYPO3\CMS\Core\Core\Environment;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
@@ -124,24 +126,33 @@ class TranslateUtility
      */
     public static function getXlfPath(string $extension, string $file, string $langKey = 'default', bool $useL10n = FALSE): string
     {
-        //get default path
-        $relPath = $extension . '/' . static::LANGUAGE_DIR;
-        $extsPath = Environment::getPublicPath() . '/typo3conf/ext';
-        $l10nPath = Environment::getLabelsPath();
-        if ($langKey === 'default') {
-            return $extsPath . '/' . $relPath . '/' . $file;
+        $relPath = $extension . '/' . static::getXlfRelPath($file, $langKey);
+        if ($useL10n && $langKey !== 'default') {
+            $basePath = Environment::getLabelsPath() . '/' . $langKey;
+        } else {
+            $basePath = Environment::getPublicPath() . '/typo3conf/ext';
         }
-        //get overlay path
+        return $basePath . '/' . $relPath;
+    }
+
+    /**
+     * get relative path to XLF
+     *
+     * @param string $file
+     * @param string $langKey
+     * @return string
+     */
+    public static function getXlfRelPath(string $file, string $langKey = 'default'): string
+    {
+        if ($langKey === 'default') {
+            return static::LANGUAGE_DIR . '/' . $file;
+        }
         $pinfo = pathinfo($file);
         $fileName = $langKey . '.' . $pinfo['filename'] . '.' . $pinfo['extension'];
         if ($pinfo['dirname'] !== '.') {
                 $fileName = $pinfo['dirname'] . '/' . $fileName;
         }
-        if ($useL10n) {
-            return $l10nPath . '/' . $langKey . '/' . $relPath . '/' . $fileName;
-        } else {
-            return $extsPath . '/' . $relPath . '/' . $fileName;
-        }
+        return static::LANGUAGE_DIR . '/' . $fileName;
     }
 
     /**
