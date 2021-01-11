@@ -1,89 +1,89 @@
 <?xml version="1.0" encoding="utf-8" standalone="yes" ?>
 <xliff version="1.0">
-	<file source-language="en" target-language="de" datatype="plaintext" original="messages" date="2019-05-31T13:27:25Z" product-name="translate_locallang">
+	<file source-language="en" target-language="de" datatype="plaintext" original="EXT:translate_locallang/Resources/Private/Language/locallang.xlf" date="2021-01-11T17:43:59Z" product-name="translate_locallang">
 		<header/>
 		<body>
-			<trans-unit id="title">
+			<trans-unit id="title" resname="title">
 				<source>Translate</source>
 				<target>Übersetzen</target>
 			</trans-unit>
-			<trans-unit id="choose_extension">
+			<trans-unit id="choose_extension" resname="choose_extension">
 				<source>Select extension</source>
 				<target>Extension auswählen</target>
 			</trans-unit>
-			<trans-unit id="choose_file">
+			<trans-unit id="choose_file" resname="choose_file">
 				<source>Select file</source>
 				<target>Datei auswählen</target>
 			</trans-unit>
-			<trans-unit id="choose_language">
+			<trans-unit id="choose_language" resname="choose_language">
 				<source>Select language</source>
 				<target>Sprache auswählen</target>
 			</trans-unit>
-			<trans-unit id="save">
+			<trans-unit id="save" resname="save">
 				<source>Save</source>
 				<target>Speichern</target>
 			</trans-unit>
-			<trans-unit id="export">
+			<trans-unit id="export" resname="export">
 				<source>Export CSV</source>
 				<target>CSV exportieren</target>
 			</trans-unit>
-			<trans-unit id="import">
+			<trans-unit id="import" resname="import">
 				<source>Import CSV</source>
 				<target>CSV importieren</target>
 			</trans-unit>
-			<trans-unit id="sort_by_key">
+			<trans-unit id="sort_by_key" resname="sort_by_key">
 				<source>Sort by key</source>
 				<target>Nach Schlüssel sortieren</target>
 			</trans-unit>
-			<trans-unit id="search">
+			<trans-unit id="search" resname="search">
 				<source>Search</source>
 				<target>Suche</target>
 			</trans-unit>
-			<trans-unit id="search_results">
+			<trans-unit id="search_results" resname="search_results">
 				<source>Results</source>
 				<target>Ergebnisse</target>
 			</trans-unit>
-			<trans-unit id="search_results_none">
+			<trans-unit id="search_results_none" resname="search_results_none">
 				<source>Nothing found.</source>
 				<target>Keine Ergebnisse.</target>
 			</trans-unit>
-			<trans-unit id="search_all">
+			<trans-unit id="search_all" resname="search_all">
 				<source>Search in all extensions</source>
 				<target>In allen Extensions suchen</target>
 			</trans-unit>
-			<trans-unit id="search_text">
+			<trans-unit id="search_text" resname="search_text">
 				<source>Text</source>
 				<target>Text</target>
 			</trans-unit>
-			<trans-unit id="create_file">
+			<trans-unit id="create_file" resname="create_file">
 				<source>Create file</source>
 				<target>Datei erstellen</target>
 			</trans-unit>
-			<trans-unit id="load_labels_from_csv_file">
+			<trans-unit id="load_labels_from_csv_file" resname="load_labels_from_csv_file">
 				<source>Load labels from CSV file</source>
 				<target>Übersetzungen aus CSV-Datei laden</target>
 			</trans-unit>
-			<trans-unit id="add">
+			<trans-unit id="add" resname="add">
 				<source>Add</source>
 				<target>Neue Zeile</target>
 			</trans-unit>
-			<trans-unit id="remove">
+			<trans-unit id="remove" resname="remove">
 				<source>Remove</source>
 				<target>Zeile entfernen</target>
 			</trans-unit>
-			<trans-unit id="move">
+			<trans-unit id="move" resname="move">
 				<source>Move</source>
 				<target>Zeile verschieben</target>
 			</trans-unit>
-			<trans-unit id="default">
+			<trans-unit id="default" resname="default">
 				<source>default</source>
 				<target>Standard</target>
 			</trans-unit>
-			<trans-unit id="key">
+			<trans-unit id="key" resname="key">
 				<source>key</source>
 				<target>Schlüssel</target>
 			</trans-unit>
-			<trans-unit id="dummy_filename">
+			<trans-unit id="dummy_filename" resname="dummy_filename">
 				<source>filename.xlf</source>
 				<target>datei.xlf</target>
 			</trans-unit>
