@@ -367,7 +367,7 @@ class XliffService
             'targetlang' => ($langKey === 'default') ? NULL: $langKey,
             'productname' => $this->extension,
             'date' => date('Y-m-d\TH:i:s\Z'), //date('c')
-            'original' => 'EXT:' . $this->extension . '/' . TranslateUtility::getXlfRelPath($this->file, $langKey),
+            'original' => 'EXT:' . $this->extension . '/' . TranslateUtility::getXlfRelPath($this->file, 'default'),
         ]);
         return $xliffview->render();
     }
