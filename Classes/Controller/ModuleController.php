@@ -62,7 +62,6 @@ class ModuleController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionControlle
         $this->conf['clearCache'] = (bool)$extConf['clearCache'];
         $this->conf['langKeysAllowed'] = $this->conf['langKeys'];
         $this->conf['translatorInfo'] = (string)$extConf['translatorInfo'];
-        $this->conf['CSVSeparator'] = ($extConf['CSVSeparator'] === 'semicolon') ? ';' : ',';
         if (!((bool)$extConf['modifyDefaultLang'] || $GLOBALS['BE_USER']->isAdmin() || $this->conf['modifyKeys'])) {
             unset($this->conf['langKeysAllowed']['default']);
         }
@@ -288,7 +287,7 @@ class ModuleController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionControlle
         header('Pragma: no-cache');
         $output = fopen('php://output', 'w');
         print(pack('CCC', 239, 187, 191)); //BOM
-        fputcsv($output, $hrow, $this->conf['CSVSeparator']);
+        fputcsv($output, $hrow, ',');
         foreach($data as $key => $labels) {
             $row = [$key];
             foreach($labels as $langKey => $dummy) {
@@ -298,7 +297,7 @@ class ModuleController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionControlle
                     $row[] = '';
                 }
             }
-            fputcsv($output, $row, $this->conf['CSVSeparator']);
+            fputcsv($output, $row, ',');
         }
         fclose($output);
         return '';
@@ -326,7 +325,7 @@ class ModuleController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionControlle
                 rewind($fp);
             }
             // check header row
-            $hrow = fgetcsv ($fp, 0, $this->conf['CSVSeparator']);
+            $hrow = fgetcsv($fp, 0, ',');
             if (!$hrow || $hrow[0] !== 'key' || count($hrow) < 2) {
                 $this->addFlashMessage('Invalid file format', 'Error', AbstractMessage::ERROR);
                 $this->forward('list', NULL, NULL, ['extension' => $extension, 'file' => $file, 'langKeys' => $langKeys]);
@@ -339,7 +338,7 @@ class ModuleController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionControlle
             }
             $langKeys = array_intersect_key($langKeys, $this->conf['langKeysAllowed']);
             $labels = [];
-            while ($row = fgetcsv ($fp, 0, $this->conf['CSVSeparator'])) {
+            while ($row = fgetcsv($fp, 0, ',')) {
                 $key = $row[0];
                 $i = 1;
                 foreach($langKeys as $langKey) {
