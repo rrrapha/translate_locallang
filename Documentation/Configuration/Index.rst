@@ -54,13 +54,6 @@ Configuration Options:
       0
 
  - :Property:
-      debug
-   :Description:
-      Show debug output
-   :Default:
-      0
-
- - :Property:
       extFilter
    :Description:
       Filter for extension names (wildcard patterns, comma separated, e.g. acme_*)
@@ -101,10 +94,3 @@ Configuration Options:
       Provide an information for translators
    :Default:
       [empty]
-
- - :Property:
-      CSVSeparator
-   :Description:
-      CSV value separator
-   :Default:
-      Comma
