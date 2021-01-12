@@ -60,7 +60,6 @@ class ModuleController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionControlle
         $this->conf['modifyKeys'] = (bool)$extConf['modifyKeys'] || $GLOBALS['BE_USER']->isAdmin();
         $this->conf['useL10n'] = (bool)$extConf['useL10n'];
         $this->conf['clearCache'] = (bool)$extConf['clearCache'];
-        $this->conf['debug'] = (bool)$extConf['debug'];
         $this->conf['langKeysAllowed'] = $this->conf['langKeys'];
         $this->conf['translatorInfo'] = (string)$extConf['translatorInfo'];
         $this->conf['CSVSeparator'] = ($extConf['CSVSeparator'] === 'semicolon') ? ';' : ',';
@@ -219,7 +218,6 @@ class ModuleController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionControlle
                     throw new \UnexpectedValueException('Not allowed to modify keys');
                 }
                 $keychanges[$key] = $keyvalue;
-                $this->log('Changed key: ' . $extension . '|' . $file . ' ' . $key . '->' . $keyvalue, 0);
             }
         }
         $savelangs = $langKeys;
@@ -240,12 +238,10 @@ class ModuleController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionControlle
             if ($xliffService->fileExists($langKey) || $xliffService->isLanguageLoaded($langKey)) {
                 $success = $xliffService->saveLang($langKey);
                 if (!$success) {
-                    $this->log('Write failed: ' . $xliffService->getFilename($langKey), 2);
+                    $this->addFlashMessage('Write failed: ' . $xliffService->getFilename($langKey), 'Error', AbstractMessage::ERROR);
                 }
             }
         }
-
-        $this->log('Updated ' . $extension . '|' . $file . ' ' . implode(', ', $savelangs), 0);
 
         if ($this->conf['clearCache']) {
             /** @var \TYPO3\CMS\Core\Cache\Frontend\FrontendInterface $cacheFrontend */
@@ -430,17 +426,5 @@ class ModuleController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionControlle
             }
         }
         $this->forward('list', NULL, NULL, ['extension' => $extension, 'file' => $newFile, 'langKeys' => $langKeys, 'sort' => FALSE]);
-    }
-
-    /**
-     * @param string $msg
-     * @param int $error (0 = message, 1 = User Error, 2 = System Error, 3 = security notice)
-     * @return void
-     */
-    protected function log(string $msg, int $error = 0): void
-    {
-        if ($this->conf['debug'] || $error) {
-            $this->addFlashMessage($msg, ($error) ? 'Error' : 'Debug', ($error) ? AbstractMessage::ERROR : AbstractMessage::NOTICE);
-        }
     }
 }

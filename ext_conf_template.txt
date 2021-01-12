@@ -6,19 +6,17 @@ langKeys = de,fr,it
 useL10n = 0
 # cat=basic//4; type=boolean; label=Clear l10n cache on save
 clearCache = 0
-# cat=basic//5; type=boolean; label=Show debug output
-debug = 0
-# cat=basic//6; type=string; label=Filter for extension names (wildcard patterns, comma separated, e.g. acme_*)
+# cat=basic//5; type=string; label=Filter for extension names (wildcard patterns, comma separated, e.g. acme_*)
 extFilter = *
-# cat=basic//7; type=string; label=Allowed extensions for non-admin users (wildcard patterns, comma separated, e.g. acme_*)
+# cat=basic//6; type=string; label=Allowed extensions for non-admin users (wildcard patterns, comma separated, e.g. acme_*)
 allowedExts = *
-# cat=basic//8; type=string; label=Allowed filenames for non-admin users (comma separated, empty=all)
+# cat=basic//7; type=string; label=Allowed filenames for non-admin users (comma separated, empty=all)
 allowedFiles = 
-# cat=basic//9; type=boolean; label=Allow non-admin users to modify default language
+# cat=basic//8; type=boolean; label=Allow non-admin users to modify default language
 modifyDefaultLang = 0
-# cat=basic//10; type=boolean; label=Allow non-admin users to modify keys and sorting (implies modifyDefaultLang)
+# cat=basic//9; type=boolean; label=Allow non-admin users to modify keys and sorting (implies modifyDefaultLang)
 modifyKeys = 0
-# cat=basic//11; type=string; label=Provide an information for translators
+# cat=basic//10; type=string; label=Provide an information for translators
 translatorInfo =
-# cat=basic//12; type=options[Comma=comma,Semicolon (Not recommended)=semicolon]; label=CSV separator
+# cat=basic//11; type=options[Comma=comma,Semicolon (Not recommended)=semicolon]; label=CSV separator
 CSVSeparator = comma
