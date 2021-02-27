@@ -68,9 +68,13 @@
 	<br>
 	<f:if condition="{conf.modifyKeys}">
 		<div class="form-group">
-			<div><label>{f:translate(key: 'load_labels_from_csv_file')}</label></div>
-			<f:form.upload name="importFile" class="btn btn-default" style="display:inline-block;" />
-			<f:form.button formaction="{f:uri.action(action:'importCsv')}" value="{f:translate(key:'import')}" class="btn btn-default">{f:translate(key:'import')}</f:form.button>
+			<label>{f:translate(key: 'load_labels_from_csv_file')}</label>
+			<div class="input-group">
+				<f:form.upload name="importFile" class="form-control" style="display:inline-block;" />
+				<span class="input-group-btn">
+					<f:form.button formaction="{f:uri.action(action:'importCsv')}" value="{f:translate(key:'import')}" class="btn btn-default">{f:translate(key:'import')}</f:form.button>
+				</span>
+			</div>
 		</div>
 	</f:if>
 </f:form>
