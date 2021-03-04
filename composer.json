@@ -4,15 +4,20 @@
     "version": "2.7.3",
     "description": "Editor for locallang.xlf files",
     "license": "GPL-2.0-or-later",
-    "replace": {
-        "typo3-ter/translate-locallang": "self.version"
-    },
     "require": {
         "typo3/cms-core": ">=10.4.0 <=11.5.99"
+    },
+    "replace": {
+        "typo3-ter/translate-locallang": "self.version"
     },
     "autoload": {
         "psr-4": {
             "Undefined\\TranslateLocallang\\": "Classes"
+        }
+    },
+    "extra": {
+        "typo3/cms": {
+            "extension-key": "translate_locallang"
         }
     }
 }
