@@ -1,0 +1,7 @@
+module.tx_translatelocallang {
+    view {
+        templateRootPaths.0 = EXT:translate_locallang/Resources/Private/Templates/
+        partialRootPaths.0 = EXT:translate_locallang/Resources/Private/Partials/
+        layoutRootPaths.0 = EXT:translate_locallang/Resources/Private/Layouts/
+    }
+}
