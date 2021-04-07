@@ -66,5 +66,16 @@
 	</f:if>
 	<br>
 	<br>
+	<f:if condition="{conf.uploadCsv}">
+		<div class="form-group">
+			<label>{f:translate(key: 'load_labels_from_csv_file')}</label>
+			<div class="input-group">
+				<f:form.upload name="importFile" class="form-control" style="display:inline-block;" />
+				<span class="input-group-btn">
+					<f:form.button formaction="{f:uri.action(action:'importCsv')}" value="{f:translate(key:'import')}" class="btn btn-default">{f:translate(key:'import')}</f:form.button>
+				</span>
+			</div>
+		</div>
+	</f:if>
 </f:form>
 </html>

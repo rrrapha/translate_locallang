@@ -36,6 +36,10 @@ use Undefined\TranslateLocallang\Utility\TranslateUtility;
 
 class ModuleController extends ActionController
 {
+    const MODE_DEFAULT       = 0;
+    const MODE_USE_L10N      = 1;
+    const MODE_USE_L10N_ONLY = 2;
+
     /**
      * @var array
      */
@@ -63,13 +67,14 @@ class ModuleController extends ActionController
         $this->conf['extFilter'] = trim((string)$extConf['extFilter']);
         $patterns = GeneralUtility::trimExplode(',', $this->conf['extFilter'], TRUE);
         $this->conf['extensions'] = TranslateUtility::getExtList($allowedExts, $this->conf['allowedFiles'], $patterns);
-        $this->conf['modifyKeys'] = (bool)$extConf['modifyKeys'] || $GLOBALS['BE_USER']->isAdmin();
+        $this->conf['modifyKeys'] = ((bool)$extConf['modifyKeys'] || $GLOBALS['BE_USER']->isAdmin()) && $extConf['useL10n'] != self::MODE_USE_L10N_ONLY;
+        $this->conf['uploadCsv'] = $this->conf['modifyKeys'] || $extConf['useL10n'] == self::MODE_USE_L10N_ONLY;
         $this->conf['useL10n'] = (bool)$extConf['useL10n'];
         $this->conf['clearCache'] = (bool)$extConf['clearCache'];
         $this->conf['langKeysAllowed'] = $this->conf['langKeys'];
         $this->conf['translatorInfo'] = (string)$extConf['translatorInfo'];
         if (!((bool)$extConf['modifyDefaultLang'] || $GLOBALS['BE_USER']->isAdmin() || $this->conf['modifyKeys']) ||
-            (bool)$this->conf['useL10n']) {
+            $extConf['useL10n'] == self::MODE_USE_L10N_ONLY) {
             unset($this->conf['langKeysAllowed']['default']);
         }
     }

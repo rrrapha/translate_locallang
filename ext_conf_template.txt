@@ -2,7 +2,7 @@
 defaultLangKey = en
 # cat=basic//2; type=string; label=Translation language keys
 langKeys = de,fr,it
-# cat=basic//3; type=boolean; label=Save translations to 'labels' or 'l10n' folder instead of 'typo3conf/ext/'
+# cat=basic//3; type=options[No=0, Yes=1, Yes (strict)=2]; label=Save translations to 'labels' or 'l10n' folder instead of 'typo3conf/ext/'
 useL10n = 0
 # cat=basic//4; type=boolean; label=Clear l10n cache on save
 clearCache = 0
