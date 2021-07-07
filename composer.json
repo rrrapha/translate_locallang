@@ -5,6 +5,7 @@
     "description": "Editor for locallang.xlf files",
     "license": "GPL-2.0-or-later",
     "require": {
+        "php": "^7.2",
         "typo3/cms-core": ">=10.4.0 <=11.5.99"
     },
     "replace": {
@@ -13,6 +14,11 @@
     "autoload": {
         "psr-4": {
             "Undefined\\TranslateLocallang\\": "Classes"
+        }
+    },
+    "config": {
+        "platform": {
+            "php": "7.2"
         }
     },
     "extra": {
