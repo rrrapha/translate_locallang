@@ -107,7 +107,7 @@ class XliffService
         if (!$this->isLanguageLoaded('default')) {
             $this->data = [];
             $fileref = TranslateUtility::getXlfPath($this->extension, $this->file, 'default', FALSE);
-            if(!$this->loadFile($fileref, 'default', TRUE)) {
+            if(!$this->loadFile($fileref, 'default')) {
                 return FALSE;
             }
         }
@@ -116,13 +116,11 @@ class XliffService
         if ($langKey !== 'default') {
             //check for file in typo3conf/ext first
             $fileref = TranslateUtility::getXlfPath($this->extension, $this->file, $langKey, FALSE);
-
-            $addkeys = !$this->useL10n;
-            $success = $this->loadFile($fileref, $langKey, $addkeys);
+            $success = $this->loadFile($fileref, $langKey);
 
             if ($this->useL10n) {
                 $fileref = TranslateUtility::getXlfPath($this->extension, $this->file, $langKey, TRUE);
-                $success = $this->loadFile($fileref, $langKey, TRUE) || $success;
+                $success = $this->loadFile($fileref, $langKey) || $success;
             }
 
             if (!$success) {
@@ -289,7 +287,7 @@ class XliffService
      * @param bool $addkeys
      * @return bool
      */
-    protected function loadFile(string $fileref, string $langKey = 'default', bool $addkeys = TRUE): bool
+    protected function loadFile(string $fileref, string $langKey = 'default'): bool
     {
         if (!is_file($fileref)) {
             return FALSE;
@@ -313,9 +311,6 @@ class XliffService
                 continue;
             }
             $key = (string)$transunit['id'];
-            if (!isset($this->data[$key]) && !$addkeys) {
-                continue;
-            }
             if (!isset($this->data[$key])) {
                 $this->data[$key] = [];
             }
