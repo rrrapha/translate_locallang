@@ -100,6 +100,7 @@ class ModuleController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionControlle
         }
 
         $disableSaveButtons = '';
+        $formChanged = FALSE;
         $files = [];
         $labels = [];
 
