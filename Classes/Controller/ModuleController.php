@@ -361,6 +361,7 @@ class ModuleController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionControlle
      */
     public function searchAction(string $word = ''): void
     {
+        $results = [];
         if ($word) {
             $results = [];
             foreach($this->conf['extensions'] as $extension) {
