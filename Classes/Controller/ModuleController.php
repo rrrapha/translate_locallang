@@ -425,6 +425,6 @@ class ModuleController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionControlle
                 }
             }
         }
-        $this->forward('list', NULL, NULL, ['extension' => $extension, 'file' => $newFile, 'langKeys' => $langKeys, 'sort' => FALSE]);
+        $this->forward('list', NULL, NULL, ['extension' => $extension, 'file' => $newFile, 'sort' => FALSE]);
     }
 }
