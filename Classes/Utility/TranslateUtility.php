@@ -44,7 +44,7 @@ class TranslateUtility
      * @param array $patterns
      * @return array
      */
-    public static function getExtList(array $allowedExts, array $allowedFiles = [], array $patterns): array
+    public static function getExtList(array $allowedExts, array $allowedFiles = [], array $patterns = []): array
     {
         //ListUtility->getAvailableExtensions() is too slow..
         $extensions = [];
