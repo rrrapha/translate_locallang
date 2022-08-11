@@ -28,15 +28,18 @@ declare(strict_types=1);
 
 namespace Undefined\TranslateLocallang\Controller;
 
+use Psr\Http\Message\ResponseInterface;
 use TYPO3\CMS\Core\Cache\CacheManager;
 use TYPO3\CMS\Core\Configuration\ExtensionConfiguration;
 use TYPO3\CMS\Core\Core\Environment;
 use TYPO3\CMS\Core\Messaging\AbstractMessage;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
+use TYPO3\CMS\Extbase\Mvc\Controller\ActionController;
+use TYPO3\CMS\Extbase\Http\ForwardResponse;
 use Undefined\TranslateLocallang\Utility\TranslateUtility;
 
 
-class ModuleController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionController
+class ModuleController extends ActionController
 {
     /**
      * @var array
@@ -76,8 +79,9 @@ class ModuleController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionControlle
      * @return void
      */
     public function listAction(string $extension = '', string $file = '', array $langKeys = ['default'], bool $sort = FALSE, array $overrideLabels = []): void
-    {
+    { 
         $moduledata = TranslateUtility::getModuleData();
+        $sessid = $GLOBALS['BE_USER']->getSession()->getIdentifier();
         if (!empty($moduledata) && $extension !== '0' ) {
             if (!$extension && $moduledata['extension'] && isset($this->conf['extensions'][$moduledata['extension']])) {
                 //restore from moduledata
@@ -85,7 +89,7 @@ class ModuleController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionControlle
                 $file = $moduledata['file'];
                 $langKeys = $moduledata['langKeys'];
             }
-            if ($moduledata['sessid'] !== $GLOBALS['BE_USER']->id && $moduledata['extension'] === $extension) {
+            if ($moduledata['sessid'] !== $sessid && $moduledata['extension'] === $extension) {
                 $timediff = time()- $moduledata['time'];
                 if ($timediff < 600) {
                     $minutes = (int)(($timediff + 30) / 60);
@@ -170,7 +174,7 @@ class ModuleController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionControlle
             'file' => $file,
             'langKeys' => $langKeys,
             'time' => time(),
-            'sessid' => $GLOBALS['BE_USER']->id,
+            'sessid' => $sessid,
         ]);
     }
 
@@ -180,9 +184,9 @@ class ModuleController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionControlle
      * @param string $extension
      * @param string $file
      * @param array $langKeys
-     * @return void
+     * @return ResponseInterface
      */
-    public function saveAction(array $keys, array $labels, string $extension, string $file, array $langKeys): void
+    public function saveAction(array $keys, array $labels, string $extension, string $file, array $langKeys): ResponseInterface
     {
         if (!isset($this->conf['extensions'][$extension])) {
             throw new \UnexpectedValueException('Extension not allowed: ' . $extension);
@@ -249,7 +253,8 @@ class ModuleController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionControlle
             $cacheFrontend->flush();
         }
 
-        $this->forward('list', NULL, NULL, ['extension' => $extension, 'file' => $file, 'langKeys' => $langKeys]);
+        return (new ForwardResponse('list'))
+            ->withArguments(['extension' => $extension, 'file' => $file, 'langKeys' => $langKeys]);
     }
 
     /**
@@ -309,9 +314,9 @@ class ModuleController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionControlle
      * @param string $file
      * @param array  $langKeys
      *
-     * @return void
+     * @return ResponseInterface
      */
-    public function importCsvAction(string $extension, string $file, array $langKeys): void
+    public function importCsvAction(string $extension, string $file, array $langKeys): ResponseInterface
     {
         $uploadedFile = $this->request->getArgument('importFile');
 
@@ -329,7 +334,8 @@ class ModuleController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionControlle
             $hrow = fgetcsv($fp, 0, ',');
             if (!$hrow || $hrow[0] !== 'key' || count($hrow) < 2) {
                 $this->addFlashMessage('Invalid file format', 'Error', AbstractMessage::ERROR);
-                $this->forward('list', NULL, NULL, ['extension' => $extension, 'file' => $file, 'langKeys' => $langKeys]);
+                return (new ForwardResponse('list'))
+                    ->withArguments(['extension' => $extension, 'file' => $file, 'langKeys' => $langKeys]);
             }
 
             $langKeys = [];
@@ -347,12 +353,12 @@ class ModuleController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionControlle
                     $i++;
                 }
             }
-
         } else {
             $this->addFlashMessage('No file uploaded', 'Error', AbstractMessage::ERROR);
         }
 
-        $this->forward('list', NULL, NULL, ['extension' => $extension, 'file' => $file, 'langKeys' => $langKeys, 'sort' => FALSE, 'overrideLabels' => $labels]);
+        return (new ForwardResponse('list'))
+            ->withArguments(['extension' => $extension, 'file' => $file, 'langKeys' => $langKeys, 'sort' => FALSE, 'overrideLabels' => $labels]);
     }
 
     /**
@@ -395,9 +401,9 @@ class ModuleController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionControlle
      * @param string $extension
      * @param string $newFile
      *
-     * @return void
+     * @return ResponseInterface
      */
-    public function createFileAction(string $extension, string $newFile): void
+    public function createFileAction(string $extension, string $newFile): ResponseInterface
     {
         if (!isset($this->conf['extensions'][$extension])) {
             throw new \UnexpectedValueException('Extension not allowed: ' . $extension);
@@ -425,6 +431,8 @@ class ModuleController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionControlle
                 }
             }
         }
-        $this->forward('list', NULL, NULL, ['extension' => $extension, 'file' => $newFile, 'sort' => FALSE]);
+
+        return (new ForwardResponse('list'))
+            ->withArguments(['extension' => $extension, 'file' => $newFile, 'sort' => FALSE]);
     }
 }
