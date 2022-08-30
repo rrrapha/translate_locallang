@@ -4,8 +4,8 @@
 
 	<f:form.hidden name="extension" value="{extension}" />
 	<f:form.hidden name="file" value="{file}" />
-	<f:for each="{langKeys}" as="langKey">
-		<f:form.hidden name="langKeys[]" value="{langKey}" />
+	<f:for each="{langKeys}" as="langKey" iteration="iter">
+		<f:form.hidden name="langKeys[{iter.index}]" value="{langKey}" />
 	</f:for>
 	<div class="translate-table form-group">
 		<div class="translate-row header">
