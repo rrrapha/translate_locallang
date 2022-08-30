@@ -76,9 +76,9 @@ class ModuleController extends ActionController
      * @param array $langKeys
      * @param bool $sort
      * @param array $overrideLabels
-     * @return void
+     * @return ResponseInterface
      */
-    public function listAction(string $extension = '', string $file = '', array $langKeys = ['default'], bool $sort = FALSE, array $overrideLabels = []): void
+    public function listAction(string $extension = '', string $file = '', array $langKeys = ['default'], bool $sort = FALSE, array $overrideLabels = []): ResponseInterface
     { 
         $moduledata = TranslateUtility::getModuleData();
         $sessid = $GLOBALS['BE_USER']->getSession()->getIdentifier();
@@ -176,6 +176,8 @@ class ModuleController extends ActionController
             'time' => time(),
             'sessid' => $sessid,
         ]);
+
+        return $this->htmlResponse();
     }
 
     /**
