@@ -263,9 +263,9 @@ class ModuleController extends ActionController
      * @param string $extension
      * @param string $file
      * @param array $langKeys
-     * @return string
+     * @return ResponseInterface
      */
-    public function exportCsvAction(string $extension, string $file, array $langKeys): string
+    public function exportCsvAction(string $extension, string $file, array $langKeys): ResponseInterface
     {
         if (!isset($this->conf['extensions'][$extension])) {
             throw new \UnexpectedValueException('Extension not allowed: ' . $extension);
@@ -308,7 +308,7 @@ class ModuleController extends ActionController
             fputcsv($output, $row, ',');
         }
         fclose($output);
-        return '';
+        return $this->htmlResponse('');
     }
 
     /**
@@ -365,9 +365,9 @@ class ModuleController extends ActionController
 
     /**
      * @param string $word
-     * @return void
+     * @return ResponseInterface
      */
-    public function searchAction(string $word = ''): void
+    public function searchAction(string $word = ''): ResponseInterface
     {
         $results = [];
         if ($word) {
@@ -397,6 +397,8 @@ class ModuleController extends ActionController
             'conf' => $this->conf,
             'search' => TRUE,
         ]);
+
+        return $this->htmlResponse();
     }
 
     /**
