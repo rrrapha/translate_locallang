@@ -30,6 +30,7 @@ namespace Undefined\TranslateLocallang\Service;
 
 use TYPO3\CMS\Core\Core\Environment;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
+use TYPO3\CMS\Fluid\View\StandaloneView;
 use Undefined\TranslateLocallang\Utility\TranslateUtility;
 
 class XliffService
@@ -356,8 +357,7 @@ class XliffService
                 ]];
             }
         }
-        $objectManager = GeneralUtility::makeInstance('TYPO3\\CMS\\Extbase\\Object\\ObjectManager');
-        $xliffview = $objectManager->get('TYPO3\\CMS\\Fluid\\View\\StandaloneView');
+        $xliffview = GeneralUtility::makeInstance(StandaloneView::class); 
         $xliffview->setTemplatePathAndFilename(Environment::getPublicPath() . '/typo3conf/ext/translate_locallang/Resources/Private/Templates/Xliff.html');
 
         date_default_timezone_set('UTC');

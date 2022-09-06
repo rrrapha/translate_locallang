@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <xliff version="1.2" xmlns="urn:oasis:names:tc:xliff:document:1.2">
-	<file source-language="en" target-language="de" datatype="plaintext" original="EXT:translate_locallang/Resources/Private/Language/locallang.xlf" date="2021-03-24T19:53:21Z" product-name="translate_locallang">
+	<file source-language="en" target-language="de" datatype="plaintext" original="EXT:translate_locallang/Resources/Private/Language/locallang.xlf" date="2022-09-06T14:53:48Z" product-name="translate_locallang">
 		<header/>
 		<body>
 			<trans-unit id="title" resname="title">
@@ -86,6 +86,14 @@
 			<trans-unit id="dummy_filename" resname="dummy_filename">
 				<source>filename.xlf</source>
 				<target>datei.xlf</target>
+			</trans-unit>
+			<trans-unit id="actionmenu.list" resname="actionmenu.list">
+				<source>Translate</source>
+				<target>Übersetzen</target>
+			</trans-unit>
+			<trans-unit id="actionmenu.search" resname="actionmenu.search">
+				<source>Search</source>
+				<target>Suchen</target>
 			</trans-unit>
 		</body>
 	</file>

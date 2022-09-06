@@ -12,7 +12,7 @@ window.addEventListener('DOMContentLoaded', function() {
 	for (i = 0, l = rows.length; i < l; i++) {
 		initrow(rows[i]);
 	}
-	var submitButton = document.getElementById('translate_save');
+	var submitButton = document.getElementsByName('translate_save')[0];
 	translate_form.addEventListener('change', function (e) {
 		formChanged();
 	});

@@ -1,39 +1,5 @@
-<f:be.container
-		includeCssFiles="{0: '{f:uri.resource(path:\'Css/translate.css\',absolute:1)}'}"
-		includeJsFiles="{0: '{f:uri.resource(path:\'JavaScript/translate.js\',absolute:1)}'}"
-		pageTitle="translate">
-	<div class="module">
-		<div class="module-docheader">
-			<div class="module-docheader-bar module-docheader-bar-navigation row">
-				<div class="module-docheader-bar-column-left col-sm-3">
-					<div class="form-inline">
-						<div class="form-group form-group-sm">
-							<f:be.menus.actionMenu additionalAttributes="{class:'form-control form-control-sm form-select form-select-sm'}">
-								<f:be.menus.actionMenuItem label="{f:translate(key:'title')->f:format.htmlspecialchars()}" controller="Module" action="list" />
-								<f:be.menus.actionMenuItem label="{f:translate(key:'search')->f:format.htmlspecialchars()}" controller="Module" action="search" additionalAttributes="{f:if(condition:'{search}',then:'{selected:1}')}" />
-							</f:be.menus.actionMenu>
-						</div>
-					</div>
-				</div>
-				<div class="module-docheader-bar-column-right col text-end">
-					useL10n: {f:if(condition:'{conf.useL10n}',then:'true',else:'false')}
-				</div>
-			</div>
-			<div class="module-docheader-bar module-docheader-bar-buttons">
-				<div class="module-docheader-bar-column-left">
-					<div class="btn-toolbar" role="toolbar" aria-label="">
-					<f:if condition="{extension} && {file}">
-						<button id="translate_save" name="_savedok" class="btn btn-{f:if(condition:'{formChanged}',then:'danger',else:'default')} btn-sm" value="1" title="{f:translate(key: 'save')}" form="translate_labels" {disableSaveButtons}>
-							<core:icon identifier="actions-document-save" /> {f:translate(key: 'save')}
-						</button>
-						<f:if condition="{labels}">
-							<f:form.button form="translate_labels" formaction="{f:uri.action(action:'exportCsv')}" value="{f:translate(key:'export')}" class="btn btn-default btn-sm">{f:translate(key:'export')}</f:form.button>
-						</f:if>
-					</f:if>
-					</div>
-				</div>
-			</div>
-		</div>
-		<f:render section="Content" />
-	</div>
-</f:be.container>
+<f:be.pageRenderer pageTitle="translate"
+    includeCssFiles="{0: 'EXT:translate_locallang/Resources/Public/Css/translate.css'}"
+    includeJsFiles="{0: 'EXT:translate_locallang/Resources/Public/JavaScript/translate.js'}" />
+
+<f:render section="Content" />

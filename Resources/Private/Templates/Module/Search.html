@@ -1,7 +1,12 @@
+<html
+   xmlns:f="http://typo3.org/ns/TYPO3/CMS/Fluid/ViewHelpers"
+   xmlns:core="http://typo3.org/ns/TYPO3/CMS/Core/ViewHelpers"
+   xmlns:be="http://typo3.org/ns/TYPO3/CMS/Backend/ViewHelpers"
+   data-namespace-typo3-fluid="true">
+
 <f:layout name="Backend" />
 
 <f:section name="Content">
-<div class="module-body">
 	<f:flashMessages />
 	<h1>{f:translate(key:'search')}</h1>
 	<f:form action="search" controller="Module" class="form-group">
@@ -29,5 +34,6 @@
 			</f:else>
 		</f:if>
 	</f:if>
-</div>
 </f:section>
+
+</html>

@@ -29,13 +29,20 @@ declare(strict_types=1);
 namespace Undefined\TranslateLocallang\Controller;
 
 use Psr\Http\Message\ResponseInterface;
+use TYPO3\CMS\Backend\Template\Components\ButtonBar;
+use TYPO3\CMS\Backend\Template\ModuleTemplate;
+use TYPO3\CMS\Backend\Template\ModuleTemplateFactory;
 use TYPO3\CMS\Core\Cache\CacheManager;
 use TYPO3\CMS\Core\Configuration\ExtensionConfiguration;
 use TYPO3\CMS\Core\Core\Environment;
+use TYPO3\CMS\Core\Imaging\Icon;
+use TYPO3\CMS\Core\Imaging\IconFactory;
 use TYPO3\CMS\Core\Messaging\AbstractMessage;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
-use TYPO3\CMS\Extbase\Mvc\Controller\ActionController;
 use TYPO3\CMS\Extbase\Http\ForwardResponse;
+use TYPO3\CMS\Extbase\Mvc\Controller\ActionController;
+use TYPO3\CMS\Extbase\Mvc\Web\Routing\UriBuilder;
+use TYPO3\CMS\Extbase\Utility\LocalizationUtility;
 use Undefined\TranslateLocallang\Utility\TranslateUtility;
 
 
@@ -45,6 +52,14 @@ class ModuleController extends ActionController
      * @var array
      */
     private $conf = [];
+    protected ModuleTemplateFactory $moduleTemplateFactory;
+    protected IconFactory $iconFactory;
+
+    public function __construct(ModuleTemplateFactory $moduleTemplateFactory, IconFactory $iconFactory)
+    {
+        $this->moduleTemplateFactory = $moduleTemplateFactory;
+        $this->iconFactory = $iconFactory;
+    }
 
     /**
      * @return void
@@ -98,12 +113,15 @@ class ModuleController extends ActionController
             }
         }
 
+        $moduleTemplate = $this->moduleTemplateFactory->create($this->request);
+        $this->addMenu($moduleTemplate);
+
         //default is always shown
         if (!in_array('default', $langKeys)) {
             array_unshift($langKeys, 'default');
         }
 
-        $disableSaveButtons = '';
+        $disableSaveButton = FALSE;
         $formChanged = FALSE;
         $files = [];
         $labels = [];
@@ -152,8 +170,11 @@ class ModuleController extends ActionController
                 $fieldcount = (count($labels) + 1) * (count($langKeys) + 1) + count($langKeys) + 10;
                 if ($fieldcount > $max_input_vars) {
                     $this->addFlashMessage('Too many labels, max_input_vars too small. Set max_input_vars to at least: ' . $fieldcount, 'Warning', AbstractMessage::WARNING);
-                    $disableSaveButtons = 'disabled';
+                    $disableSaveButton = TRUE;
                 }
+
+                $this->addSaveButton($moduleTemplate, $disableSaveButton, $formChanged);
+                $this->addExportButton($moduleTemplate);
             }
         }
 
@@ -165,8 +186,6 @@ class ModuleController extends ActionController
             'labels' => $labels,
             'conf' => $this->conf,
             'isAdmin' => $GLOBALS['BE_USER']->isAdmin(),
-            'disableSaveButtons' => $disableSaveButtons,
-            'formChanged' => $formChanged,
         ]);
 
         TranslateUtility::setModuleData([
@@ -177,7 +196,9 @@ class ModuleController extends ActionController
             'sessid' => $sessid,
         ]);
 
-        return $this->htmlResponse();
+        $moduleTemplate->setContent($this->view->render());
+
+        return $this->htmlResponse($moduleTemplate->renderContent());
     }
 
     /**
@@ -308,6 +329,7 @@ class ModuleController extends ActionController
             fputcsv($output, $row, ',');
         }
         fclose($output);
+
         return $this->htmlResponse('');
     }
 
@@ -321,7 +343,7 @@ class ModuleController extends ActionController
     public function importCsvAction(string $extension, string $file, array $langKeys): ResponseInterface
     {
         $uploadedFile = $this->request->getArgument('importFile');
-
+        $labels = [];
         if (is_uploaded_file($uploadedFile['tmp_name'])) {
             $fp = @fopen($uploadedFile['tmp_name'], 'r');
             if ($fp === FALSE) {
@@ -346,7 +368,6 @@ class ModuleController extends ActionController
                 $langKeys[$langKey] = $langKey;
             }
             $langKeys = array_intersect_key($langKeys, $this->conf['langKeysAllowed']);
-            $labels = [];
             while ($row = fgetcsv($fp, 0, ',')) {
                 $key = $row[0];
                 $i = 1;
@@ -398,7 +419,11 @@ class ModuleController extends ActionController
             'search' => TRUE,
         ]);
 
-        return $this->htmlResponse();
+        $moduleTemplate = $this->moduleTemplateFactory->create($this->request);
+        $this->addMenu($moduleTemplate);
+        $moduleTemplate->setContent($this->view->render());
+
+        return $this->htmlResponse($moduleTemplate->renderContent());
     }
 
     /**
@@ -438,5 +463,74 @@ class ModuleController extends ActionController
 
         return (new ForwardResponse('list'))
             ->withArguments(['extension' => $extension, 'file' => $newFile, 'sort' => FALSE]);
+    }
+
+    /**
+     * @param ModuleTemplate $moduleTemplate
+     * @return void
+     */
+    private function addMenu($moduleTemplate)
+    {
+        $uriBuilder = GeneralUtility::makeInstance(UriBuilder::class);
+        $uriBuilder->setRequest($this->request);
+        $menuRegistry = $moduleTemplate->getDocHeaderComponent()->getMenuRegistry();
+        $menu = $menuRegistry->makeMenu();
+        $menu->setIdentifier('actionmenu');
+
+        $menuItems = ['list', 'search'];
+        foreach($menuItems as $key => $action) {
+            $uri = $uriBuilder->reset()->uriFor($action, [], 'Module');
+            $isActive = $this->request->getControllerActionName() === $action ? true : false;
+            $title = LocalizationUtility::translate('actionmenu.' . $action, 'TranslateLocallang');
+            $menuItem = $menu->makeMenuItem()
+              ->setTitle($title)
+              ->setHref($uri)
+              ->setActive($isActive);
+            $menu->addMenuItem($menuItem);
+        }
+        $menuRegistry->addMenu($menu);
+    }
+
+    /**
+     * @param ModuleTemplate $moduleTemplate
+     * @param bool $disabled
+     * @param bool $highlight
+     * @return void
+     */
+    private function addSaveButton($moduleTemplate, $disabled = FALSE, $highlight = FALSE)
+    {
+        $buttonBar = $moduleTemplate->getDocHeaderComponent()->getButtonBar();
+        $buttonTitle = LocalizationUtility::translate('save', 'TranslateLocallang');
+        $button = $buttonBar->makeInputButton()
+          ->setForm('translate_labels')
+          ->setName('translate_save')
+          ->setValue('yes')
+          ->setTitle($buttonTitle)
+          ->setShowLabelText($buttonTitle)
+          ->setDisabled($disabled)
+          ->setIcon($this->iconFactory->getIcon('actions-document-save', Icon::SIZE_SMALL));
+        if ($highlight)
+            $button->setClasses('btn-danger');
+        $buttonBar->addButton($button, ButtonBar::BUTTON_POSITION_LEFT, 1);
+    }
+
+    /**
+     * @param ModuleTemplate $moduleTemplate
+     * @param bool $disabled
+     * @return void
+     */
+    private function addExportButton($moduleTemplate, $disabled = FALSE)
+    {
+        $buttonBar = $moduleTemplate->getDocHeaderComponent()->getButtonBar();
+        $buttonTitle = LocalizationUtility::translate('export', 'TranslateLocallang');
+        $button = $buttonBar->makeInputButton()
+          ->setForm('translate_export')
+          ->setName('translate_export')
+          ->setValue('yes')
+          ->setTitle($buttonTitle)
+          ->setShowLabelText($buttonTitle)
+          ->setDisabled($disabled)
+          ->setIcon($this->iconFactory->getIcon('actions-download', Icon::SIZE_SMALL));
+        $buttonBar->addButton($button, ButtonBar::BUTTON_POSITION_LEFT, 1);
     }
 }

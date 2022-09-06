@@ -1,7 +1,12 @@
+<html
+   xmlns:f="http://typo3.org/ns/TYPO3/CMS/Fluid/ViewHelpers"
+   xmlns:core="http://typo3.org/ns/TYPO3/CMS/Core/ViewHelpers"
+   xmlns:be="http://typo3.org/ns/TYPO3/CMS/Backend/ViewHelpers"
+   data-namespace-typo3-fluid="true">
+
 <f:layout name="Backend" />
 
 <f:section name="Content">
-<div class="module-body">
 	<f:flashMessages />
 	<h1>{f:translate(key:'title')} {f:if(condition:'{extension}',then:' - {extension}')}</h1>
 	<f:if condition="{conf.translatorInfo}">
@@ -20,20 +25,30 @@
 			<f:render partial="Module/List" arguments="{_all}" />
 		</f:if>
 		<f:if condition="{conf.modifyKeys}">
-			<f:form>
+			<f:form id="translate_create_file" action="createFile" controller="Module">
 				<f:form.hidden name="extension" value="{extension}" />
 				<div class="form-group">
 					<label>{f:translate(key:'create_file')}</label>
 					<div class="input-group">
 						<f:form.textfield name="newFile" value="" class="form-control" placeholder="{f:translate(key: 'dummy_filename')}"/>
 						<span class="input-group-btn">
-							<f:form.button formaction="{f:uri.action(action:'createFile')}" value="{f:translate(key:'create_file')}" class="btn btn-default">{f:translate(key:'create_file')}</f:form.button>
+							<f:form.button value="{f:translate(key:'create_file')}" class="btn btn-default">{f:translate(key:'create_file')}</f:form.button>
 						</span>
 					</div>
 				</div>
 			</f:form>
+			<f:form id="translate_export" action="exportCsv" controller="Module">
+				<f:form.hidden name="extension" value="{extension}" />
+				<f:if condition="{file}">
+					<f:form.hidden name="file" value="{file}" />
+					<f:for each="{langKeys}" as="langKey" iteration="iter">
+						<f:form.hidden name="langKeys[{iter.index}]" value="{langKey}" />
+					</f:for>
+				</f:if>
+			</f:form>
 		</f:if>
 	</f:if>
 	<br>
-</div>
 </f:section>
+
+</html>
