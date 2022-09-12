@@ -1,0 +1,11 @@
+services:
+  _defaults:
+    autowire: true
+    autoconfigure: true
+    public: false
+
+  Undefined\TranslateLocallang\:
+    resource: '../Classes/*'
+
+  Undefined\TranslateLocallang\Controller\ModuleController:
+    tags: ['backend.controller']
