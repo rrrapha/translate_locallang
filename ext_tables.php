@@ -13,7 +13,7 @@ defined('TYPO3') or die();
         ],
         [
             'access' => 'user,group',
-            'icon' => 'EXT:translate_locallang/Resources/Public/Icons/Extension.svg',
+            'iconIdentifier' => 'module-translate',
             'labels' => 'LLL:EXT:translate_locallang/Resources/Private/Language/locallang_mod.xlf',
         ]
     );
