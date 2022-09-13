@@ -174,6 +174,7 @@ class ModuleController extends ActionController
             'labels' => $labels,
             'conf' => $this->conf,
             'isAdmin' => $GLOBALS['BE_USER']->isAdmin(),
+			'time' => time(),
         ]);
 
         TranslateUtility::setModuleData([

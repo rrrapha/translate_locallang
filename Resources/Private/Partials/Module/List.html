@@ -44,15 +44,15 @@
 		</f:for>
 		<div class="translate-row">
 			<div>
-				<f:form.textfield name="keys[_newkey]" value="" readonly="{f:if(condition:'{conf.modifyKeys}',else:'1')}" />
+				<f:form.textfield name="keys[_newkey{time}]" value="" readonly="{f:if(condition:'{conf.modifyKeys}',else:'1')}" />
 			</div>
 			<div>
-				<f:form.textarea name="labels[_newkey][default]" value="" readonly="{f:if(condition:'{conf.langKeysAllowed.default}',else:'1')}" />
+				<f:form.textarea name="labels[_newkey{time}][default]" value="" readonly="{f:if(condition:'{conf.langKeysAllowed.default}',else:'1')}" />
 			</div>
 			<f:for each="{langKeys}" as="langKey">
 			<f:if condition="{langKey} != 'default'">
 				<div>
-					<f:form.textarea name="labels[_newkey][{langKey}]" value="" />
+					<f:form.textarea name="labels[_newkey{time}][{langKey}]" value="" />
 				</div>
 			</f:if>
 			</f:for>
