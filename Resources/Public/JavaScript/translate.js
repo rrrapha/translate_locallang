@@ -96,13 +96,13 @@ window.addEventListener('DOMContentLoaded', function() {
 			var newkey = '_newkey' + newindex++;
 			var oname = inputs[0].getAttribute('name');
 			var key = oname.substring(oname.lastIndexOf('[') + 1, oname.lastIndexOf(']'));
-			var nname = 'tx_translatelocallang_tools_translatelocallangm1[keys]['+newkey+']';
+			var nname = oname.replace('[' + key + ']', '[' + newkey+ ']');
 			inputs[0].setAttribute('name', nname);
 			inputs[0].value = '';
 
 			for (i = 0; i < textareas.length; i++) {
 				oname = textareas[i].getAttribute('name');
-				nname = oname.replace('][' + key + '][', '][' + newkey+ '][');
+				nname = oname.replace('[' + key + '][', '[' + newkey+ '][');
 				textareas[i].setAttribute('name', nname);
 				textareas[i].value = '';
 			}
