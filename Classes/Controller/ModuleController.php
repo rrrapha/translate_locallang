@@ -161,8 +161,7 @@ class ModuleController extends ActionController
                     $disableSaveButton = TRUE;
                 }
 
-                $this->addSaveButton($moduleTemplate, $disableSaveButton, $formChanged);
-                $this->addExportButton($moduleTemplate);
+                $this->addButtons($moduleTemplate, $disableSaveButton, $formChanged);
             }
         }
 
@@ -482,44 +481,44 @@ class ModuleController extends ActionController
 
     /**
      * @param ModuleTemplate $moduleTemplate
-     * @param bool $disabled
-     * @param bool $highlight
+     * @param bool $disableSaveButton
+     * @param bool $highlightSaveButton
      * @return void
      */
-    private function addSaveButton($moduleTemplate, $disabled = FALSE, $highlight = FALSE)
+    private function addButtons($moduleTemplate, $disableSaveButton = FALSE, $highlightSaveButton = FALSE)
     {
         $buttonBar = $moduleTemplate->getDocHeaderComponent()->getButtonBar();
         $buttonTitle = LocalizationUtility::translate('save', 'TranslateLocallang');
-        $button = $buttonBar->makeInputButton()
+        $saveButton = $buttonBar->makeInputButton()
           ->setForm('translate_labels')
           ->setName('translate_save')
           ->setValue('yes')
           ->setTitle($buttonTitle)
           ->setShowLabelText($buttonTitle)
-          ->setDisabled($disabled)
+          ->setDisabled($disableSaveButton)
           ->setIcon($this->iconFactory->getIcon('actions-document-save', Icon::SIZE_SMALL));
-        if ($highlight)
+        if ($highlightSaveButton)
             $button->setClasses('btn-danger');
-        $buttonBar->addButton($button, ButtonBar::BUTTON_POSITION_LEFT, 1);
-    }
+        $buttonBar->addButton($saveButton, ButtonBar::BUTTON_POSITION_LEFT, 1);
 
-    /**
-     * @param ModuleTemplate $moduleTemplate
-     * @param bool $disabled
-     * @return void
-     */
-    private function addExportButton($moduleTemplate, $disabled = FALSE)
-    {
-        $buttonBar = $moduleTemplate->getDocHeaderComponent()->getButtonBar();
         $buttonTitle = LocalizationUtility::translate('export', 'TranslateLocallang');
-        $button = $buttonBar->makeInputButton()
+        $exportButton = $buttonBar->makeInputButton()
           ->setForm('translate_export')
           ->setName('translate_export')
           ->setValue('yes')
           ->setTitle($buttonTitle)
           ->setShowLabelText($buttonTitle)
-          ->setDisabled($disabled)
           ->setIcon($this->iconFactory->getIcon('actions-download', Icon::SIZE_SMALL));
-        $buttonBar->addButton($button, ButtonBar::BUTTON_POSITION_LEFT, 1);
+        $buttonBar->addButton($exportButton, ButtonBar::BUTTON_POSITION_LEFT, 2);
+
+        $uriBuilder = GeneralUtility::makeInstance(UriBuilder::class);
+        $uriBuilder->setRequest($this->request);
+        $uri = $uriBuilder->reset()->uriFor('list', [], 'Module');
+        $buttonTitle = LocalizationUtility::translate('LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:labels.reload');
+        $reloadButton = $buttonBar->makeLinkButton()
+            ->setHref($uri)
+            ->setTitle($buttonTitle)
+            ->setIcon($this->iconFactory->getIcon('actions-refresh', Icon::SIZE_SMALL));
+        $buttonBar->addButton($reloadButton, ButtonBar::BUTTON_POSITION_RIGHT);
     }
 }
