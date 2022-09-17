@@ -23,6 +23,15 @@
 	<f:if condition="{extension}">
 		<f:if condition="{file}">
 			<f:render partial="Module/List" arguments="{_all}" />
+			<f:form id="translate_export" action="exportCsv" controller="Module">
+				<f:form.hidden name="extension" value="{extension}" />
+				<f:if condition="{file}">
+					<f:form.hidden name="file" value="{file}" />
+					<f:for each="{langKeys}" as="langKey" iteration="iter">
+						<f:form.hidden name="langKeys[{iter.index}]" value="{langKey}" />
+					</f:for>
+				</f:if>
+			</f:form>
 		</f:if>
 		<f:if condition="{conf.modifyKeys}">
 			<f:form id="translate_create_file" action="createFile" controller="Module">
@@ -36,15 +45,6 @@
 						</span>
 					</div>
 				</div>
-			</f:form>
-			<f:form id="translate_export" action="exportCsv" controller="Module">
-				<f:form.hidden name="extension" value="{extension}" />
-				<f:if condition="{file}">
-					<f:form.hidden name="file" value="{file}" />
-					<f:for each="{langKeys}" as="langKey" iteration="iter">
-						<f:form.hidden name="langKeys[{iter.index}]" value="{langKey}" />
-					</f:for>
-				</f:if>
 			</f:form>
 		</f:if>
 	</f:if>
