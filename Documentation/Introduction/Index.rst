@@ -14,7 +14,6 @@ What does it do?
 
 The Translate backend module is an editor for locallang.xlf files (Resources/Private/Language/locallang*.xlf). 
 Additionally, the translation files can be exported as CSV (Excel) file.
-See extension manager for configuration options.
 
 Features:
 

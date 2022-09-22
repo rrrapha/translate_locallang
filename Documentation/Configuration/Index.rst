@@ -11,7 +11,7 @@ Configuration
 Extension Configuration
 =======================
 
-All configuration is done in the extension manager (extConf). 
+Click :guilabel:`Settings > Extension Configuration` in the backend to change the options.
 
 Configuration Options:
 
