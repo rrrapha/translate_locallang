@@ -19,6 +19,7 @@ window.addEventListener('DOMContentLoaded', function() {
 
 	function formChanged() {
 		submitButton.classList.add('btn-danger');
+		submitButton.classList.remove('btn-default');
 	}
 
 	function initrow(row) {
