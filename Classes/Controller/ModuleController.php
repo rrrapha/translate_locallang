@@ -325,15 +325,15 @@ class ModuleController extends ActionController
      * @param string $extension
      * @param string $file
      * @param array  $langKeys
+     * @param array  $importFile
      *
      * @return ResponseInterface
      */
-    public function importCsvAction(string $extension, string $file, array $langKeys): ResponseInterface
+    public function importCsvAction(string $extension, string $file, array $langKeys, array $importFile): ResponseInterface
     {
-        $uploadedFile = $this->request->getArgument('importFile');
         $labels = [];
-        if (is_uploaded_file($uploadedFile['tmp_name'])) {
-            $fp = @fopen($uploadedFile['tmp_name'], 'r');
+        if (is_uploaded_file($importFile['tmp_name'])) {
+            $fp = @fopen($importFile['tmp_name'], 'r');
             if ($fp === FALSE) {
                 throw new \RuntimeException('Could not open file');
             }
@@ -498,7 +498,7 @@ class ModuleController extends ActionController
           ->setDisabled($disableSaveButton)
           ->setIcon($this->iconFactory->getIcon('actions-document-save', Icon::SIZE_SMALL));
         if ($highlightSaveButton)
-            $button->setClasses('btn-danger');
+            $saveButton->setClasses('btn-danger');
         $buttonBar->addButton($saveButton, ButtonBar::BUTTON_POSITION_LEFT, 1);
 
         $buttonTitle = LocalizationUtility::translate('export', 'TranslateLocallang');
