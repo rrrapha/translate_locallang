@@ -25,25 +25,37 @@
 			<f:render partial="Module/List" arguments="{_all}" />
 			<f:form id="translate_export" action="exportCsv" controller="Module">
 				<f:form.hidden name="extension" value="{extension}" />
-				<f:if condition="{file}">
+				<f:form.hidden name="file" value="{file}" />
+				<f:for each="{langKeys}" as="langKey" iteration="iter">
+					<f:form.hidden name="langKeys[{iter.index}]" value="{langKey}" />
+				</f:for>
+			</f:form>
+			<f:if condition="{conf.modifyKeys}">
+				<f:form id="translate_import" action="importCsv" controller="Module" class="form-group" enctype="multipart/form-data">
+					<f:form.hidden name="extension" value="{extension}" />
 					<f:form.hidden name="file" value="{file}" />
 					<f:for each="{langKeys}" as="langKey" iteration="iter">
 						<f:form.hidden name="langKeys[{iter.index}]" value="{langKey}" />
 					</f:for>
-				</f:if>
-			</f:form>
-		</f:if>
-		<f:if condition="{conf.modifyKeys}">
-			<f:form id="translate_create_file" action="createFile" controller="Module">
-				<f:form.hidden name="extension" value="{extension}" />
-				<div class="form-group">
-					<label>{f:translate(key:'create_file')}</label>
+					<label>{f:translate(key: 'load_labels_from_csv_file')}</label>
 					<div class="input-group">
-						<f:form.textfield name="newFile" value="" class="form-control" placeholder="{f:translate(key: 'dummy_filename')}"/>
+						<f:form.upload name="importFile" additionalAttributes="{accept:'.csv,.txt'}" class="form-control" style="display:inline-block;" />
 						<span class="input-group-btn">
-							<f:form.button value="{f:translate(key:'create_file')}" class="btn btn-default">{f:translate(key:'create_file')}</f:form.button>
+							<f:form.submit value="{f:translate(key:'import')}" class="btn btn-default">{f:translate(key:'import')}</f:form.submit>
 						</span>
 					</div>
+				</f:form>
+			</f:if>
+		</f:if>
+		<f:if condition="{conf.modifyKeys}">
+			<f:form id="translate_create_file" action="createFile" controller="Module" class="form-group">
+				<f:form.hidden name="extension" value="{extension}" />
+				<label>{f:translate(key:'create_file')}</label>
+				<div class="input-group">
+					<f:form.textfield name="newFile" value="" class="form-control" placeholder="{f:translate(key: 'dummy_filename')}"/>
+					<span class="input-group-btn">
+						<f:form.submit value="{f:translate(key:'create_file')}" class="btn btn-default">{f:translate(key:'create_file')}</f:form.submit>
+					</span>
 				</div>
 			</f:form>
 		</f:if>
