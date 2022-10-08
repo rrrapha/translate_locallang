@@ -149,7 +149,7 @@ class TranslateUtility
      */
     private static function isExtension(string $extdir): bool
     {
-        return (@is_file($extdir . 'ext_emconf.php') && @is_dir($extdir . static::LANGUAGE_DIR));
+        return @is_dir($extdir . static::LANGUAGE_DIR);
     }
 
     /**
