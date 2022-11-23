@@ -2,9 +2,9 @@
 
 $EM_CONF[$_EXTKEY] = [
     'title' => 'Translate',
-    'description' => 'Editor for locallang.xlf files',
+    'description' => 'Backend Module for creating and editing of language files (locallang.xlf).',
     'category' => 'module',
-    'version' => '2.8.3',
+    'version' => '2.8.4',
     'state' => 'stable',
     'clearCacheOnLoad' => 1,
     'author' => 'Raphael Graf',
