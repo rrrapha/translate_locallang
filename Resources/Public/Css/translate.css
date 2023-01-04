@@ -53,6 +53,9 @@
 	overflow-y:auto;
 	padding:0;
 }
+.translate-row textarea[readonly] {
+	color: gray;
+}
 .translate-row svg {
 	pointer-events:none;
 }

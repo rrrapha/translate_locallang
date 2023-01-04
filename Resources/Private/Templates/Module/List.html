@@ -30,7 +30,7 @@
 					<f:form.hidden name="langKeys[{iter.index}]" value="{langKey}" />
 				</f:for>
 			</f:form>
-			<f:if condition="{conf.modifyKeys}">
+			<f:if condition="{conf.uploadCsv}">
 				<f:form id="translate_import" action="importCsv" controller="Module" class="form-group" enctype="multipart/form-data">
 					<f:form.hidden name="extension" value="{extension}" />
 					<f:form.hidden name="file" value="{file}" />
