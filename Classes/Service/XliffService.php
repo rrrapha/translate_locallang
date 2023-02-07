@@ -284,7 +284,6 @@ class XliffService
      *
      * @param string $fileref
      * @param string $langKey
-     * @param bool $addkeys
      * @return bool
      */
     protected function loadFile(string $fileref, string $langKey = 'default'): bool
