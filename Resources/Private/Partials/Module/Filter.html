@@ -1,13 +1,14 @@
 <f:form action="list" controller="Module" class="form-group">
 	<f:form.select
-	    name="extension"
+	    name="extkey"
 	    options="{conf.extensions}"
-	    value="{extension}"
+	    optionLabelField="key"
+	    value="{extkey}"
 	    prependOptionValue="0"
 	    prependOptionLabel="{f:translate(key:'choose_extension')} {f:if(condition:'{isAdmin} && {conf.extFilter} && {conf.extFilter} != *',then:'(Filter: {conf.extFilter})')}"
 	    additionalAttributes="{onchange:'this.form.submit()'}"
 	    class="form-select form-control input-sm" />
-	<f:if condition="{extension}">
+	<f:if condition="{extkey}">
 		<f:form.select name="file" options="{files}" value="{file}" prependOptionValue="0" prependOptionLabel="{f:translate(key:'choose_file')}" additionalAttributes="{onchange:'this.form.submit()'}" class="form-select form-control input-sm"/>
 		<f:if condition="{file}">
 			<f:form.select name="langKeys" options="{conf.langKeys}" value="{langKeys}" multiple="1" additionalAttributes="{onchange:'this.form.submit()'}" class="form-select form-control input-sm" size="{conf.langKeys->f:count()}"/>

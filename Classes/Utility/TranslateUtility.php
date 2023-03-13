@@ -19,6 +19,7 @@ namespace Undefined\TranslateLocallang\Utility;
 use TYPO3\CMS\Core\Core\Environment;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Backend\Utility\BackendUtility;
+use TYPO3\CMS\Extensionmanager\Utility\ListUtility;
 
 class TranslateUtility
 {
@@ -34,21 +35,14 @@ class TranslateUtility
      */
     public static function getExtList(array $allowedExts, array $allowedFiles = [], array $patterns = []): array
     {
-        //ListUtility->getAvailableExtensions() is too slow..
+        $listUtility = GeneralUtility::makeInstance(ListUtility::class); 
+        $availableExtensions = $listUtility->getAvailableExtensions('Local');
         $extensions = [];
-        $extsPath = Environment::getPublicPath() . '/typo3conf/ext';
-        if (($handle = @opendir($extsPath)) === FALSE) {
-            return $extensions;
-        }
-        while (($entry = readdir($handle)) !== FALSE) {
-            $extdir = $extsPath . '/' . $entry . '/';
-            if ($entry[0] === '.' || !static::isExtension($extdir)) {
-                continue;
-            }
+        foreach($availableExtensions as $extkey => $extension) {
             if (!empty($patterns)) {
                 $skip = 1;
                 foreach($patterns as $pattern) {
-                    if (fnmatch($pattern, $entry)) {
+                    if (fnmatch($pattern, $extkey)) {
                         $skip = 0;
                     }
                 }
@@ -59,7 +53,7 @@ class TranslateUtility
             if (!empty($allowedExts)) {
                 $skip = 1;
                 foreach($allowedExts as $pattern) {
-                    if (fnmatch($pattern, $entry)) {
+                    if (fnmatch($pattern, $extkey)) {
                         $skip = 0;
                     }
                 }
@@ -67,10 +61,10 @@ class TranslateUtility
                     continue;
                 }
             }
-            if (!empty($allowedFiles) && !static::fileExists($extdir . static::LANGUAGE_DIR, $allowedFiles)) {
+            if (!empty($allowedFiles) && !static::fileExists($extension['packagePath'] . static::LANGUAGE_DIR, $allowedFiles)) {
                 continue;
             }
-            $extensions[$entry] = $entry;
+            $extensions[$extkey] = $extension;
         }
         ksort($extensions);
         return $extensions;
@@ -79,15 +73,14 @@ class TranslateUtility
     /**
      * get list of XLF files, default language only
      *
-     * @param string $extension
+     * @param array $extension
      * @param array $allowedFiles
      * @return array
      */
-    public static function getFileList(string $extension, array $allowedFiles = []): array
+    public static function getFileList(array $extension, array $allowedFiles = []): array
     {
         $files = [];
-        $extdir = Environment::getPublicPath() . '/typo3conf/ext/' . $extension . '/';
-        $langdir = $extdir . static::LANGUAGE_DIR;
+        $langdir = $extension['packagePath'] . static::LANGUAGE_DIR;
 
         $allfiles = GeneralUtility::getAllFilesAndFoldersInPath([], $langdir . '/', 'xlf', false, 3);
         foreach($allfiles as $file) {
@@ -106,21 +99,21 @@ class TranslateUtility
     /**
      * get path to XLF, no checking for file existence
      *
-     * @param string $extension
+     * @param array $extension
      * @param string $file
      * @param string $langKey
      * @param bool $useL10n
      * @return string
      */
-    public static function getXlfPath(string $extension, string $file, string $langKey = 'default', bool $useL10n = FALSE): string
+    public static function getXlfPath(array $extension, string $file, string $langKey = 'default', bool $useL10n = FALSE): string
     {
-        $relPath = $extension . '/' . static::getXlfRelPath($file, $langKey);
+        $relPath = static::getXlfRelPath($file, $langKey);
         if ($useL10n && $langKey !== 'default') {
-            $basePath = Environment::getLabelsPath() . '/' . $langKey;
+            $basePath = Environment::getLabelsPath() . '/' . $langKey . '/' . $extension['key'] . '/';
         } else {
-            $basePath = Environment::getPublicPath() . '/typo3conf/ext';
+            $basePath = $extension['packagePath'];
         }
-        return $basePath . '/' . $relPath;
+        return $basePath . $relPath;
     }
 
     /**
@@ -177,7 +170,7 @@ class TranslateUtility
         $moduledata = BackendUtility::getModuleData(['data' => ''], [], 'tools_translate_locallang');
         if (!empty($moduledata['data'])) {
             $data = unserialize($moduledata['data']);
-            if (count($data) === 5 && isset($data['sessid'])) {
+            if (count($data) === 5 && isset($data['sessid']) && isset($data['extkey'])) {
                 return $data;
             }
         }

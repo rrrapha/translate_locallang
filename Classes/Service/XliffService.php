@@ -32,9 +32,9 @@ class XliffService
     protected $data = [];
 
     /**
-    * @var string
+    * @var array
     */
-    protected $extension = '';
+    protected $extension = [];
 
     /**
     * @var string
@@ -67,14 +67,14 @@ class XliffService
     protected $languageLoaded = [];
 
     /**
-     * @param string $extension
+     * @param array $extension
      * @param string $file
      * @param string $sourcelang
      * @param bool $useL10n
      * @param bool $lockSourceLang
      * @return void
      */
-    public function init(string $extension, string $file, string $sourcelang = 'en', bool $useL10n = TRUE, bool $lockSourceLang = FALSE): void
+    public function init(array $extension, string $file, string $sourcelang = 'en', bool $useL10n = TRUE, bool $lockSourceLang = FALSE): void
     {
         $this->extension = $extension;
         $this->file = $file;
@@ -353,9 +353,9 @@ class XliffService
             'labels' => $labels,
             'sourcelang' => $this->sourcelang,
             'targetlang' => ($langKey === 'default') ? NULL: $langKey,
-            'productname' => $this->extension,
+            'productname' => $this->extension['key'],
             'date' => date('Y-m-d\TH:i:s\Z'), //date('c')
-            'original' => 'EXT:' . $this->extension . '/' . TranslateUtility::getXlfRelPath($this->file, 'default'),
+            'original' => 'EXT:' . $this->extension['key'] . '/' . TranslateUtility::getXlfRelPath($this->file, 'default'),
         ]);
         return $xliffview->render();
     }

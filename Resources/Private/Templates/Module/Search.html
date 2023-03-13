@@ -25,7 +25,7 @@
 				<h2>{f:translate(key:'search_results')}:</h2>
 				<f:for each="{results}" as="result">
 					<div>
-						<f:link.action action="list" arguments="{extension:result.0,file:result.1,langKeys:result.2}"><strong>{result.0}</strong>/Resources/Private/Language/{result.1}</f:link.action>
+						<f:link.action action="list" arguments="{extkey:result.0,file:result.1,langKeys:result.2}"><strong>{result.0}</strong>/Resources/Private/Language/{result.1}</f:link.action>
 					</div>
 				</f:for>
 			</f:then>

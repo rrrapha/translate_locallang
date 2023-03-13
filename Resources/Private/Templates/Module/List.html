@@ -8,7 +8,7 @@
 
 <f:section name="Content">
 	<f:flashMessages />
-	<h1>{f:translate(key:'title')} {f:if(condition:'{extension}',then:' - {extension}')}</h1>
+	<h1>{f:translate(key:'title')} {f:if(condition:'{extkey}',then:' - {extkey}')}</h1>
 	<f:if condition="{conf.translatorInfo}">
 		<div class="alert alert-warning">
 			<div class="media">
@@ -20,11 +20,11 @@
 	</f:if>
 	<f:render partial="Module/Filter" arguments="{_all}" />
 	<br>
-	<f:if condition="{extension}">
+	<f:if condition="{extkey}">
 		<f:if condition="{file}">
 			<f:render partial="Module/List" arguments="{_all}" />
 			<f:form id="translate_export" action="exportCsv" controller="Module">
-				<f:form.hidden name="extension" value="{extension}" />
+				<f:form.hidden name="extkey" value="{extkey}" />
 				<f:form.hidden name="file" value="{file}" />
 				<f:for each="{langKeys}" as="langKey" iteration="iter">
 					<f:form.hidden name="langKeys[{iter.index}]" value="{langKey}" />
@@ -32,7 +32,7 @@
 			</f:form>
 			<f:if condition="{conf.modifyKeys}">
 				<f:form id="translate_import" action="importCsv" controller="Module" class="form-group" enctype="multipart/form-data">
-					<f:form.hidden name="extension" value="{extension}" />
+					<f:form.hidden name="extkey" value="{extkey}" />
 					<f:form.hidden name="file" value="{file}" />
 					<f:for each="{langKeys}" as="langKey" iteration="iter">
 						<f:form.hidden name="langKeys[{iter.index}]" value="{langKey}" />
@@ -49,7 +49,7 @@
 		</f:if>
 		<f:if condition="{conf.modifyKeys}">
 			<f:form id="translate_create_file" action="createFile" controller="Module" class="form-group">
-				<f:form.hidden name="extension" value="{extension}" />
+				<f:form.hidden name="extkey" value="{extkey}" />
 				<label>{f:translate(key:'create_file')}</label>
 				<div class="input-group">
 					<f:form.textfield name="newFile" value="" class="form-control" placeholder="{f:translate(key: 'dummy_filename')}"/>
