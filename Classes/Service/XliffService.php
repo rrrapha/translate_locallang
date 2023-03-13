@@ -103,7 +103,7 @@ class XliffService
 
         //load overlay data
         if ($langKey !== 'default') {
-            //check for file in typo3conf/ext first
+            //check for file in extension directory first
             $fileref = TranslateUtility::getXlfPath($this->extension, $this->file, $langKey, FALSE);
 
             $addkeys = !$this->useL10n;
@@ -345,8 +345,8 @@ class XliffService
                 ]];
             }
         }
-        $xliffview = GeneralUtility::makeInstance(StandaloneView::class); 
-        $xliffview->setTemplatePathAndFilename(Environment::getPublicPath() . '/typo3conf/ext/translate_locallang/Resources/Private/Templates/Xliff.html');
+        $xliffview = GeneralUtility::makeInstance(StandaloneView::class);
+        $xliffview->setTemplatePathAndFilename('EXT:translate_locallang/Resources/Private/Templates/Xliff.html');
 
         date_default_timezone_set('UTC');
         $xliffview->assignMultiple([

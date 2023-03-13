@@ -35,7 +35,7 @@ class TranslateUtility
      */
     public static function getExtList(array $allowedExts, array $allowedFiles = [], array $patterns = []): array
     {
-        $listUtility = GeneralUtility::makeInstance(ListUtility::class); 
+        $listUtility = GeneralUtility::makeInstance(ListUtility::class);
         $availableExtensions = $listUtility->getAvailableExtensions('Local');
         $extensions = [];
         foreach($availableExtensions as $extkey => $extension) {

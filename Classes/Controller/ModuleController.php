@@ -123,7 +123,7 @@ class ModuleController extends ActionController
             $l10ndir = Environment::getLabelsPath() . '/' . $l . '/' . $extkey;
             if (!$this->conf['useL10n'] && is_dir($l10ndir)) {
                 $this->addFlashMessage(
-                    $l10ndir . ' directory exists. (You are currently editing the files in typo3conf/ext).', 'Notice', AbstractMessage::NOTICE
+                    $l10ndir . ' directory exists. (You are currently editing the files in the extension directory).', 'Notice', AbstractMessage::NOTICE
                 );
             }
             $files = TranslateUtility::getFileList($extension, $this->conf['allowedFiles']);
