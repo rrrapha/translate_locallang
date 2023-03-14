@@ -446,6 +446,10 @@ class ModuleController extends ActionController
             }
             if ($ok) {
                 /* copy the template file */
+                $dir = dirname($path);
+                if (!file_exists($dir)) {
+                    GeneralUtility::mkdir_deep($dir);
+                }
                 $src = realpath(__DIR__ . '/../../Resources/Private/Templates/Empty.xlf');
                 if (!@copy($src, $path)) {
                     $this->addFlashMessage('Could not create file', 'Error', AbstractMessage::ERROR);
