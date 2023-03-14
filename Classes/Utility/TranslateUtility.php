@@ -137,15 +137,6 @@ class TranslateUtility
     }
 
     /**
-     * @param string extdir
-     * @return bool
-     */
-    private static function isExtension(string $extdir): bool
-    {
-        return @is_dir($extdir . static::LANGUAGE_DIR);
-    }
-
-    /**
      * @param string dir
      * @param array filenames
      * @return bool
