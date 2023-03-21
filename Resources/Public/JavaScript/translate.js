@@ -109,6 +109,7 @@ window.addEventListener('DOMContentLoaded', function() {
 			}
 			initrow(newnode);
 			this.parentNode.parentNode.insertBefore(newnode, refnode);
+			inputs[0].focus();
 		});
 	}
 
