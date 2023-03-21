@@ -18,12 +18,19 @@
 	border:1px solid #aaaaaa;
 	font-weight:bold;
 }
+.translate-row.header > div {
+	padding: 4px;
+}
 .translate-row > div {
 	display:table-cell;
 	border-left:1px solid #aaaaaa;
 	border-right:1px solid #aaaaaa;
 	vertical-align:top;
 	line-height:normal;
+}
+.translate-row > div:focus-within {
+	outline: 2px solid #aaaaaa;
+	outline-offset: -2px;
 }
 .translate-row > .same {
 	background-color:#dbeceb;
@@ -40,7 +47,7 @@
 	outline:none;
 	background-color:transparent;
 	line-height:normal;
-	padding:0;
+	padding:4px;
 }
 .translate-row textarea {
 	resize: none;
@@ -51,7 +58,7 @@
 	line-height:normal;
 	height:2.9em;
 	overflow-y:auto;
-	padding:0;
+	padding:4px;
 }
 .translate-row svg {
 	pointer-events:none;
@@ -63,6 +70,7 @@
 
 form.form-group select {
 	width: 100%;
+	margin-bottom: 8px;
 }
 form.form-group select.form-control[multiple] {
 	min-height: 0;
