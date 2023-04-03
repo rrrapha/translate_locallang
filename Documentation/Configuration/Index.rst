@@ -40,11 +40,11 @@ Configuration Options:
       de,fr,it
 
  - :Property:
-      useL10n 
+      sortOnSave
    :Description:
-      Save translations to 'labels' or 'l10n' folder instead of the extension directory
+      Sort labels on save
    :Default:
-      0
+      1
 
  - :Property:
       clearCache
@@ -59,6 +59,13 @@ Configuration Options:
       Filter for extension names (wildcard patterns, comma separated, e.g. acme_*)
    :Default:
       \*
+
+ - :Property:
+      useL10n 
+   :Description:
+      Save translations to 'labels' or 'l10n' folder instead of the extension directory
+   :Default:
+      0
 
  - :Property:
       allowedExts
