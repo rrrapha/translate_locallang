@@ -1,14 +1,14 @@
 window.addEventListener('DOMContentLoaded', function() {
 
 	// Add event listeners to filter selects to submit the form on change
-	const filterSelects = document.querySelectorAll('select[name="extkey"], select[name="file"], select[name="langKeys[]"]')
+	const filterSelects = document.querySelectorAll('select[name="extkey"], select[name="file"], select[name="langKeys[]"]');
 
 	filterSelects.forEach(select => {
 		select.addEventListener('change', () => {
-			const form = select.closest('form')
-			form.submit()
-		})
-	})
+			const form = select.closest('form');
+			form.submit();
+		});
+	});
 
 	var el_act = null;	//current drag elem
 	var el_last = null;	//last element with a highlight border
