@@ -28,6 +28,10 @@ window.addEventListener('DOMContentLoaded', function() {
 		formChanged();
 	});
 
+	if (submitButton.classList.contains('btn-danger')) {
+		submitButton.classList.remove('btn-default'); // needed in TYPO3 12
+	}
+
 	function formChanged() {
 		submitButton.classList.add('btn-danger');
 		submitButton.classList.remove('btn-default');
