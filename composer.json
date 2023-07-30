@@ -1,7 +1,7 @@
 {
     "name": "undefined/translate-locallang",
     "type": "typo3-cms-extension",
-    "version": "2.8.5",
+    "version": "2.9.0",
     "description": "Backend Module for creating and editing of language files (locallang.xlf).",
     "license": "GPL-2.0-or-later",
     "require": {
