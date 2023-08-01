@@ -44,7 +44,7 @@ Configuration Options:
    :Description:
       Sort labels on save
    :Default:
-      1
+      0
 
  - :Property:
       clearCache
