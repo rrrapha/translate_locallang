@@ -167,7 +167,7 @@ class ModuleController extends ActionController
             }
         }
 
-        $this->view->assignMultiple([
+        $moduleTemplate->assignMultiple([
             'extkey' => $extkey,
             'files' => $files,
             'file' => $file,
@@ -186,9 +186,7 @@ class ModuleController extends ActionController
             'sessid' => $sessid,
         ]);
 
-        $moduleTemplate->setContent($this->view->render());
-
-        return $this->htmlResponse($moduleTemplate->renderContent());
+        return $moduleTemplate->renderResponse('Module/List');
     }
 
     /**
@@ -248,7 +246,7 @@ class ModuleController extends ActionController
             }
         }
         foreach($keychanges as $key => $keyvalue) {
-            $xliffService->changeKey($key, $keyvalue);
+            $xliffService->changeKey((string)$key, $keyvalue);
         }
 
         if ($this->conf['sortOnSave']) {
@@ -408,18 +406,17 @@ class ModuleController extends ActionController
                 }
             }
         }
-        $this->view->assignMultiple([
+
+        $moduleTemplate = $this->moduleTemplateFactory->create($this->request);
+        $this->addMenu($moduleTemplate);
+        $moduleTemplate->assignMultiple([
             'word' => $word,
             'results' => $results,
             'conf' => $this->conf,
             'search' => TRUE,
         ]);
 
-        $moduleTemplate = $this->moduleTemplateFactory->create($this->request);
-        $this->addMenu($moduleTemplate);
-        $moduleTemplate->setContent($this->view->render());
-
-        return $this->htmlResponse($moduleTemplate->renderContent());
+        return $moduleTemplate->renderResponse('Module/Search');
     }
 
     /**
