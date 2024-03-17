@@ -6,7 +6,6 @@ $EM_CONF[$_EXTKEY] = [
     'category' => 'module',
     'version' => '2.9.0',
     'state' => 'stable',
-    'clearCacheOnLoad' => 1,
     'author' => 'Raphael Graf',
     'author_email' => 'r@undefined.ch',
     'author_company' => 'undefined',
