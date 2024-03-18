@@ -20,7 +20,7 @@ window.addEventListener('DOMContentLoaded', function() {
 		return;
 
 	var rows = translate_form.getElementsByClassName('translate-row');
-	for (i = 0, l = rows.length; i < l; i++) {
+	for (i = 1, l = rows.length; i < l; i++) {
 		initrow(rows[i]);
 	}
 	var submitButton = document.getElementsByName('translate_save')[0];
@@ -38,27 +38,27 @@ window.addEventListener('DOMContentLoaded', function() {
 	}
 
 	function initrow(row) {
-		var handles = row.getElementsByClassName('move');
-		var adders = row.getElementsByClassName('add');
-		var removers = row.getElementsByClassName('del');
-		if (handles.length > 0)
-			inithandle(handles[0]);
-		if (adders.length > 0)
-			initadder(adders[0]);
-		if (removers.length > 0)
-			initremover(removers[0]);
+		var parents = row.getElementsByClassName('add');
+		if (parents.length > 0)
+			initAdd(row, parents[0].firstElementChild);
+		parents = row.getElementsByClassName('del');
+		if (parents.length > 0)
+			initDel(row, parents[0].firstElementChild);
+		parents = row.getElementsByClassName('move');
+		if (parents.length > 0)
+			initMove(row, parents[0].firstElementChild);
 	}
 
-	function inithandle(obj) {
-		obj.setAttribute('draggable', 'true');
-		obj.addEventListener('dragstart', function (e) {
+	function initMove(row, button) {
+		button.setAttribute('draggable', 'true');
+		button.addEventListener('dragstart', function (e) {
 			e.dataTransfer.effectAllowed = 'move';
-			el_act = this.parentNode;
+			el_act = row;
 			el_act.style.opacity = '0.5';
 			dragging = true;
 		});
 
-		obj.addEventListener('dragend', function (e) {
+		button.addEventListener('dragend', function (e) {
 			dragging = false;
 			if (el_act)
 				el_act.style.opacity = '';
@@ -66,7 +66,7 @@ window.addEventListener('DOMContentLoaded', function() {
 				el_last.className = 'translate-row';
 		});
 
-		obj.parentNode.addEventListener('dragover', function (e) {
+		row.addEventListener('dragover', function (e) {
 			e.preventDefault();
 			if (!dragging)
 				return false;
@@ -85,7 +85,7 @@ window.addEventListener('DOMContentLoaded', function() {
 			el_last.className = 'translate-row over';
 		});
 
-		obj.parentNode.addEventListener('drop', function (e) {
+		row.addEventListener('drop', function (e) {
 			e.stopPropagation();
 			e.preventDefault();
 			if (!dragging)
@@ -101,12 +101,12 @@ window.addEventListener('DOMContentLoaded', function() {
 	}
 
 	var newindex = 0;
-	function initadder(obj) {
-		obj.addEventListener('click', function (e) {
+	function initAdd(row, button) {
+		button.addEventListener('click', function (e) {
 			e.stopPropagation();
 			e.preventDefault();
-			var refnode = this.parentNode.nextSibling;
-			var newnode = this.parentNode.cloneNode(true);
+			var refnode = row.nextSibling;
+			var newnode = row.cloneNode(true);
 			var inputs = newnode.getElementsByTagName('input');
 			var textareas = newnode.getElementsByTagName('textarea');
 			var newkey = '_newkey' + newindex++;
@@ -123,14 +123,14 @@ window.addEventListener('DOMContentLoaded', function() {
 				textareas[i].value = '';
 			}
 			initrow(newnode);
-			this.parentNode.parentNode.insertBefore(newnode, refnode);
+			row.parentNode.insertBefore(newnode, refnode);
 			inputs[0].focus();
 		});
 	}
 
-	function initremover(obj) {
-		obj.addEventListener('click', function (e) {
-			this.parentNode.parentNode.removeChild(obj.parentNode);
+	function initDel(row, button) {
+		button.addEventListener('click', function (e) {
+			row.parentNode.removeChild(row);
 			formChanged();
 		});
 	}
