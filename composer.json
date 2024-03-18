@@ -1,14 +1,10 @@
 {
     "name": "undefined/translate-locallang",
     "type": "typo3-cms-extension",
-    "version": "2.9.0",
     "description": "Backend Module for creating and editing of language files (locallang.xlf).",
     "license": "GPL-2.0-or-later",
     "require": {
-        "typo3/cms-core": ">=11.5.0 <=12.4.99"
-    },
-    "replace": {
-        "typo3-ter/translate-locallang": "self.version"
+        "typo3/cms-core": "^12 || ^13"
     },
     "autoload": {
         "psr-4": {

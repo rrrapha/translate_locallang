@@ -25,7 +25,7 @@ use TYPO3\CMS\Core\Configuration\ExtensionConfiguration;
 use TYPO3\CMS\Core\Core\Environment;
 use TYPO3\CMS\Core\Imaging\Icon;
 use TYPO3\CMS\Core\Imaging\IconFactory;
-use TYPO3\CMS\Core\Messaging\AbstractMessage;
+use TYPO3\CMS\Core\Type\ContextualFeedbackSeverity;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Extbase\Http\ForwardResponse;
 use TYPO3\CMS\Extbase\Mvc\Controller\ActionController;
@@ -97,7 +97,7 @@ class ModuleController extends ActionController
                 $timediff = time()- $moduledata['time'];
                 if ($timediff < 600) {
                     $minutes = (int)(($timediff + 30) / 60);
-                    $this->addFlashMessage('Someone else started editing this extension ' . $minutes . ' minutes ago.', 'Warning', AbstractMessage::WARNING);
+                    $this->addFlashMessage('Someone else started editing this extension ' . $minutes . ' minutes ago.', 'Warning', ContextualFeedbackSeverity::WARNING);
                 }
             }
         }
@@ -124,7 +124,7 @@ class ModuleController extends ActionController
             $l10ndir = Environment::getLabelsPath() . '/' . $l . '/' . $extkey;
             if (!$this->conf['useL10n'] && is_dir($l10ndir)) {
                 $this->addFlashMessage(
-                    $l10ndir . ' directory exists. (You are currently editing the files in the extension directory).', 'Notice', AbstractMessage::NOTICE
+                    $l10ndir . ' directory exists. (You are currently editing the files in the extension directory).', 'Notice', ContextualFeedbackSeverity::NOTICE
                 );
             }
             $files = TranslateUtility::getFileList($extension, $this->conf['allowedFiles']);
@@ -139,7 +139,7 @@ class ModuleController extends ActionController
 
                     foreach($langKeys as $langKey) {
                         if (!$xliffService->loadLang($langKey)) {
-                            $this->addFlashMessage('Could not load language: ' . $langKey, 'Warning', AbstractMessage::WARNING);
+                            $this->addFlashMessage('Could not load language: ' . $langKey, 'Warning', ContextualFeedbackSeverity::WARNING);
                             $xliffService->addLang($langKey);
                         }
                     }
@@ -153,13 +153,13 @@ class ModuleController extends ActionController
                     $formChanged = TRUE;
                 }
                 if (empty($labels)) {
-                    $this->addFlashMessage('No labels found.', 'Warning', AbstractMessage::WARNING);
+                    $this->addFlashMessage('No labels found.', 'Warning', ContextualFeedbackSeverity::WARNING);
                 }
 
                 $max_input_vars = (int)ini_get('max_input_vars');
                 $fieldcount = (count($labels) + 1) * (count($langKeys) + 1) + count($langKeys) + 10;
                 if ($fieldcount > $max_input_vars) {
-                    $this->addFlashMessage('Too many labels, max_input_vars too small. Set max_input_vars to at least: ' . $fieldcount, 'Warning', AbstractMessage::WARNING);
+                    $this->addFlashMessage('Too many labels, max_input_vars too small. Set max_input_vars to at least: ' . $fieldcount, 'Warning', ContextualFeedbackSeverity::WARNING);
                     $disableSaveButton = TRUE;
                 }
 
@@ -167,7 +167,7 @@ class ModuleController extends ActionController
             }
         }
 
-        $this->view->assignMultiple([
+        $moduleTemplate->assignMultiple([
             'extkey' => $extkey,
             'files' => $files,
             'file' => $file,
@@ -186,9 +186,7 @@ class ModuleController extends ActionController
             'sessid' => $sessid,
         ]);
 
-        $moduleTemplate->setContent($this->view->render());
-
-        return $this->htmlResponse($moduleTemplate->renderContent());
+        return $moduleTemplate->renderResponse('Module/List');
     }
 
     /**
@@ -248,7 +246,7 @@ class ModuleController extends ActionController
             }
         }
         foreach($keychanges as $key => $keyvalue) {
-            $xliffService->changeKey($key, $keyvalue);
+            $xliffService->changeKey((string)$key, $keyvalue);
         }
 
         if ($this->conf['sortOnSave']) {
@@ -260,7 +258,7 @@ class ModuleController extends ActionController
             if ($xliffService->fileExists($langKey) || $xliffService->isLanguageLoaded($langKey)) {
                 $success = $xliffService->saveLang($langKey);
                 if (!$success) {
-                    $this->addFlashMessage('Write failed: ' . $xliffService->getFilename($langKey), 'Error', AbstractMessage::ERROR);
+                    $this->addFlashMessage('Write failed: ' . $xliffService->getFilename($langKey), 'Error', ContextualFeedbackSeverity::ERROR);
                 }
             }
         }
@@ -353,7 +351,7 @@ class ModuleController extends ActionController
             // check header row
             $hrow = fgetcsv($fp, 0, ',');
             if (!$hrow || $hrow[0] !== 'key' || count($hrow) < 2) {
-                $this->addFlashMessage('Invalid file format', 'Error', AbstractMessage::ERROR);
+                $this->addFlashMessage('Invalid file format', 'Error', ContextualFeedbackSeverity::ERROR);
                 return (new ForwardResponse('list'))
                     ->withArguments(['extkey' => $extkey, 'file' => $file, 'langKeys' => $langKeys]);
             }
@@ -373,7 +371,7 @@ class ModuleController extends ActionController
                 }
             }
         } else {
-            $this->addFlashMessage('No file uploaded', 'Error', AbstractMessage::ERROR);
+            $this->addFlashMessage('No file uploaded', 'Error', ContextualFeedbackSeverity::ERROR);
         }
 
         return (new ForwardResponse('list'))
@@ -408,18 +406,17 @@ class ModuleController extends ActionController
                 }
             }
         }
-        $this->view->assignMultiple([
+
+        $moduleTemplate = $this->moduleTemplateFactory->create($this->request);
+        $this->addMenu($moduleTemplate);
+        $moduleTemplate->assignMultiple([
             'word' => $word,
             'results' => $results,
             'conf' => $this->conf,
             'search' => TRUE,
         ]);
 
-        $moduleTemplate = $this->moduleTemplateFactory->create($this->request);
-        $this->addMenu($moduleTemplate);
-        $moduleTemplate->setContent($this->view->render());
-
-        return $this->htmlResponse($moduleTemplate->renderContent());
+        return $moduleTemplate->renderResponse('Module/Search');
     }
 
     /**
@@ -441,12 +438,12 @@ class ModuleController extends ActionController
             $ok = TRUE;
             $parts = explode('.', $newFile);
             if (count($parts) !== 2 || $parts[0] === '' || end($parts) !== 'xlf') {
-                $this->addFlashMessage('Illegal filename', 'Error', AbstractMessage::ERROR);
+                $this->addFlashMessage('Illegal filename', 'Error', ContextualFeedbackSeverity::ERROR);
                 $ok = FALSE;
             }
             $path = TranslateUtility::getXlfPath($extension, $newFile, 'default', FALSE);
             if (is_file($path)) {
-                 $this->addFlashMessage('The file already exists', 'Error', AbstractMessage::ERROR);
+                 $this->addFlashMessage('The file already exists', 'Error', ContextualFeedbackSeverity::ERROR);
                  $ok = FALSE;
             }
             if ($ok) {
@@ -457,7 +454,7 @@ class ModuleController extends ActionController
                 }
                 $src = realpath(__DIR__ . '/../../Resources/Private/Templates/Empty.xlf');
                 if (!@copy($src, $path)) {
-                    $this->addFlashMessage('Could not create file', 'Error', AbstractMessage::ERROR);
+                    $this->addFlashMessage('Could not create file', 'Error', ContextualFeedbackSeverity::ERROR);
                 }
             }
         }

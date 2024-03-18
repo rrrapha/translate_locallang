@@ -6,13 +6,12 @@ $EM_CONF[$_EXTKEY] = [
     'category' => 'module',
     'version' => '2.9.0',
     'state' => 'stable',
-    'clearCacheOnLoad' => 1,
     'author' => 'Raphael Graf',
     'author_email' => 'r@undefined.ch',
     'author_company' => 'undefined',
     'constraints' => [
         'depends' => [
-            'typo3' => '11.5.0-12.4.99',
+            'typo3' => '12.0.0-13.4.99',
         ],
         'conflicts' => [],
         'suggests' => [],
