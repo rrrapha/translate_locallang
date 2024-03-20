@@ -186,7 +186,7 @@ class ModuleController extends ActionController
             'sessid' => $sessid,
         ]);
 
-        return $moduleTemplate->renderResponse('Module/List');
+        return $moduleTemplate->renderResponse();
     }
 
     /**
@@ -416,7 +416,7 @@ class ModuleController extends ActionController
             'search' => TRUE,
         ]);
 
-        return $moduleTemplate->renderResponse('Module/Search');
+        return $moduleTemplate->renderResponse();
     }
 
     /**
