@@ -82,7 +82,7 @@ class TranslateUtility
         $files = [];
         $langdir = $extension['packagePath'] . static::LANGUAGE_DIR;
 
-        $allfiles = GeneralUtility::getAllFilesAndFoldersInPath([], $langdir . '/', 'xlf', false, 5);
+        $allfiles = GeneralUtility::getAllFilesAndFoldersInPath([], $langdir . '/', 'xlf', false);
         foreach($allfiles as $file) {
                 $filename = str_replace($langdir . '/', '', $file);
                 $parts = explode('.', $filename);
