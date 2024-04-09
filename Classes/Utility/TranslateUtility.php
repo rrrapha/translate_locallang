@@ -147,6 +147,25 @@ class TranslateUtility
     }
 
     /**
+     * check if locallangXMLOverride array is set
+     *
+     * @param string $extkey
+     * @param string $file
+     * @param array $langKeys
+     * @return bool
+     */
+    public static function hasOverride(string $extkey, string $file, array $langKeys)
+    {
+        $overrideKey = 'EXT:' . $extkey. '/' . static::getXlfRelPath($file);
+        foreach($langKeys as $langKey) {
+            if (@isset($GLOBALS['TYPO3_CONF_VARS']['SYS']['locallangXMLOverride'][$langKey][$overrideKey])) {
+                return TRUE;
+            }
+        }
+        return @isset($GLOBALS['TYPO3_CONF_VARS']['SYS']['locallangXMLOverride'][$overrideKey]);
+    }
+
+    /**
      * get persistent module data
      *
      * @return array

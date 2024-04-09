@@ -125,6 +125,11 @@ class ModuleController extends ActionController
                 $file = '';
             }
             if ($file) {
+                if (TranslateUtility::hasOverride($extkey, $file, $langKeys)) {
+					$msg = 'This file has locallangXMLOverride configured';
+                    $msg.= ' ($GLOBALS[\'TYPO3_CONF_VARS\'][\'SYS\'][\'locallangXMLOverride\'])';
+                    $this->addFlashMessage($msg, 'Notice', ContextualFeedbackSeverity::NOTICE);
+                }
                 if (empty($overrideLabels)) {
                     $xliffService = GeneralUtility::makeInstance('Undefined\TranslateLocallang\Service\XliffService');
                     $xliffService->init($extension, $file, $this->conf['defaultLangKey'], !$this->conf['modifyKeys']);
