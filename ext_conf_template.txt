@@ -8,8 +8,6 @@ sortOnSave = 0
 clearCache = 0
 # cat=basic//5; type=string; label=Filter for extension names (wildcard patterns, comma separated, e.g. acme_*)
 extFilter = *
-# cat=basic//6; type=boolean; label=Save translations to 'labels' or 'l10n' folder instead of 'typo3conf/ext/'
-useL10n = 0
 # cat=basic//7; type=string; label=Allowed extensions for non-admin users (wildcard patterns, comma separated, e.g. acme_*)
 allowedExts = *
 # cat=basic//8; type=string; label=Allowed filenames for non-admin users (comma separated, empty=all)

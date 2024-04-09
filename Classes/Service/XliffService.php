@@ -44,11 +44,6 @@ class XliffService
     /**
     * @var bool
     */
-    protected $useL10n = TRUE;
-
-    /**
-    * @var bool
-    */
     protected $lockSourceLang = TRUE;
 
     /**
@@ -70,16 +65,14 @@ class XliffService
      * @param array $extension
      * @param string $file
      * @param string $sourcelang
-     * @param bool $useL10n
      * @param bool $lockSourceLang
      * @return void
      */
-    public function init(array $extension, string $file, string $sourcelang = 'en', bool $useL10n = TRUE, bool $lockSourceLang = FALSE): void
+    public function init(array $extension, string $file, string $sourcelang = 'en', bool $lockSourceLang = FALSE): void
     {
         $this->extension = $extension;
         $this->file = $file;
         $this->sourcelang = $sourcelang;
-        $this->useL10n = $useL10n;
         $this->lockSourceLang = $lockSourceLang;
     }
 
@@ -96,7 +89,7 @@ class XliffService
         if (!$this->isLanguageLoaded('default')) {
             $this->data = [];
             $fileref = TranslateUtility::getXlfPath($this->extension, $this->file, 'default', FALSE);
-            if(!$this->loadFile($fileref, 'default', TRUE)) {
+            if(!$this->loadFile($fileref, 'default')) {
                 return FALSE;
             }
         }
@@ -106,13 +99,7 @@ class XliffService
             //check for file in extension directory first
             $fileref = TranslateUtility::getXlfPath($this->extension, $this->file, $langKey, FALSE);
 
-            $addkeys = !$this->useL10n;
-            $success = $this->loadFile($fileref, $langKey, $addkeys);
-
-            if ($this->useL10n) {
-                $fileref = TranslateUtility::getXlfPath($this->extension, $this->file, $langKey, TRUE);
-                $success = $this->loadFile($fileref, $langKey, TRUE) || $success;
-            }
+            $success = $this->loadFile($fileref, $langKey);
 
             if (!$success) {
                 return FALSE;
@@ -138,14 +125,7 @@ class XliffService
         if (!$xliff) {
             return FALSE;
         }
-        $fileref = TranslateUtility::getXlfPath($this->extension, $this->file, $langKey, $this->useL10n);
-        if ($this->useL10n && !is_dir(dirname($fileref))) {
-            try {
-                GeneralUtility::mkdir_deep(dirname($fileref), '');
-            } catch (\RuntimeException $e) {
-                return FALSE;
-            }
-        }
+        $fileref = TranslateUtility::getXlfPath($this->extension, $this->file, $langKey);
         return GeneralUtility::writeFile($fileref, $xliff);
     }
 
@@ -241,7 +221,7 @@ class XliffService
      */
     public function getFilename(string $langKey): string
     {
-        return TranslateUtility::getXlfPath($this->extension, $this->file, $langKey, $this->useL10n);
+        return TranslateUtility::getXlfPath($this->extension, $this->file, $langKey);
     }
 
     /**
@@ -275,7 +255,7 @@ class XliffService
      *
      * @param string $fileref
      * @param string $langKey
-     * @param bool $addkeys
+     * @param bool $addkeys XXX unused?
      * @return bool
      */
     protected function loadFile(string $fileref, string $langKey = 'default', bool $addkeys = TRUE): bool

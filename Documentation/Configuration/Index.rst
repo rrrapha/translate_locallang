@@ -61,13 +61,6 @@ Configuration Options:
       \*
 
  - :Property:
-      useL10n 
-   :Description:
-      Save translations to 'labels' or 'l10n' folder instead of the extension directory
-   :Default:
-      0
-
- - :Property:
       allowedExts
    :Description:
       Allowed extensions for non-admin users (wildcard patterns, comma separated, e.g. acme_*)

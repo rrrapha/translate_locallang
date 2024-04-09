@@ -65,7 +65,6 @@ class ModuleController extends ActionController
         $patterns = GeneralUtility::trimExplode(',', $this->conf['extFilter'], TRUE);
         $this->conf['extensions'] = TranslateUtility::getExtList($allowedExts, $this->conf['allowedFiles'], $patterns);
         $this->conf['modifyKeys'] = (bool)$extConf['modifyKeys'] || $GLOBALS['BE_USER']->isAdmin();
-        $this->conf['useL10n'] = (bool)$extConf['useL10n'];
         $this->conf['clearCache'] = (bool)$extConf['clearCache'];
         $this->conf['langKeysAllowed'] = $this->conf['langKeys'];
         $this->conf['translatorInfo'] = (string)$extConf['translatorInfo'];
@@ -120,13 +119,6 @@ class ModuleController extends ActionController
                 throw new \UnexpectedValueException('Extension not allowed: ' . $extkey);
             }
             $extension = $this->conf['extensions'][$extkey];
-            $l = next($this->conf['langKeys']);
-            $l10ndir = Environment::getLabelsPath() . '/' . $l . '/' . $extkey;
-            if (!$this->conf['useL10n'] && is_dir($l10ndir)) {
-                $this->addFlashMessage(
-                    $l10ndir . ' directory exists. (You are currently editing the files in the extension directory).', 'Notice', ContextualFeedbackSeverity::NOTICE
-                );
-            }
             $files = TranslateUtility::getFileList($extension, $this->conf['allowedFiles']);
 
             if ($file && !isset($files[$file])) {
@@ -135,7 +127,7 @@ class ModuleController extends ActionController
             if ($file) {
                 if (empty($overrideLabels)) {
                     $xliffService = GeneralUtility::makeInstance('Undefined\TranslateLocallang\Service\XliffService');
-                    $xliffService->init($extension, $file, $this->conf['defaultLangKey'], $this->conf['useL10n'], !$this->conf['modifyKeys']);
+                    $xliffService->init($extension, $file, $this->conf['defaultLangKey'], !$this->conf['modifyKeys']);
 
                     foreach($langKeys as $langKey) {
                         if (!$xliffService->loadLang($langKey)) {
@@ -223,7 +215,7 @@ class ModuleController extends ActionController
         }
 
         $xliffService = GeneralUtility::makeInstance('Undefined\TranslateLocallang\Service\XliffService');
-        $xliffService->init($extension, $file, $this->conf['defaultLangKey'], $this->conf['useL10n'], !$this->conf['modifyKeys']);
+        $xliffService->init($extension, $file, $this->conf['defaultLangKey'], !$this->conf['modifyKeys']);
         $xliffService->mergeData($labels, $this->conf['langKeys']);
 
         //handle keychanges
@@ -291,7 +283,7 @@ class ModuleController extends ActionController
         }
 
         $xliffService = GeneralUtility::makeInstance('Undefined\TranslateLocallang\Service\XliffService');
-        $xliffService->init($extension, $file, $this->conf['defaultLangKey'], $this->conf['useL10n'], !$this->conf['modifyKeys']);
+        $xliffService->init($extension, $file, $this->conf['defaultLangKey'], !$this->conf['modifyKeys']);
 
         $hrow = ['key'];
         foreach($langKeys as $langKey) {
@@ -391,7 +383,7 @@ class ModuleController extends ActionController
                 foreach($files as $file) {
                     $langKeys = [];
                     foreach($this->conf['langKeysAllowed'] as $langKey => $dummy) {
-                        $path = TranslateUtility::getXlfPath($extension, $file, $langKey, $this->conf['useL10n']);
+                        $path = TranslateUtility::getXlfPath($extension, $file, $langKey);
                         if (is_file($path)) {
                             $xliff = file_get_contents($path);
                             $matchtag = ($langKey === 'default') ? 'source' : 'target';

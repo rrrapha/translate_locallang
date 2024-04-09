@@ -102,17 +102,12 @@ class TranslateUtility
      * @param array $extension
      * @param string $file
      * @param string $langKey
-     * @param bool $useL10n
      * @return string
      */
-    public static function getXlfPath(array $extension, string $file, string $langKey = 'default', bool $useL10n = FALSE): string
+    public static function getXlfPath(array $extension, string $file, string $langKey = 'default'): string
     {
         $relPath = static::getXlfRelPath($file, $langKey);
-        if ($useL10n && $langKey !== 'default') {
-            $basePath = Environment::getLabelsPath() . '/' . $langKey . '/' . $extension['key'] . '/';
-        } else {
-            $basePath = $extension['packagePath'];
-        }
+        $basePath = $extension['packagePath'];
         return $basePath . $relPath;
     }
 
