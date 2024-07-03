@@ -339,7 +339,7 @@ class ModuleController extends ActionController
             $importFile['tmp_name'] = $arguments['tmp_name'];
         }
         
-	    $labels = [];
+    	$labels = [];
         if (is_uploaded_file($importFile['tmp_name'])) {
             $fp = @fopen($importFile['tmp_name'], 'r');
             if ($fp === FALSE) {
