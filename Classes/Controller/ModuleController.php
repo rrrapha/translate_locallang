@@ -333,15 +333,14 @@ class ModuleController extends ActionController
      */
     public function importCsvAction(string $extkey, string $file, array $langKeys): ResponseInterface
     {
-    	$importFile['tmp_name'] = '';
-        $arguments = $this->request->getArguments();
-        if ($arguments['tmp_name'] ?? false) {
-            $importFile['tmp_name'] = $arguments['tmp_name'];
+    	if ($this->request->getUploadedFiles()) {
+            $importedFile = $this->request->getUploadedFiles()['importFile'];
+            $tempFileName = $importedFile->getTemporaryFileName();
         }
-        
-    	$labels = [];
-        if (is_uploaded_file($importFile['tmp_name'])) {
-            $fp = @fopen($importFile['tmp_name'], 'r');
+
+        $labels = [];
+        if (is_uploaded_file($tempFileName ?? '')) {
+            $fp = @fopen($tempFileName, 'r');
             if ($fp === FALSE) {
                 throw new \RuntimeException('Could not open file');
             }
