@@ -24,10 +24,24 @@
 		<f:if condition="{key}">
 		<div class="translate-row">
 			<div>
-				<f:form.textfield name="keys[{key}]" value="{key}" readonly="{f:if(condition:'{conf.modifyKeys}',else:'1')}" />
+                <f:if condition="{conf.modifyKeys}">
+                    <f:then>
+                        <f:form.textfield name="keys[{key}]" value="{key}" />
+                    </f:then>
+                    <f:else>
+                        <f:form.textfield name="keys[{key}]" value="{key}" readonly />
+                    </f:else>
+                </f:if>
 			</div>
 			<div class="{f:if(condition:'{label.default}',else:'nd')}">
-				<f:form.textarea name="labels[{key}][default]" value="{label.default}" readonly="{f:if(condition:'{conf.langKeysAllowed.default}',else:'1')}" />
+                <f:if condition="{conf.langKeysAllowed.default}">
+                    <f:then>
+                        <f:form.textarea name="labels[{key}][default]" value="{label.default}" />
+                    </f:then>
+                    <f:else>
+                        <f:form.textarea name="labels[{key}][default]" value="{label.default}" readonly />
+                    </f:else>
+                </f:if>
 			</div>
 			<f:for each="{label}" as="value" key="langKey">
 				<f:if condition="{langKey} != 'default'">
@@ -44,10 +58,24 @@
 		</f:for>
 		<div class="translate-row">
 			<div>
-				<f:form.textfield name="keys[_newkey{time}]" value="" readonly="{f:if(condition:'{conf.modifyKeys}',else:'1')}" />
+                <f:if condition="{conf.modifyKeys}">
+                    <f:then>
+                        <f:form.textfield name="keys[_newkey{time}]" value="" />
+                    </f:then>
+                    <f:else>
+                        <f:form.textfield name="keys[_newkey{time}]" value="" readonly />
+                    </f:else>
+                </f:if>
 			</div>
 			<div>
-				<f:form.textarea name="labels[_newkey{time}][default]" value="" readonly="{f:if(condition:'{conf.langKeysAllowed.default}',else:'1')}" />
+                <f:if condition="{conf.langKeysAllowed.default}">
+                    <f:then>
+                        <f:form.textarea name="labels[_newkey{time}][default]" value="" />
+                    </f:then>
+                    <f:else>
+                        <f:form.textarea name="labels[_newkey{time}][default]" value="" readonly />
+                    </f:else>
+                </f:if>
 			</div>
 			<f:for each="{langKeys}" as="langKey">
 			<f:if condition="{langKey} != 'default'">
