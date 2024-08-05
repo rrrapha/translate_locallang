@@ -1,6 +1,6 @@
 <html xmlns:f="http://typo3.org/ns/TYPO3/CMS/Fluid/ViewHelpers" data-namespace-typo3-fluid="true">
 <f:form id="translate_labels" action="save" controller="Module" class="form-group" 
-    additionalAttributes="{spellcheck:'false',autocomplete:'off',autocorrect:'off',autocapitalize:'off'}">
+    additionalAttributes="{spellcheck:'false',autocomplete:'off',autocorrect:'off',autocapitalize:'off'}" data-default="{conf.defaultLangKey}">
 
 	<f:form.hidden name="extkey" value="{extkey}" />
 	<f:form.hidden name="file" value="{file}" />
@@ -18,6 +18,9 @@
 				<div class="add"></div>
 				<div class="del"></div>
 				<div class="move"></div>
+				<f:if condition="{conf.autoTranslate}">
+					<div class="autotrans"></div>
+				</f:if>
 			</f:if>
 		</div>
 		<f:for each="{labels}" as="label" key="key">
@@ -37,7 +40,7 @@
 				</f:if>
 			</f:for>
 			<f:if condition="{conf.modifyKeys}">
-				<f:render partial="Module/Icons" />
+				<f:render partial="Module/Icons" arguments="{_all}" />
 			</f:if>
 		</div>
 		</f:if>
@@ -57,7 +60,7 @@
 			</f:if>
 			</f:for>
 			<f:if condition="{conf.modifyKeys}">
-				<f:render partial="Module/Icons" />
+				<f:render partial="Module/Icons" arguments="{_all}" />
 			</f:if>
 		</div>
 	</div>

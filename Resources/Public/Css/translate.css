@@ -59,7 +59,7 @@
 .translate-row svg {
 	pointer-events: none;
 }
-.translate-row > .add, .translate-row > .del, .translate-row > .move {
+.translate-row > .add, .translate-row > .del, .translate-row > .move, .translate-row > .autotrans {
 	width: 2em;
 	padding: 4px;
 }

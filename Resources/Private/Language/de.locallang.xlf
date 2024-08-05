@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <xliff version="1.2" xmlns="urn:oasis:names:tc:xliff:document:1.2">
-	<file source-language="en" target-language="de" datatype="plaintext" original="EXT:translate_locallang/Resources/Private/Language/locallang.xlf" date="2022-09-06T14:53:48Z" product-name="translate_locallang">
+	<file source-language="en" target-language="de" datatype="plaintext" original="EXT:translate_locallang/Resources/Private/Language/locallang.xlf" date="2024-08-05T18:30:42Z" product-name="translate_locallang">
 		<header/>
 		<body>
 			<trans-unit id="title" resname="title">
@@ -94,6 +94,10 @@
 			<trans-unit id="actionmenu.search" resname="actionmenu.search">
 				<source>Search</source>
 				<target>Suchen</target>
+			</trans-unit>
+			<trans-unit id="autotrans" resname="autotrans">
+				<source>Translate automatically</source>
+				<target>Automatisch übersetzen</target>
 			</trans-unit>
 		</body>
 	</file>

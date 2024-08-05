@@ -19,6 +19,8 @@ window.addEventListener('DOMContentLoaded', function() {
 	if (!translate_form)
 		return;
 
+	var lang_default = translate_form.getAttribute('data-default');
+
 	var rows = translate_form.getElementsByClassName('translate-row');
 	for (i = 1, l = rows.length; i < l; i++) {
 		initrow(rows[i]);
@@ -47,6 +49,9 @@ window.addEventListener('DOMContentLoaded', function() {
 		parents = row.getElementsByClassName('move');
 		if (parents.length > 0)
 			initMove(row, parents[0].firstElementChild);
+		parents = row.getElementsByClassName('autotrans');
+		if (parents.length > 0)
+			initAutotrans(row, parents[0].firstElementChild);
 	}
 
 	function initMove(row, button) {
@@ -133,5 +138,32 @@ window.addEventListener('DOMContentLoaded', function() {
 			row.parentNode.removeChild(row);
 			formChanged();
 		});
+	}
+
+	function initAutotrans(row, button) {
+		button.addEventListener('click', function (e) {
+			e.stopPropagation();
+			e.preventDefault();
+			var textareas = row.getElementsByTagName('textarea');
+			for (i = 0; i < textareas.length; i++) {
+				name = textareas[i].getAttribute('name');
+				var lang = name.substring(name.lastIndexOf('[') + 1, name.lastIndexOf(']'));
+				if (textareas[i].value == '' && textareas[0].value != '')
+					autotranslate(textareas[0].value, lang_default, lang, textareas[i]);
+			}
+		});
+	}
+
+	function autotranslate(text, lang_from, lang_to, elem) {
+		function autotransListener() {
+			var json = JSON.parse(this.responseText);
+			elem.value = json.responseData.translatedText;
+			formChanged();
+		}
+		const req = new XMLHttpRequest();
+		var url = 'https://api.mymemory.translated.net/get?q=' + encodeURIComponent(text) + '&langpair=' + lang_from + '|' + lang_to + '';
+		req.addEventListener("load", autotransListener);
+		req.open("GET", url);
+		req.send();
 	}
 });

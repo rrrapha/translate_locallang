@@ -1,20 +1,32 @@
-# cat=basic//1; type=string; label=Default language key (default=en)
+# cat=Basic; type=string; label=Default language key (default=en)
 defaultLangKey = en
-# cat=basic//2; type=string; label=Translation language keys
+
+# cat=Basic; type=string; label=Translation language keys
 langKeys = de,fr,it
-# cat=basic//3; type=boolean; label=Sort labels on save
+
+# cat=Basic; type=boolean; label=Sort labels on save
 sortOnSave = 0
-# cat=basic//4; type=boolean; label=Clear l10n cache on save
+
+# cat=Basic; type=boolean; label=Clear l10n cache on save
 clearCache = 0
-# cat=basic//5; type=string; label=Filter for extension names (wildcard patterns, comma separated, e.g. acme_*)
+
+# cat=Basic; type=string; label=Filter for extension names (wildcard patterns, comma separated, e.g. acme_*)
 extFilter = *
-# cat=basic//7; type=string; label=Allowed extensions for non-admin users (wildcard patterns, comma separated, e.g. acme_*)
-allowedExts = *
-# cat=basic//8; type=string; label=Allowed filenames for non-admin users (comma separated, empty=all)
-allowedFiles = 
-# cat=basic//9; type=boolean; label=Allow non-admin users to modify default language
-modifyDefaultLang = 0
-# cat=basic//10; type=boolean; label=Allow non-admin users to modify keys and sorting (implies modifyDefaultLang)
-modifyKeys = 0
-# cat=basic//11; type=string; label=Provide an information for translators
+
+# cat=Basic; type=string; label=Provide an information for translators
 translatorInfo =
+
+# cat=Basic; type=boolean; label=Enable automatic translation via MyMemory (experimental)
+autoTranslate = 0
+
+# cat=Permissions; type=string; label=Allowed extensions for non-admin users (wildcard patterns, comma separated, e.g. acme_*)
+allowedExts = *
+
+# cat=Permissions; type=string; label=Allowed filenames for non-admin users (comma separated, empty=all)
+allowedFiles =
+
+# cat=Permissions; type=boolean; label=Allow non-admin users to modify default language
+modifyDefaultLang = 0
+
+# cat=Permissions; type=boolean; label=Allow non-admin users to modify keys and sorting (implies modifyDefaultLang)
+modifyKeys = 0

@@ -68,6 +68,7 @@ class ModuleController extends ActionController
         $this->conf['clearCache'] = (bool)$extConf['clearCache'];
         $this->conf['langKeysAllowed'] = $this->conf['langKeys'];
         $this->conf['translatorInfo'] = (string)$extConf['translatorInfo'];
+        $this->conf['autoTranslate'] = (bool)$extConf['autoTranslate'];
         if (!((bool)$extConf['modifyDefaultLang'] || $GLOBALS['BE_USER']->isAdmin() || $this->conf['modifyKeys'])) {
             unset($this->conf['langKeysAllowed']['default']);
         }
