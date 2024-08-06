@@ -154,13 +154,15 @@ window.addEventListener('DOMContentLoaded', function() {
 		});
 	}
 
-	function autotranslate(text, lang_from, lang_to, elem) {
+	function autotranslate(text, from, to, elem) {
 		function autotransListener() {
 			var json = JSON.parse(this.responseText);
 			elem.value = json.responseData.translatedText;
 			formChanged();
 		}
 		const req = new XMLHttpRequest();
+		var lang_from = from.replace('_', '-');
+		var lang_to = to.replace('_', '-');
 		var url = 'https://api.mymemory.translated.net/get?q=' + encodeURIComponent(text) + '&langpair=' + lang_from + '|' + lang_to + '';
 		req.addEventListener("load", autotransListener);
 		req.open("GET", url);
