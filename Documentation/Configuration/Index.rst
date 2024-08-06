@@ -61,6 +61,20 @@ Configuration Options:
       \*
 
  - :Property:
+      translatorInfo
+   :Description:
+      Provide an information for translators
+   :Default:
+      [empty]
+
+ - :Property:
+      autoTranslate
+   :Description:
+      Enable automatic translation via MyMemory (experimental)
+   :Default:
+      0
+
+ - :Property:
       allowedExts
    :Description:
       Allowed extensions for non-admin users (wildcard patterns, comma separated, e.g. acme_*)
@@ -87,10 +101,3 @@ Configuration Options:
       Allow non-admin users to modify keys and sorting (implies modifyDefaultLang)
    :Default:
       0
-
- - :Property:
-      translatorInfo
-   :Description:
-      Provide an information for translators
-   :Default:
-      [empty]

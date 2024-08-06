@@ -28,3 +28,5 @@ Features:
 - Configurable restrictions for non-admin backend users.
 
 - Search for labels across all extensions.
+
+- Automatic translation via MyMemory (experimental)
