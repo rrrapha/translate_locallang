@@ -88,7 +88,7 @@ class XliffService
         //load default data first
         if (!$this->isLanguageLoaded('default')) {
             $this->data = [];
-            $fileref = TranslateUtility::getXlfPath($this->extension, $this->file, 'default', FALSE);
+            $fileref = TranslateUtility::getXlfPath($this->extension, $this->file, 'default');
             if(!$this->loadFile($fileref, 'default')) {
                 return FALSE;
             }
@@ -97,7 +97,7 @@ class XliffService
         //load overlay data
         if ($langKey !== 'default') {
             //check for file in extension directory first
-            $fileref = TranslateUtility::getXlfPath($this->extension, $this->file, $langKey, FALSE);
+            $fileref = TranslateUtility::getXlfPath($this->extension, $this->file, $langKey);
 
             $success = $this->loadFile($fileref, $langKey);
 

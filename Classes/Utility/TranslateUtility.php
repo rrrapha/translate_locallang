@@ -132,8 +132,8 @@ class TranslateUtility
     }
 
     /**
-     * @param string dir
-     * @param array filenames
+     * @param string $dir
+     * @param array $filenames
      * @return bool
      */
     private static function fileExists(string $dir, array $filenames): bool

@@ -443,7 +443,7 @@ class ModuleController extends ActionController
                 $this->addFlashMessage('Illegal filename', 'Error', ContextualFeedbackSeverity::ERROR);
                 $ok = FALSE;
             }
-            $path = TranslateUtility::getXlfPath($extension, $newFile, 'default', FALSE);
+            $path = TranslateUtility::getXlfPath($extension, $newFile, 'default');
             if (is_file($path)) {
                  $this->addFlashMessage('The file already exists', 'Error', ContextualFeedbackSeverity::ERROR);
                  $ok = FALSE;
@@ -506,7 +506,7 @@ class ModuleController extends ActionController
           ->setName('translate_save')
           ->setValue('yes')
           ->setTitle($buttonTitle)
-          ->setShowLabelText($buttonTitle)
+          ->setShowLabelText(true)
           ->setDisabled($disableSaveButton)
           ->setIcon($this->iconFactory->getIcon('actions-document-save', Icon::SIZE_SMALL));
         if ($highlightSaveButton)
@@ -519,7 +519,7 @@ class ModuleController extends ActionController
           ->setName('translate_export')
           ->setValue('yes')
           ->setTitle($buttonTitle)
-          ->setShowLabelText($buttonTitle)
+          ->setShowLabelText(true)
           ->setIcon($this->iconFactory->getIcon('actions-download', Icon::SIZE_SMALL));
         $buttonBar->addButton($exportButton, ButtonBar::BUTTON_POSITION_LEFT, 2);
 
