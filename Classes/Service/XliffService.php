@@ -32,7 +32,7 @@ class XliffService
     protected $data = [];
 
     /**
-    * @var array
+    * @var array<string>
     */
     protected $extension = [];
 
@@ -57,12 +57,12 @@ class XliffService
     protected $labelcount = 0;
 
     /**
-    * @var array
+    * @var array<bool>
     */
     protected $languageLoaded = [];
 
     /**
-     * @param array $extension
+     * @param array<string> $extension
      * @param string $file
      * @param string $sourcelang
      * @param bool $lockSourceLang
@@ -140,7 +140,7 @@ class XliffService
 
     /**
      * @param array $data
-     * @param array $langKeys
+     * @param array<string> $langKeys
      * @return void
      */
     public function mergeData(array $data, array $langKeys): void

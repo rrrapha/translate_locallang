@@ -37,7 +37,7 @@ use Undefined\TranslateLocallang\Utility\TranslateUtility;
 class ModuleController extends ActionController
 {
     /**
-     * @var array
+     * @var array<mixed>
      */
     private $conf = [];
     protected ModuleTemplateFactory $moduleTemplateFactory;
@@ -77,9 +77,9 @@ class ModuleController extends ActionController
     /**
      * @param string $extkey
      * @param string $file
-     * @param array $langKeys
+     * @param array<string> $langKeys
      * @param bool $sort
-     * @param array $overrideLabels
+     * @param array<array<string>> $overrideLabels
      * @return ResponseInterface
      */
     public function listAction(string $extkey = '', string $file = '', array $langKeys = ['default'], bool $sort = FALSE, array $overrideLabels = []): ResponseInterface
@@ -127,7 +127,7 @@ class ModuleController extends ActionController
             }
             if ($file) {
                 if (TranslateUtility::hasOverride($extkey, $file, $langKeys)) {
-					$msg = 'This file has locallangXMLOverride configured';
+                    $msg = 'This file has locallangXMLOverride configured';
                     $msg.= ' ($GLOBALS[\'TYPO3_CONF_VARS\'][\'SYS\'][\'locallangXMLOverride\'])';
                     $this->addFlashMessage($msg, 'Notice', ContextualFeedbackSeverity::NOTICE);
                 }
@@ -188,11 +188,11 @@ class ModuleController extends ActionController
     }
 
     /**
-     * @param array $keys
-     * @param array $labels
+     * @param array<string> $keys
+     * @param array<array<string>> $labels
      * @param string $extkey
      * @param string $file
-     * @param array $langKeys
+     * @param array<string> $langKeys
      * @return ResponseInterface
      */
     public function saveAction(array $keys, array $labels, string $extkey, string $file, array $langKeys): ResponseInterface
@@ -274,7 +274,7 @@ class ModuleController extends ActionController
     /**
      * @param string $extkey
      * @param string $file
-     * @param array $langKeys
+     * @param array<string> $langKeys
      * @return ResponseInterface
      */
     public function exportCsvAction(string $extkey, string $file, array $langKeys): ResponseInterface
@@ -328,7 +328,7 @@ class ModuleController extends ActionController
     /**
      * @param string $extkey
      * @param string $file
-     * @param array  $langKeys
+     * @param array<string> $langKeys
      *
      * @return ResponseInterface
      */

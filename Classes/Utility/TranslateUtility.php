@@ -28,10 +28,10 @@ class TranslateUtility
     /**
      * get list of extensions, loaded or not
      *
-     * @param array $allowedExts (empty = all)
-     * @param array $allowedFiles (empty = all)
-     * @param array $patterns
-     * @return array
+     * @param array<string> $allowedExts (empty = all)
+     * @param array<string> $allowedFiles (empty = all)
+     * @param array<string> $patterns
+     * @return array<array<string>>
      */
     public static function getExtList(array $allowedExts, array $allowedFiles = [], array $patterns = []): array
     {
@@ -73,9 +73,9 @@ class TranslateUtility
     /**
      * get list of XLF files, default language only
      *
-     * @param array $extension
-     * @param array $allowedFiles
-     * @return array
+     * @param array<string> $extension
+     * @param array<string> $allowedFiles
+     * @return array<string>
      */
     public static function getFileList(array $extension, array $allowedFiles = []): array
     {
@@ -99,7 +99,7 @@ class TranslateUtility
     /**
      * get path to XLF, no checking for file existence
      *
-     * @param array $extension
+     * @param array<string> $extension
      * @param string $file
      * @param string $langKey
      * @return string
@@ -133,7 +133,7 @@ class TranslateUtility
 
     /**
      * @param string $dir
-     * @param array $filenames
+     * @param array<string> $filenames
      * @return bool
      */
     private static function fileExists(string $dir, array $filenames): bool
@@ -151,7 +151,7 @@ class TranslateUtility
      *
      * @param string $extkey
      * @param string $file
-     * @param array $langKeys
+     * @param array<string> $langKeys
      * @return bool
      */
     public static function hasOverride(string $extkey, string $file, array $langKeys)
