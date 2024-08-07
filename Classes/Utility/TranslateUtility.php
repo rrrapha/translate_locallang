@@ -61,7 +61,7 @@ class TranslateUtility
                     continue;
                 }
             }
-            if (!empty($allowedFiles) && !static::fileExists($extension['packagePath'] . static::LANGUAGE_DIR, $allowedFiles)) {
+            if (!empty($allowedFiles) && !self::fileExists($extension['packagePath'] . self::LANGUAGE_DIR, $allowedFiles)) {
                 continue;
             }
             $extensions[$extkey] = $extension;
@@ -80,7 +80,7 @@ class TranslateUtility
     public static function getFileList(array $extension, array $allowedFiles = []): array
     {
         $files = [];
-        $langdir = $extension['packagePath'] . static::LANGUAGE_DIR;
+        $langdir = $extension['packagePath'] . self::LANGUAGE_DIR;
 
         $allfiles = GeneralUtility::getAllFilesAndFoldersInPath([], $langdir . '/', 'xlf', false);
         foreach($allfiles as $file) {
@@ -106,7 +106,7 @@ class TranslateUtility
      */
     public static function getXlfPath(array $extension, string $file, string $langKey = 'default'): string
     {
-        $relPath = static::getXlfRelPath($file, $langKey);
+        $relPath = self::getXlfRelPath($file, $langKey);
         $basePath = $extension['packagePath'];
         return $basePath . $relPath;
     }
@@ -121,14 +121,14 @@ class TranslateUtility
     public static function getXlfRelPath(string $file, string $langKey = 'default'): string
     {
         if ($langKey === 'default') {
-            return static::LANGUAGE_DIR . '/' . $file;
+            return self::LANGUAGE_DIR . '/' . $file;
         }
         $pinfo = pathinfo($file);
         $fileName = $langKey . '.' . $pinfo['filename'] . '.' . $pinfo['extension'];
         if ($pinfo['dirname'] !== '.') {
                 $fileName = $pinfo['dirname'] . '/' . $fileName;
         }
-        return static::LANGUAGE_DIR . '/' . $fileName;
+        return self::LANGUAGE_DIR . '/' . $fileName;
     }
 
     /**
@@ -156,7 +156,7 @@ class TranslateUtility
      */
     public static function hasOverride(string $extkey, string $file, array $langKeys)
     {
-        $overrideKey = 'EXT:' . $extkey. '/' . static::getXlfRelPath($file);
+        $overrideKey = 'EXT:' . $extkey. '/' . self::getXlfRelPath($file);
         foreach($langKeys as $langKey) {
             if (@isset($GLOBALS['TYPO3_CONF_VARS']['SYS']['locallangXMLOverride'][$langKey][$overrideKey])) {
                 return TRUE;
