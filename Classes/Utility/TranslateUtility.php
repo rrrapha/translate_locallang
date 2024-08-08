@@ -168,7 +168,7 @@ class TranslateUtility
     /**
      * get persistent module data
      *
-     * @return array
+     * @return array<mixed>
      */
     public static function getModuleData(): array
     {
@@ -183,7 +183,7 @@ class TranslateUtility
     }
 
     /**
-     * @param array $data
+     * @param array<mixed> $data
      * @return void
      */
     public static function setModuleData($data): void

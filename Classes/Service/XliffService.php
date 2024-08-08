@@ -27,7 +27,7 @@ class XliffService
     const CDATA_END = ']]>';
 
     /**
-    * @var array
+    * @var array<mixed>
     */
     protected $data = [];
 
@@ -130,7 +130,7 @@ class XliffService
     }
 
     /**
-     * @return array
+     * @return array<mixed>
      */
     public function &getData(): array
     {
@@ -139,7 +139,7 @@ class XliffService
     }
 
     /**
-     * @param array $data
+     * @param array<mixed> $data
      * @param array<string> $langKeys
      * @return void
      */
