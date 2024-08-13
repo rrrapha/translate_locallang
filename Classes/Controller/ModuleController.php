@@ -455,7 +455,7 @@ class ModuleController extends ActionController
                     GeneralUtility::mkdir_deep($dir);
                 }
                 $src = realpath(__DIR__ . '/../../Resources/Private/Templates/Empty.xlf');
-                if (!@copy($src, $path)) {
+                if (!$src || !@copy($src, $path)) {
                     $this->addFlashMessage('Could not create file', 'Error', ContextualFeedbackSeverity::ERROR);
                 }
             }
