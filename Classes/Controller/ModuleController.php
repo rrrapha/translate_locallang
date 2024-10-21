@@ -24,6 +24,7 @@ use TYPO3\CMS\Core\Cache\CacheManager;
 use TYPO3\CMS\Core\Configuration\ExtensionConfiguration;
 use TYPO3\CMS\Core\Core\Environment;
 use TYPO3\CMS\Core\Imaging\Icon;
+use TYPO3\CMS\Core\Imaging\IconSize;
 use TYPO3\CMS\Core\Imaging\IconFactory;
 use TYPO3\CMS\Core\Type\ContextualFeedbackSeverity;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
@@ -508,7 +509,7 @@ class ModuleController extends ActionController
           ->setTitle($buttonTitle)
           ->setShowLabelText(true)
           ->setDisabled($disableSaveButton)
-          ->setIcon($this->iconFactory->getIcon('actions-document-save', Icon::SIZE_SMALL));
+          ->setIcon($this->iconFactory->getIcon('actions-document-save', IconSize::SMALL));
         if ($highlightSaveButton)
             $saveButton->setClasses('btn-danger');
         $buttonBar->addButton($saveButton, ButtonBar::BUTTON_POSITION_LEFT, 1);
@@ -520,7 +521,7 @@ class ModuleController extends ActionController
           ->setValue('yes')
           ->setTitle($buttonTitle)
           ->setShowLabelText(true)
-          ->setIcon($this->iconFactory->getIcon('actions-download', Icon::SIZE_SMALL));
+          ->setIcon($this->iconFactory->getIcon('actions-download', IconSize::SMALL));
         $buttonBar->addButton($exportButton, ButtonBar::BUTTON_POSITION_LEFT, 2);
 
         $uriBuilder = GeneralUtility::makeInstance(UriBuilder::class);
@@ -530,7 +531,7 @@ class ModuleController extends ActionController
         $reloadButton = $buttonBar->makeLinkButton()
             ->setHref($uri)
             ->setTitle($buttonTitle)
-            ->setIcon($this->iconFactory->getIcon('actions-refresh', Icon::SIZE_SMALL));
+            ->setIcon($this->iconFactory->getIcon('actions-refresh', IconSize::SMALL));
         $buttonBar->addButton($reloadButton, ButtonBar::BUTTON_POSITION_RIGHT);
     }
 }
