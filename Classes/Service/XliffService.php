@@ -16,9 +16,9 @@ declare(strict_types=1);
 
 namespace Undefined\TranslateLocallang\Service;
 
-use TYPO3\CMS\Core\Core\Environment;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
-use TYPO3\CMS\Fluid\View\StandaloneView;
+use TYPO3\CMS\Core\View\ViewFactoryData;
+use TYPO3\CMS\Core\View\ViewFactoryInterface;
 use Undefined\TranslateLocallang\Utility\TranslateUtility;
 
 class XliffService
@@ -60,6 +60,16 @@ class XliffService
     * @var array<bool>
     */
     protected $languageLoaded = [];
+
+    /**
+    * @var ViewFactoryInterface
+    */
+    protected ViewFactoryInterface $viewFactory;
+
+    public function __construct(ViewFactoryInterface $viewFactory)
+    {
+        $this->viewFactory = $viewFactory;
+    }
 
     /**
      * @param array<string> $extension
@@ -325,8 +335,10 @@ class XliffService
                 ]];
             }
         }
-        $xliffview = GeneralUtility::makeInstance(StandaloneView::class);
-        $xliffview->setTemplatePathAndFilename('EXT:translate_locallang/Resources/Private/Templates/Xliff.html');
+        $viewFactoryData = new ViewFactoryData(
+            templatePathAndFilename: 'EXT:translate_locallang/Resources/Private/Templates/Xliff.html',
+        );
+        $xliffview = $this->viewFactory->create($viewFactoryData);
 
         date_default_timezone_set('UTC');
         $xliffview->assignMultiple([

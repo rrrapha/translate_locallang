@@ -9,3 +9,6 @@ services:
 
   Undefined\TranslateLocallang\Controller\ModuleController:
     tags: ['backend.controller']
+
+  Undefined\TranslateLocallang\Service\XliffService:
+    public: true
