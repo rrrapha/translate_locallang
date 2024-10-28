@@ -23,8 +23,6 @@ use TYPO3\CMS\Extensionmanager\Utility\ListUtility;
 
 class TranslateUtility
 {
-    const LANGUAGE_DIR = 'Resources/Private/Language';
-
     /**
      * get list of extensions, loaded or not
      *
@@ -61,7 +59,7 @@ class TranslateUtility
                     continue;
                 }
             }
-            if (!empty($allowedFiles) && !self::fileExists($extension['packagePath'] . self::LANGUAGE_DIR, $allowedFiles)) {
+            if (!empty($allowedFiles) && !self::fileExists($extension['packagePath'], $allowedFiles)) {
                 continue;
             }
             $extensions[$extkey] = $extension;
@@ -80,7 +78,7 @@ class TranslateUtility
     public static function getFileList(array $extension, array $allowedFiles = []): array
     {
         $files = [];
-        $langdir = $extension['packagePath'] . self::LANGUAGE_DIR;
+        $langdir = $extension['packagePath'];
 
         $allfiles = GeneralUtility::getAllFilesAndFoldersInPath([], $langdir . '/', 'xlf', false);
         foreach($allfiles as $file) {
@@ -121,14 +119,14 @@ class TranslateUtility
     public static function getXlfRelPath(string $file, string $langKey = 'default'): string
     {
         if ($langKey === 'default') {
-            return self::LANGUAGE_DIR . '/' . $file;
+            return $file;
         }
         $pinfo = pathinfo($file);
         $fileName = $langKey . '.' . $pinfo['filename'] . '.' . $pinfo['extension'];
         if ($pinfo['dirname'] !== '.') {
                 $fileName = $pinfo['dirname'] . '/' . $fileName;
         }
-        return self::LANGUAGE_DIR . '/' . $fileName;
+        return $fileName;
     }
 
     /**
