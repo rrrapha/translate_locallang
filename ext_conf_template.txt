@@ -22,9 +22,6 @@ autoTranslate = 0
 # cat=Permissions; type=string; label=Allowed extensions for non-admin users (wildcard patterns, comma separated, e.g. acme_*)
 allowedExts = *
 
-# cat=Permissions; type=string; label=Allowed filenames for non-admin users (comma separated, empty=all)
-allowedFiles =
-
 # cat=Permissions; type=boolean; label=Allow non-admin users to modify default language
 modifyDefaultLang = 0
 

@@ -60,11 +60,10 @@ class ModuleController extends ActionController
         $langKeys = GeneralUtility::trimExplode(',', $extConf['langKeys'], TRUE);
         $this->conf['langKeys'] = array_merge(['default' => $this->conf['defaultLangKey'] . ' (default)'], array_combine($langKeys, $langKeys));
         $this->conf['sortOnSave'] = isset($extConf['sortOnSave']) && $extConf['sortOnSave'];
-        $this->conf['allowedFiles'] = $GLOBALS['BE_USER']->isAdmin() ? [] : GeneralUtility::trimExplode(',', $extConf['allowedFiles'], TRUE);
         $allowedExts = $GLOBALS['BE_USER']->isAdmin() ? [] : GeneralUtility::trimExplode(',', $extConf['allowedExts'], TRUE);
         $this->conf['extFilter'] = trim((string)$extConf['extFilter']);
         $patterns = GeneralUtility::trimExplode(',', $this->conf['extFilter'], TRUE);
-        $this->conf['extensions'] = TranslateUtility::getExtList($allowedExts, $this->conf['allowedFiles'], $patterns);
+        $this->conf['extensions'] = TranslateUtility::getExtList($allowedExts, $patterns);
         $this->conf['modifyKeys'] = (bool)$extConf['modifyKeys'] || $GLOBALS['BE_USER']->isAdmin();
         $this->conf['clearCache'] = (bool)$extConf['clearCache'];
         $this->conf['langKeysAllowed'] = $this->conf['langKeys'];
@@ -121,7 +120,7 @@ class ModuleController extends ActionController
                 throw new \UnexpectedValueException('Extension not allowed: ' . $extkey);
             }
             $extension = $this->conf['extensions'][$extkey];
-            $files = TranslateUtility::getFileList($extension, $this->conf['allowedFiles']);
+            $files = TranslateUtility::getFileList($extension);
 
             if ($file && !isset($files[$file])) {
                 $file = '';
@@ -390,7 +389,7 @@ class ModuleController extends ActionController
         $results = [];
         if ($word) {
             foreach($this->conf['extensions'] as $extension) {
-                $files = TranslateUtility::getFileList($extension, $this->conf['allowedFiles']);
+                $files = TranslateUtility::getFileList($extension);
                 foreach($files as $file) {
                     $langKeys = [];
                     foreach($this->conf['langKeysAllowed'] as $langKey => $dummy) {

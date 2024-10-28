@@ -27,11 +27,10 @@ class TranslateUtility
      * get list of extensions, loaded or not
      *
      * @param array<string> $allowedExts (empty = all)
-     * @param array<string> $allowedFiles (empty = all)
      * @param array<string> $patterns
      * @return array<array<string>>
      */
-    public static function getExtList(array $allowedExts, array $allowedFiles = [], array $patterns = []): array
+    public static function getExtList(array $allowedExts, array $patterns = []): array
     {
         $listUtility = GeneralUtility::makeInstance(ListUtility::class);
         $availableExtensions = $listUtility->getAvailableExtensions('Local');
@@ -59,9 +58,6 @@ class TranslateUtility
                     continue;
                 }
             }
-            if (!empty($allowedFiles) && !self::fileExists($extension['packagePath'], $allowedFiles)) {
-                continue;
-            }
             $extensions[$extkey] = $extension;
         }
         ksort($extensions);
@@ -72,24 +68,21 @@ class TranslateUtility
      * get list of XLF files, default language only
      *
      * @param array<string> $extension
-     * @param array<string> $allowedFiles
      * @return array<string>
      */
-    public static function getFileList(array $extension, array $allowedFiles = []): array
+    public static function getFileList(array $extension): array
     {
         $files = [];
         $langdir = $extension['packagePath'];
 
-        $allfiles = GeneralUtility::getAllFilesAndFoldersInPath([], $langdir . '/', 'xlf', false);
+        $allfiles = GeneralUtility::getAllFilesAndFoldersInPath([], $langdir, 'xlf', false);
         foreach($allfiles as $file) {
-                $filename = str_replace($langdir . '/', '', $file);
-                $parts = explode('.', $filename);
-                if (count($parts) !== 2 || $parts[0] === '') {
-                    continue;
-                }
-                if (empty($allowedFiles) || in_array($filename, $allowedFiles)) {
-                    $files[$filename] = $filename;
-                }
+            $filename = str_replace($langdir, '', $file);
+            $parts = explode('.', $filename);
+            if (count($parts) !== 2 || $parts[0] === '') {
+                continue;
+            }
+            $files[$filename] = $filename;
         }
         return $files;
     }
@@ -127,21 +120,6 @@ class TranslateUtility
                 $fileName = $pinfo['dirname'] . '/' . $fileName;
         }
         return $fileName;
-    }
-
-    /**
-     * @param string $dir
-     * @param array<string> $filenames
-     * @return bool
-     */
-    private static function fileExists(string $dir, array $filenames): bool
-    {
-        foreach($filenames as $filename) {
-            if (@is_file($dir . '/' . $filename)) {
-                return TRUE;
-            }
-        }
-        return FALSE;
     }
 
     /**
