@@ -6,6 +6,14 @@
 .translate-row {
 	display: table-row;
 }
+.translate-row:hover textarea,
+.translate-row:hover input
+{
+    color: #000!important;
+}
+#translate_labels .translate-row:hover textarea {
+    height: 200px; 
+}
 .translate-row.over {
 	border-top: 2px solid #558b87;
 }
@@ -30,6 +38,9 @@
 }
 .translate-row > .same {
 	background-color: #dbeceb;
+}
+.translate-row > .same > textarea{
+    color: #000!important;
 }
 .translate-row > .nd {
 	background-color: #e5bcbc;
