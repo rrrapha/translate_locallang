@@ -71,3 +71,21 @@ form.form-group select {
 form.form-group select.form-control[multiple] {
 	min-height: 0;
 }
+
+@media (prefers-color-scheme: dark) {
+	.translate-row:hover {
+		background-color: #222222;
+	}
+	.translate-row > .same {
+		background-color: #063734;
+	}
+	.translate-row > .nd {
+		background-color: #611616;
+	}
+	.translate-row > .nt {
+		background-color: #390707;
+	}
+	.translate-row textarea, .translate-row input {
+		color:white;
+	}
+}
