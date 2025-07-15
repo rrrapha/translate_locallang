@@ -82,13 +82,6 @@ Configuration Options:
       \*
 
  - :Property:
-      allowedFiles
-   :Description:
-      Allowed filenames for non-admin users (comma separated, empty=all)
-   :Default:
-      [empty]
-
- - :Property:
       modifyDefaultLang
    :Description:
       Allow non-admin users to modify default language
