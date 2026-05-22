@@ -522,15 +522,5 @@ class ModuleController extends ActionController
           ->setShowLabelText(true)
           ->setIcon($this->iconFactory->getIcon('actions-download', IconSize::SMALL));
         $buttonBar->addButton($exportButton, ButtonBar::BUTTON_POSITION_LEFT, 2);
-
-        $uriBuilder = GeneralUtility::makeInstance(UriBuilder::class);
-        $uriBuilder->setRequest($this->request);
-        $uri = $uriBuilder->reset()->uriFor('list', [], 'Module');
-        $buttonTitle = LocalizationUtility::translate('LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:labels.reload');
-        $reloadButton = $buttonBar->makeLinkButton()
-            ->setHref($uri)
-            ->setTitle($buttonTitle)
-            ->setIcon($this->iconFactory->getIcon('actions-refresh', IconSize::SMALL));
-        $buttonBar->addButton($reloadButton, ButtonBar::BUTTON_POSITION_RIGHT);
     }
 }
