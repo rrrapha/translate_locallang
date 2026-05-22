@@ -18,6 +18,7 @@ namespace Undefined\TranslateLocallang\Controller;
 
 use Psr\Http\Message\ResponseInterface;
 use TYPO3\CMS\Backend\Template\Components\ButtonBar;
+use TYPO3\CMS\Backend\Template\Components\ComponentFactory;
 use TYPO3\CMS\Backend\Template\ModuleTemplate;
 use TYPO3\CMS\Backend\Template\ModuleTemplateFactory;
 use TYPO3\CMS\Core\Cache\CacheManager;
@@ -44,7 +45,11 @@ class ModuleController extends ActionController
     protected ModuleTemplateFactory $moduleTemplateFactory;
     protected IconFactory $iconFactory;
 
-    public function __construct(ModuleTemplateFactory $moduleTemplateFactory, IconFactory $iconFactory)
+    public function __construct(
+        ModuleTemplateFactory $moduleTemplateFactory,
+        IconFactory $iconFactory,
+        protected readonly ComponentFactory $componentFactory,
+    )
     {
         $this->moduleTemplateFactory = $moduleTemplateFactory;
         $this->iconFactory = $iconFactory;
@@ -474,7 +479,7 @@ class ModuleController extends ActionController
         $uriBuilder = GeneralUtility::makeInstance(UriBuilder::class);
         $uriBuilder->setRequest($this->request);
         $menuRegistry = $moduleTemplate->getDocHeaderComponent()->getMenuRegistry();
-        $menu = $menuRegistry->makeMenu();
+        $menu = $this->componentFactory->createMenu();
         $menu->setIdentifier('actionmenu');
 
         $menuItems = ['list', 'search'];
@@ -482,7 +487,7 @@ class ModuleController extends ActionController
             $uri = $uriBuilder->reset()->uriFor($action, [], 'Module');
             $isActive = $this->request->getControllerActionName() === $action ? true : false;
             $title = LocalizationUtility::translate('actionmenu.' . $action, 'TranslateLocallang');
-            $menuItem = $menu->makeMenuItem()
+            $menuItem = $this->componentFactory->createMenuItem()
               ->setTitle($title)
               ->setHref($uri)
               ->setActive($isActive);
@@ -501,7 +506,7 @@ class ModuleController extends ActionController
     {
         $buttonBar = $moduleTemplate->getDocHeaderComponent()->getButtonBar();
         $buttonTitle = LocalizationUtility::translate('save', 'TranslateLocallang');
-        $saveButton = $buttonBar->makeInputButton()
+        $saveButton = $this->componentFactory->createInputButton()
           ->setForm('translate_labels')
           ->setName('translate_save')
           ->setValue('yes')
@@ -514,7 +519,7 @@ class ModuleController extends ActionController
         $buttonBar->addButton($saveButton, ButtonBar::BUTTON_POSITION_LEFT, 1);
 
         $buttonTitle = LocalizationUtility::translate('export', 'TranslateLocallang');
-        $exportButton = $buttonBar->makeInputButton()
+        $exportButton =  $this->componentFactory->createInputButton()
           ->setForm('translate_export')
           ->setName('translate_export')
           ->setValue('yes')
