@@ -26,6 +26,9 @@ class XliffService
     const CDATA_START = '<![CDATA[';
     const CDATA_END = ']]>';
 
+    const XLIFF_VERSION_12 = '1.2';
+    const XLIFF_VERSION_20 = '2.0';
+
     /**
     * @var array<mixed>
     */
@@ -52,6 +55,11 @@ class XliffService
     protected $sourcelang = 'en';
 
     /**
+    * @var string
+    */
+    protected $xliffVersion = self::XLIFF_VERSION_12;
+
+    /**
     * @var int
     */
     protected $labelcount = 0;
@@ -76,14 +84,16 @@ class XliffService
      * @param string $file
      * @param string $sourcelang
      * @param bool $lockSourceLang
+     * @param string $xliffVersion
      * @return void
      */
-    public function init(array $extension, string $file, string $sourcelang = 'en', bool $lockSourceLang = FALSE): void
+    public function init(array $extension, string $file, string $sourcelang = 'en', bool $lockSourceLang = FALSE, string $xliffVersion = self::XLIFF_VERSION_12): void
     {
         $this->extension = $extension;
         $this->file = $file;
         $this->sourcelang = $sourcelang;
         $this->lockSourceLang = $lockSourceLang;
+        $this->xliffVersion = ($xliffVersion === static::XLIFF_VERSION_20) ? static::XLIFF_VERSION_20 : static::XLIFF_VERSION_12;
     }
 
     /**
@@ -281,34 +291,25 @@ class XliffService
             echo '</pre>';
             return FALSE;
         }
-        $children = [];
+        $units = (static::detectVersion($xml) === static::XLIFF_VERSION_20)
+            ? $this->extractUnits20($xml)
+            : $this->extractUnits12($xml);
 
-        if (isset($xml->file) && isset($xml->file->body)) {
-            $children = $xml->file->body->children();
-        }
-
-        foreach ($children as $transunit) {
-            if (!isset($transunit['id'])) {
-                continue;
-            }
-            $key = (string)$transunit['id'];
+        foreach ($units as $key => $unit) {
             if (!isset($this->data[$key]) && !$addkeys) {
                 continue;
             }
             if (!isset($this->data[$key])) {
                 $this->data[$key] = [];
             }
-            $value = $str = '';
-            if ($langKey === 'default' && isset($transunit->source)) {
-                $value = (string)$transunit->source;
-                $str = $transunit->source->asXML();
-            // @extensionScannerIgnoreLine
-            } else if (isset($transunit->target)) {
-                $value = (string)$transunit->target;
-                $str = $transunit->target->asXML();
-            }
-            if ($str && strpos($str, static::CDATA_START, 8) !== FALSE) {
-                $value = static::CDATA_START . $value . static::CDATA_END;
+            $element = ($langKey === 'default') ? $unit['source'] : $unit['target'];
+            $value = '';
+            if ($element instanceof \SimpleXMLElement) {
+                $value = (string)$element;
+                $str = (string)$element->asXML();
+                if (strpos($str, static::CDATA_START, 8) !== FALSE) {
+                    $value = static::CDATA_START . $value . static::CDATA_END;
+                }
             }
             $this->data[$key][$langKey] = $value;
         }
@@ -316,6 +317,105 @@ class XliffService
         $this->languageLoaded[$langKey] = TRUE;
 
         return TRUE;
+    }
+
+    /**
+     * Detect the XLIFF version of a parsed file
+     *
+     * The detection rules are intentionally kept identical to the private getXliffVersion() of TYPO3\CMS\Core\Localization\Loader\XliffLoader.
+     * That class is @internal and final, so the logic has to be duplicated instead of called.
+     *
+     * @param \SimpleXMLElement $xml
+     * @return string
+     */
+    protected static function detectVersion(\SimpleXMLElement $xml): string
+    {
+        $namespaces = $xml->getNamespaces(true);
+
+        // Check if XLIFF 2.x namespace is present (matches 2.0, 2.1, 2.2, etc.)
+        foreach ($namespaces as $namespace) {
+            if (str_starts_with($namespace, 'urn:oasis:names:tc:xliff:document:2.')) {
+                return static::XLIFF_VERSION_20;
+            }
+        }
+
+        // Check version attribute
+        $version = (string)$xml['version'];
+        if (str_starts_with($version, '2.')) {
+            return static::XLIFF_VERSION_20;
+        }
+
+        // Default to 1.2
+        return static::XLIFF_VERSION_12;
+    }
+
+    /**
+     * Collect the trans-units of an XLIFF 1.2 file, keyed by label id
+     *
+     * @param \SimpleXMLElement $xml
+     * @return array<array<\SimpleXMLElement|null>>
+     */
+    protected function extractUnits12(\SimpleXMLElement $xml): array
+    {
+        $units = [];
+        if (!isset($xml->file) || !isset($xml->file->body)) {
+            return $units;
+        }
+        foreach ($xml->file->body->children() as $transunit) {
+            if (!isset($transunit['id'])) {
+                continue;
+            }
+            $units[(string)$transunit['id']] = [
+                'source' => isset($transunit->source) ? $transunit->source : NULL,
+                // @extensionScannerIgnoreLine
+                'target' => isset($transunit->target) ? $transunit->target : NULL,
+            ];
+        }
+        return $units;
+    }
+
+    /**
+     * Collect the units of an XLIFF 2.0 file, keyed by label id
+     *
+     * @param \SimpleXMLElement $xml
+     * @return array<array<\SimpleXMLElement|null>>
+     */
+    protected function extractUnits20(\SimpleXMLElement $xml): array
+    {
+        $units = [];
+        foreach ($xml->file as $file) {
+            $this->collectUnits20($file, $units);
+        }
+        return $units;
+    }
+
+    /**
+     * @param \SimpleXMLElement $node
+     * @param array<array<\SimpleXMLElement|null>> $units
+     * @return void
+     */
+    protected function collectUnits20(\SimpleXMLElement $node, array &$units): void
+    {
+        foreach ($node->children() as $child) {
+            if ($child->getName() === 'group') {
+                // Units may be nested in groups
+                $this->collectUnits20($child, $units);
+                continue;
+            }
+            if ($child->getName() !== 'unit' || !isset($child['id'])) {
+                continue;
+            }
+            // Only the first segment is editable, further segments would be plural forms
+            if (!isset($child->segment[0])) {
+                continue;
+            }
+            $segment = $child->segment[0];
+            $units[(string)$child['id']] = [
+                'source' => isset($segment->source) ? $segment->source : NULL,
+                // @extensionScannerIgnoreLine
+                'target' => isset($segment->target) ? $segment->target : NULL,
+            ];
+        }
     }
 
     /**
@@ -331,12 +431,15 @@ class XliffService
                 $labels[$key] = [
                     0 => [
                         'source' => $this->encodeValue($this->data[$key]['default']),
-                        'target' => $this->encodeValue($this->data[$key][$langKey])
+                        'target' => $this->encodeValue($this->data[$key][$langKey]),
+                        // XLIFF 2.0 only: an empty translation must not be marked as approved
+                        'state' => ($this->data[$key][$langKey] === '') ? 'initial' : 'final',
                 ]];
             }
         }
+        $template = ($this->xliffVersion === static::XLIFF_VERSION_20) ? 'Xliff20.html' : 'Xliff.html';
         $viewFactoryData = new ViewFactoryData(
-            templatePathAndFilename: 'EXT:translate_locallang/Resources/Private/Templates/Xliff.html',
+            templatePathAndFilename: 'EXT:translate_locallang/Resources/Private/Templates/' . $template,
         );
         $xliffview = $this->viewFactory->create($viewFactoryData);
 

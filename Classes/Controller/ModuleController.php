@@ -33,6 +33,7 @@ use TYPO3\CMS\Extbase\Http\ForwardResponse;
 use TYPO3\CMS\Extbase\Mvc\Controller\ActionController;
 use TYPO3\CMS\Extbase\Mvc\Web\Routing\UriBuilder;
 use TYPO3\CMS\Extbase\Utility\LocalizationUtility;
+use Undefined\TranslateLocallang\Service\XliffService;
 use Undefined\TranslateLocallang\Utility\TranslateUtility;
 
 
@@ -64,6 +65,8 @@ class ModuleController extends ActionController
         $this->conf['defaultLangKey'] = (trim($extConf['defaultLangKey'])) ? trim($extConf['defaultLangKey']) : 'en';
         $langKeys = GeneralUtility::trimExplode(',', $extConf['langKeys'], TRUE);
         $this->conf['langKeys'] = array_merge(['default' => $this->conf['defaultLangKey'] . ' (default)'], array_combine($langKeys, $langKeys));
+        $xliffVersion = trim((string)($extConf['xliffVersion'] ?? ''));
+        $this->conf['xliffVersion'] = ($xliffVersion === XliffService::XLIFF_VERSION_20) ? XliffService::XLIFF_VERSION_20 : XliffService::XLIFF_VERSION_12;
         $this->conf['sortOnSave'] = isset($extConf['sortOnSave']) && $extConf['sortOnSave'];
         $allowedExts = $GLOBALS['BE_USER']->isAdmin() ? [] : GeneralUtility::trimExplode(',', $extConf['allowedExts'], TRUE);
         $this->conf['extFilter'] = trim((string)$extConf['extFilter']);
@@ -137,8 +140,8 @@ class ModuleController extends ActionController
                     $this->addFlashMessage($msg, 'Notice', ContextualFeedbackSeverity::NOTICE);
                 }
                 if (empty($overrideLabels)) {
-                    $xliffService = GeneralUtility::makeInstance('Undefined\TranslateLocallang\Service\XliffService');
-                    $xliffService->init($extension, $file, $this->conf['defaultLangKey'], !$this->conf['modifyKeys']);
+                    $xliffService = GeneralUtility::makeInstance(XliffService::class);
+                    $xliffService->init($extension, $file, $this->conf['defaultLangKey'], !$this->conf['modifyKeys'], $this->conf['xliffVersion']);
 
                     foreach($langKeys as $langKey) {
                         if (!$xliffService->loadLang($langKey)) {
@@ -225,8 +228,8 @@ class ModuleController extends ActionController
             }
         }
 
-        $xliffService = GeneralUtility::makeInstance('Undefined\TranslateLocallang\Service\XliffService');
-        $xliffService->init($extension, $file, $this->conf['defaultLangKey'], !$this->conf['modifyKeys']);
+        $xliffService = GeneralUtility::makeInstance(XliffService::class);
+        $xliffService->init($extension, $file, $this->conf['defaultLangKey'], !$this->conf['modifyKeys'], $this->conf['xliffVersion']);
         $xliffService->mergeData($labels, $this->conf['langKeys']);
 
         //handle keychanges
@@ -293,8 +296,8 @@ class ModuleController extends ActionController
             throw new \UnexpectedValueException('File not allowed: ' . $file);
         }
 
-        $xliffService = GeneralUtility::makeInstance('Undefined\TranslateLocallang\Service\XliffService');
-        $xliffService->init($extension, $file, $this->conf['defaultLangKey'], !$this->conf['modifyKeys']);
+        $xliffService = GeneralUtility::makeInstance(XliffService::class);
+        $xliffService->init($extension, $file, $this->conf['defaultLangKey'], !$this->conf['modifyKeys'], $this->conf['xliffVersion']);
 
         $hrow = ['key'];
         foreach($langKeys as $langKey) {
@@ -459,7 +462,8 @@ class ModuleController extends ActionController
                 if (!file_exists($dir)) {
                     GeneralUtility::mkdir_deep($dir);
                 }
-                $src = realpath(__DIR__ . '/../../Resources/Private/Templates/Empty.xlf');
+                $template = ($this->conf['xliffVersion'] === XliffService::XLIFF_VERSION_20) ? 'Empty20.xlf' : 'Empty.xlf';
+                $src = realpath(__DIR__ . '/../../Resources/Private/Templates/' . $template);
                 if (!$src || !@copy($src, $path)) {
                     $this->addFlashMessage('Could not create file', 'Error', ContextualFeedbackSeverity::ERROR);
                 }

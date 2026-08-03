@@ -4,6 +4,9 @@ defaultLangKey = en
 # cat=Basic; type=string; label=Translation language keys
 langKeys = de,fr,it
 
+# cat=Basic; type=options[1.2=1.2,2.0=2.0]; label=XLIFF version for saving files (both versions are read)
+xliffVersion = 1.2
+
 # cat=Basic; type=boolean; label=Sort labels on save
 sortOnSave = 0
 
