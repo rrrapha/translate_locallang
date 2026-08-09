@@ -23,6 +23,9 @@ Features:
 
 - CDATA support.
 
+- XLIFF 1.2 and 2.0 support. Both versions are read, the version used for writing
+  is configurable (:ref:`xliffVersion <configuration-xliffversion>`).
+
 - CSV import/export function.
 
 - Configurable restrictions for non-admin backend users.
