@@ -66,7 +66,7 @@ class ModuleController extends ActionController
         $langKeys = GeneralUtility::trimExplode(',', $extConf['langKeys'], TRUE);
         $this->conf['langKeys'] = array_merge(['default' => $this->conf['defaultLangKey'] . ' (default)'], array_combine($langKeys, $langKeys));
         $xliffVersion = trim((string)($extConf['xliffVersion'] ?? ''));
-        $this->conf['xliffVersion'] = ($xliffVersion === XliffService::XLIFF_VERSION_20) ? XliffService::XLIFF_VERSION_20 : XliffService::XLIFF_VERSION_12;
+        $this->conf['xliffVersion'] = ($xliffVersion === XliffService::XLIFF_VERSION_12) ? XliffService::XLIFF_VERSION_12 : XliffService::XLIFF_VERSION_20;
         $this->conf['sortOnSave'] = isset($extConf['sortOnSave']) && $extConf['sortOnSave'];
         $allowedExts = $GLOBALS['BE_USER']->isAdmin() ? [] : GeneralUtility::trimExplode(',', $extConf['allowedExts'], TRUE);
         $this->conf['extFilter'] = trim((string)$extConf['extFilter']);
@@ -462,7 +462,7 @@ class ModuleController extends ActionController
                 if (!file_exists($dir)) {
                     GeneralUtility::mkdir_deep($dir);
                 }
-                $template = ($this->conf['xliffVersion'] === XliffService::XLIFF_VERSION_20) ? 'Empty20.xlf' : 'Empty.xlf';
+                $template = ($this->conf['xliffVersion'] === XliffService::XLIFF_VERSION_12) ? 'Empty1.2.xlf' : 'Empty.xlf';
                 $src = realpath(__DIR__ . '/../../Resources/Private/Templates/' . $template);
                 if (!$src || !@copy($src, $path)) {
                     $this->addFlashMessage('Could not create file', 'Error', ContextualFeedbackSeverity::ERROR);

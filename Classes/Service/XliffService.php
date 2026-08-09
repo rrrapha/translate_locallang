@@ -57,7 +57,7 @@ class XliffService
     /**
     * @var string
     */
-    protected $xliffVersion = self::XLIFF_VERSION_12;
+    protected $xliffVersion = self::XLIFF_VERSION_20;
 
     /**
     * @var int
@@ -87,13 +87,13 @@ class XliffService
      * @param string $xliffVersion
      * @return void
      */
-    public function init(array $extension, string $file, string $sourcelang = 'en', bool $lockSourceLang = FALSE, string $xliffVersion = self::XLIFF_VERSION_12): void
+    public function init(array $extension, string $file, string $sourcelang = 'en', bool $lockSourceLang = FALSE, string $xliffVersion = self::XLIFF_VERSION_20): void
     {
         $this->extension = $extension;
         $this->file = $file;
         $this->sourcelang = $sourcelang;
         $this->lockSourceLang = $lockSourceLang;
-        $this->xliffVersion = ($xliffVersion === static::XLIFF_VERSION_20) ? static::XLIFF_VERSION_20 : static::XLIFF_VERSION_12;
+        $this->xliffVersion = ($xliffVersion === static::XLIFF_VERSION_12) ? static::XLIFF_VERSION_12 : static::XLIFF_VERSION_20;
     }
 
     /**
@@ -437,7 +437,7 @@ class XliffService
                 ]];
             }
         }
-        $template = ($this->xliffVersion === static::XLIFF_VERSION_20) ? 'Xliff20.html' : 'Xliff.html';
+        $template = ($this->xliffVersion === static::XLIFF_VERSION_12) ? 'Xliff1.2.html' : 'Xliff.html';
         $viewFactoryData = new ViewFactoryData(
             templatePathAndFilename: 'EXT:translate_locallang/Resources/Private/Templates/' . $template,
         );
